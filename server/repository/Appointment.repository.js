@@ -2,8 +2,8 @@ const { query } = require("express");
 const Repository = require("./Repository");
 const { default: mongoose } = require("mongoose");
 const userConnection = process.env.CONNECTION_URL;
-const userModel = require("./models/User.model");
-class UserRepository extends Repository {
+const userModel = require("./models/Appointment.model");
+class AppointmentRepository extends Repository {
   constructor(connection, model) {
     super(connection, model);
   }
@@ -17,6 +17,7 @@ class UserRepository extends Repository {
 }
   async read(id) {
     let user = await this.model.findOne({ user_id: id });
+    console.log(user);
     if (user) return user;
     throw new Error("Could not find object with id " + id);
   }
@@ -44,4 +45,4 @@ async exist(id){
 
 }
 
-module.exports = new UserRepository(userConnection, userModel);
+module.exports = new AppointmentRepository(userConnection, userModel);

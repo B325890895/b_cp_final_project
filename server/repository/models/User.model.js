@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userScema = mongoose.Schema({
+const userSchema = mongoose.Schema({
     user_id: {
         type: 'number',
         required: true,
@@ -37,4 +37,4 @@ const userScema = mongoose.Schema({
     // appointment:{type:mongoose.SchemaType.objectId,ref:'Appointment'}
 
 });
-module.exports = mongoose.model('User', userScema);
+module.exports = mongoose.model('User', userSchema);

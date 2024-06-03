@@ -2,15 +2,10 @@ const mongoose = require('mongoose');
 require("dotenv").config();
 class Repository {
 
-    constructor(connection, collection, model) {
-        console.log("repository");
-        console.log(connection);
-        mongoose.connect(connection
-        //     , {
-        //     useNewUrlParser: true,
-        //     useUnifiedTopology: true,
-        // }
-    ).then(() => {
+    constructor(connection, model) {
+
+        mongoose.connect(connection)
+        .then(() => {
             console.log('MongoDB connected');
         }).catch(err => {
             console.error('MongoDB connection error:', err);
@@ -45,15 +40,14 @@ class Repository {
 
     }
     async delete(id) {
-        console.log(id);
-        let object = await this.model.deleteOne({  user_id: id });
+        let object = await this.model.deleteOne({  id: id });
         if (object)
             return object;
         throw new Error('Could not find object with id ' + id);
     }
 
     async exist(id){
-        const doesObjectExist = await this.model.exists({ user_id: id })
+        const doesObjectExist = await this.model.exists({ id: id })
         if (doesObjectExist) 
             return true;
         return false;
