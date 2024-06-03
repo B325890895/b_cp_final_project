@@ -64,7 +64,6 @@ function NavBar() {
         </AppBar>
             <Outlet />
       </Box>
-      {/* <Outlet /> */}
     </>
   );
 }

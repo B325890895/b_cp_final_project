@@ -4,4 +4,4 @@ function NextTurn() {
   return <div>התור הקרוב שלי</div>;
 }
 
-export default Error;
+export default NextTurn;

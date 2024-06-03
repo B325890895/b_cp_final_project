@@ -1,7 +1,7 @@
 import React from "react";
 
 function Calendar() {
-  return <div>לוח שנה</div>;
+  return (<div>לוח שנה</div>);
 }
 
-export default Error;
+export default Calendar;
