@@ -11,25 +11,16 @@ import { Link, Outlet } from "react-router-dom";
 
 function NavBar() {
   const navItems = [
-    {name: "בית",link: "home"},
+    { name: "בית", link: "home" },
     { name: "תשלום", link: "payment" },
     { name: "התחייבות חברת החולים", link: "hmo" },
     { name: "לוח שנה", link: "calendar" },
+    { name: "אזור אישי", link: "profile" },
   ];
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-  // return(
-  //   <>
-  //   <button id="homebtn">
-  //   <Link to="/Home">
-  //     <i className="fa-solid fa-house"></i>
-  //   </Link>
-  // </button>
-  // <Outlet/>
-  // </>
-  // )
 
   return (
     <>
@@ -62,7 +53,7 @@ function NavBar() {
             </Box>
           </Toolbar>
         </AppBar>
-            <Outlet />
+        <Outlet />
       </Box>
     </>
   );
