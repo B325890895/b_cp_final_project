@@ -10,12 +10,10 @@ import HMO from "./pages/HMO";
 import PageNotFound from "./pages/PageNotFound";
 import Payment from "./pages/Payment";
 import NavBar from "./components/NavBar";
-// import '@fontsource/roboto/300.css';
-// import '@fontsource/roboto/400.css';
-// import '@fontsource/roboto/500.css';
-// import '@fontsource/roboto/700.css';
+
 
 function App() {
+  
   return (
     <>
       <BrowserRouter>
