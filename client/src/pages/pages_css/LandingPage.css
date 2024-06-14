@@ -1,0 +1,22 @@
+#logoImg {
+  width: 30vw;
+  margin-top: -3vw;
+}
+#loginButton {
+  color: #aee62d;
+  border-color: #aee62d;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+#titleSection {
+  text-align: center; 
+  >h1{
+    font-size: 8em;
+    margin: 0.5vw;
+  }
+  >h2{
+    font-size: 2em;
+    margin: 0.5vw;
+  }
+}
