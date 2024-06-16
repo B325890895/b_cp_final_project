@@ -1,6 +1,6 @@
 import React from 'react'
 import NextPayment from '../components/NextPayment'
-import PreviousPayments from '../components/PreviousPayments'
+// import PreviousPayments from '../components/PreviousPayments'
 
 function Payment  ()  {
   return (
