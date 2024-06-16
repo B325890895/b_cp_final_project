@@ -42,7 +42,9 @@ function ShowProfile({userDetail,setProfileState}) {
     {isLoading &&
     <Loading/>} */}
       {!fetchError && !isLoading && (
-        <Card>
+        <Card    sx={{
+          "& > :not(style)": { m: 1, width: "80vw" },
+        }}>
           <CardContent>
             <div dir="rtl">
               <h1> {userDetail.name}</h1>
