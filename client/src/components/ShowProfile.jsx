@@ -44,7 +44,7 @@ function ShowProfile({userDetail,setProfileState}) {
       {!fetchError && !isLoading && (
         <Card>
           <CardContent>
-            <div>
+            <div dir="rtl">
               <h1> {userDetail.name}</h1>
               <h3>מספר זהות: {userDetail.userId}</h3>
               <h3>תאריך לידה: {userDetail.birthDate}</h3>

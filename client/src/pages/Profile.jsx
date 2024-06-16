@@ -1,4 +1,5 @@
 import React, {useState,useEffect} from "react";
+// import "./pages_css/Profile.css";
 import ShowProfile from "../components/ShowProfile";
 import CreateProfile from "../components/CreateProfile";
 import UpdateProfile from "../components/UpdateProfile";
@@ -37,7 +38,7 @@ export default function Profile() {
 
   return (
     <>
-    {profileState=="create"&& <CreateProfile setUserDetail={setUserDetail} setProfileState={setProfileState}/>}
+    {profileState=="create"&& <CreateProfile id="" setUserDetail={setUserDetail} setProfileState={setProfileState}/>}
      {profileState=="show"&&<ShowProfile userDetail={userDetail} setProfileState={setProfileState}/>}
      {profileState=="update"&&<UpdateProfile userDetail={userDetail} setUserDetail={setUserDetail} setProfileState={setProfileState}/>}
 

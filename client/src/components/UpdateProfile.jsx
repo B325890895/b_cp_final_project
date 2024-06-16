@@ -16,6 +16,7 @@ function UpdateProfile({ userDetail, setUserDetail }) {
         }}
         noValidate
         autoComplete="off"
+        dir="rtl"
       >
         <TextField
           id="user_id"

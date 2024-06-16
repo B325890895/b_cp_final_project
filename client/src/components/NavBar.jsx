@@ -8,6 +8,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link, Outlet } from "react-router-dom";
+import "./components_css/NavBar.css";
 
 function NavBar() {
   const navItems = [
@@ -24,7 +25,7 @@ function NavBar() {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex" }} dir="rtl">
         <CssBaseline />
         <AppBar component="nav">
           <Toolbar>
@@ -42,7 +43,7 @@ function NavBar() {
               component="div"
               sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
             >
-              לוגו
+            <img  id="logoWithText"src="../src/assets/logoWithText.jpg" alt="logo with text"/>
             </Typography>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               {navItems.map((item) => (
