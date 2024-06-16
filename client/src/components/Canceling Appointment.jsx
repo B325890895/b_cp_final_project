@@ -1,7 +1,11 @@
 import React from "react";
 
 function CancelingAppointment() {
-  return <div><button>לביטול התור הקרוב</button></div>;
+  console.log("cann");
+  return (<>
+ 
+  <button >לביטול התור הקרוב</button>
+  </>);
 }
 
 export default CancelingAppointment;
