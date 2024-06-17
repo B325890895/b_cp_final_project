@@ -11,13 +11,33 @@ import { Link, Outlet } from "react-router-dom";
 import "./components_css/NavBar.css";
 
 function NavBar() {
-  const navItems = [
+  const userState = "manager";
+  const navItemsClient = [
     { name: "בית", link: "home" },
     { name: "תשלום", link: "payment" },
     { name: "התחייבות חברת החולים", link: "hmo" },
     { name: "לוח שנה", link: "calendar" },
     { name: "אזור אישי", link: "profile" },
   ];
+  const navItemsManager = [
+    { name: "בית", link: "home" },
+    { name: "צפיה בקבלות", link: "payment" },
+    { name: "צפיה בלקוחות", link: "clients" },
+    { name: "לוח שנה", link: "calendar" },
+    { name: "אזור אישי", link: "profile" },
+  ];
+  let navItems = null;
+  switch (userState) {
+    case "manager":
+      navItems = navItemsManager;
+      break;
+    case "client":
+      navItems = navItemsClient;
+      break;
+    default:
+      navItems = null;
+      break;
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -43,7 +63,11 @@ function NavBar() {
               component="div"
               sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
             >
-            <img  id="logoWithText"src="../src/assets/logoWithText.jpg" alt="logo with text"/>
+              <img
+                id="logoWithText"
+                src="../src/assets/logoWithText.jpg"
+                alt="logo with text"
+              />
             </Typography>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               {navItems.map((item) => (
