@@ -3,22 +3,23 @@ import React, {useState,useEffect} from "react";
 import ShowProfile from "../components/ShowProfile";
 import CreateProfile from "../components/CreateProfile";
 import UpdateProfile from "../components/UpdateProfile";
+import info from '../assets/currentUserInfo.json';
+import Error from "../components/Error";
+import Loading from "../components/Loading";
+
 
 export default function Profile() {
 
   const [profileState,setProfileState]=useState("show");
-  const [userDetail, setUserDetail] = useState({
-    userId: "658941237",
-    name: "אבי אברהם",
-    birthDate: "17/02/2007",
-    email: "abc@abc.com",
-    father: { name: "בני בנימין", phoneNumber: "0583598746" },
-    mother: { name: "מיכל מיכאלי", phoneNumber: "047896523" },
-    HMO: "מאוחדת",
-  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
+  const userDetail=info[0].userInfo;
 
   useEffect(() => {
-    //async () => await importUserDetailsFromDatabase();
+    if(!userDetail)
+      {
+        //async () => await importUserDetailsFromDatabase();
+      }
   }, []);
 
   const importUserDetailsFromDatabase = async () => {
@@ -38,9 +39,13 @@ export default function Profile() {
 
   return (
     <>
-    {profileState=="create"&& <CreateProfile id="" setUserDetail={setUserDetail} setProfileState={setProfileState}/>}
-     {profileState=="show"&&<ShowProfile userDetail={userDetail} setProfileState={setProfileState}/>}
-     {profileState=="update"&&<UpdateProfile userDetail={userDetail} setUserDetail={setUserDetail} setProfileState={setProfileState}/>}
+          {fetchError&&
+    <Error/>}
+    {isLoading &&
+    <Loading/>}
+    {profileState=="create"&&!fetchError && !isLoading && <CreateProfile id="" setUserDetail={setUserDetail} setProfileState={setProfileState}/>}
+     {profileState=="show"&&!fetchError && !isLoading &&<ShowProfile userDetail={userDetail} setProfileState={setProfileState}/>}
+     {profileState=="update"&&!fetchError && !isLoading &&<UpdateProfile setProfileState={setProfileState}/>}
 
     </>
   );

@@ -8,10 +8,15 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+import info from '../assets/currentUserInfo.json'
 
 
-function UpdateProfile({ userDetail, setUserDetail }) {
-  //let userDetail=bring user from json data 
+
+function UpdateProfile({setProfileState}) {
+  const URL_API = "http://localhost:3001";
+  const [fetchError, setFetchError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+const userDetail=info[0].userInfo;
   const [updateName, setUpdateName] = useState(userDetail.name);
   const [updateEmail, setUpdateEmail] = useState(userDetail.email);
   const [updateBirthDate, setUpdateBirthDate] = useState(userDetail.birthDate);
@@ -31,7 +36,9 @@ function UpdateProfile({ userDetail, setUserDetail }) {
 
   function updateHandler() {
 
-    updatedProfile={
+    console.log("");
+
+    const updatedProfile={
       userId: userDetail.userId,
       name: updateName,
       birthDate: updateBirthDate,
@@ -47,7 +54,7 @@ function UpdateProfile({ userDetail, setUserDetail }) {
       },
     }
     
-    fetch(`${URL_API}/user/${userId}`, {
+    fetch(`${URL_API}/user/${userDetail.userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +73,7 @@ function UpdateProfile({ userDetail, setUserDetail }) {
       .catch((error) => {
         setFetchError("Error updating profile:", error);
       });
-
+      info[0].userInfo=updatedProfile;
     setProfileState("show")
   }
 

@@ -12,26 +12,6 @@ function ShowProfile({userDetail,setProfileState}) {
   const [fetchError, setFetchError] = useState(null);
 
 
-  // useEffect(() => {
-  //   //async () => await importUserDetailsFromDatabase();
-  //   console.log(env.REACT_APP_URL);
-  // }, []);
-
-  // const importUserDetailsFromDatabase = async () => {
-  //   try {
-  //     const response = await fetch(`${process.env.REACT_APP_URL}/${userId}`);
-  //     if (!response.ok) {
-  //       throw Error("Did not received expected data");
-  //     }
-  //     const result = await response.json();
-  //     setUserDetail(result);
-  //   } catch (err) {
-  //     setFetchError(err.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   function updateHandler() {
     setProfileState("update")
   }
