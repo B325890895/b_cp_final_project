@@ -66,15 +66,7 @@ const CalendarComponent = ({ onDateChange, availableHours }) => {
         tileClassNam={{ date }}
       />
       {showAppoint&&<CancelingAppointment thisAppointment={showAppoint}/>}
-      {/* {date && ( // Display TimePicker only if date is selected
-        <TimePicker
-          onChange={handleTimeChange}
-          value={time}
-          disableClock={true}
-          hourPlaceholder="hh"
-          minutePlaceholder="mm"
-        />
-      )} */}
+
     </div>
   );
 
