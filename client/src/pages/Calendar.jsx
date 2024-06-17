@@ -13,16 +13,27 @@ const CalendarComponent = ({ onDateChange, availableHours }) => {
 
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(null);
+  const [showAppoint, setShowAppoint] = useState(null);
   useEffect(() => {
     setTime(null);
   }, [date]);
-
+  useEffect(() => {
+    console.log(showAppoint)
+  }
+  ,[showAppoint])
   const handleDateChange = (newDate) => {
     setDate(newDate);
     // onDateChange(newDate);
   };
   const dayClick = (date) => {
-    return(<>{getThisAppointment(date)} && {<CancelingAppointment />}</>)
+    const thisAppointment =getThisAppointment(date)
+    if (thisAppointment) {
+      console.log(date);
+      setShowAppoint(thisAppointment);
+    }
+    else {
+      setShowAppoint(null);
+    }
   }
   // const handleTimeChange = (newTime) => {
   //   setTime(newTime);
@@ -38,7 +49,7 @@ const CalendarComponent = ({ onDateChange, availableHours }) => {
   const tileContent = ({ date }) => {
     let remarks;
     const thisAppoint = getThisAppointment(date);
-    if(thisAppoint)  remarks = thisAppoint.status.toString() ;
+    if (thisAppoint) remarks = thisAppoint.status.toString();
     return <div style={{ color: 'green', width: '100%', height: '100%' }}>{remarks}</div>;
   }
   return (
@@ -48,12 +59,13 @@ const CalendarComponent = ({ onDateChange, availableHours }) => {
         defaultValue={date}
         onChange={handleDateChange}
         onClickDay={dayClick}
+        onActiveStartDateChange={()=>{ setShowAppoint(null)}}
         value={date}
         tileDisabled={tileDisabled}
         tileContent={tileContent}
         tileClassNam={{ date }}
       />
-
+      {showAppoint&&<CancelingAppointment thisAppointment={showAppoint}/>}
       {/* {date && ( // Display TimePicker only if date is selected
         <TimePicker
           onChange={handleTimeChange}

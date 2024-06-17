@@ -1,10 +1,10 @@
 import React from "react";
 
-function CancelingAppointment() {
-  console.log("cann");
+function CancelingAppointment({ thisAppointment }) {
+  console.log(thisAppointment.time.toString());
   return (<>
- 
-  <button >לביטול התור הקרוב</button>
+    <div>התור יתקיים בשעה {thisAppointment.time}</div>
+    <button >לביטול התור </button>
   </>);
 }
 
