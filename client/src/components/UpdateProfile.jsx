@@ -12,11 +12,11 @@ import info from '../assets/currentUserInfo.json'
 
 
 
-function UpdateProfile({setProfileState}) {
+function UpdateProfile({ setProfileState }) {
   const URL_API = "http://localhost:3001";
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-const userDetail=info[0].userInfo;
+  const userDetail = info[0].userInfo;
   const [updateName, setUpdateName] = useState(userDetail.name);
   const [updateEmail, setUpdateEmail] = useState(userDetail.email);
   const [updateBirthDate, setUpdateBirthDate] = useState(userDetail.birthDate);
@@ -38,7 +38,7 @@ const userDetail=info[0].userInfo;
 
     console.log("");
 
-    const updatedProfile={
+    const updatedProfile = {
       userId: userDetail.userId,
       name: updateName,
       birthDate: updateBirthDate,
@@ -53,7 +53,7 @@ const userDetail=info[0].userInfo;
         phoneNumber: updateMotherPhoneNumber,
       },
     }
-    
+
     fetch(`${URL_API}/user/${userDetail.userId}`, {
       method: "PUT",
       headers: {
@@ -73,7 +73,7 @@ const userDetail=info[0].userInfo;
       .catch((error) => {
         setFetchError("Error updating profile:", error);
       });
-      info[0].userInfo=updatedProfile;
+    info[0].userInfo = updatedProfile;
     setProfileState("show")
   }
 
@@ -88,80 +88,80 @@ const userDetail=info[0].userInfo;
         autoComplete="off"
         dir="rtl"
       >
-                  <CardContent>
+        <CardContent>
 
-        <TextField
-          id="user_id"
-          label="מספר זהות"
-          variant="standard"
-          value={userDetail.userId}
-        />
-        <TextField
-          id="user_name"
-          label="שם"
-          variant="standard"
-          value={updateName || ""}
-          onChange={(e) => setUpdateName(e.target.value)}
-        />
-
-        <div>
-          <h2>פרטי האב:</h2>
           <TextField
-            id="user_father_name"
+            id="user_id"
+            label="מספר זהות"
+            variant="standard"
+            value={userDetail.userId}
+          />
+          <TextField
+            id="user_name"
             label="שם"
             variant="standard"
-            value={updateFatherName || ""}
-            onChange={(e) => setUpdateFatherName(e.target.value)}
+            value={updateName || ""}
+            onChange={(e) => setUpdateName(e.target.value)}
           />
-          <TextField
-            id="user_father_phoneNumber"
-            label="מספר טלפון"
-            variant="standard"
-            value={updateFatherPhoneNumber || ""}
-            onChange={(e) => setUpdateFatherPhoneNumber(e.target.value)}
-          />
-        </div>
-        <div>
-          <h2>פרטי האם:</h2>
-          <TextField
-            id="user_mother_name"
-            label="שם"
-            variant="standard"
-            value={updateMotherName || ""}
-            onChange={(e) => setUpdateMotherName(e.target.value)}
-          />
-          <TextField
-            id="user_mother_phoneNumber"
-            label="מספר טלפון"
-            variant="standard"
-            value={updateMotherPhoneNumber || ""}
-            onChange={(e) => setUpdateMotherPhoneNumber(e.target.value)}
-          />
-        </div>
 
-        <TextField
-          id="user_email"
-          label="כתובת מייל"
-          variant="standard"
-          value={updateEmail || ""}
-          onChange={(e) => setUpdateEmail(e.target.value)}
-        />
-        <TextField
-          id="user_hmo"
-          label="קופת חולים"
-          variant="standard"
-          value={updateHMO || ""}
-          onChange={(e) => setUpdateHMO(e.target.value)}
-        />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={["DatePicker"]}>
-            <DatePicker label="birth date" id="birth_date" />
-          </DemoContainer>
-        </LocalizationProvider>
+          <div>
+            <h2>פרטי האב:</h2>
+            <TextField
+              id="user_father_name"
+              label="שם"
+              variant="standard"
+              value={updateFatherName || ""}
+              onChange={(e) => setUpdateFatherName(e.target.value)}
+            />
+            <TextField
+              id="user_father_phoneNumber"
+              label="מספר טלפון"
+              variant="standard"
+              value={updateFatherPhoneNumber || ""}
+              onChange={(e) => setUpdateFatherPhoneNumber(e.target.value)}
+            />
+          </div>
+          <div>
+            <h2>פרטי האם:</h2>
+            <TextField
+              id="user_mother_name"
+              label="שם"
+              variant="standard"
+              value={updateMotherName || ""}
+              onChange={(e) => setUpdateMotherName(e.target.value)}
+            />
+            <TextField
+              id="user_mother_phoneNumber"
+              label="מספר טלפון"
+              variant="standard"
+              value={updateMotherPhoneNumber || ""}
+              onChange={(e) => setUpdateMotherPhoneNumber(e.target.value)}
+            />
+          </div>
+
+          <TextField
+            id="user_email"
+            label="כתובת מייל"
+            variant="standard"
+            value={updateEmail || ""}
+            onChange={(e) => setUpdateEmail(e.target.value)}
+          />
+          <TextField
+            id="user_hmo"
+            label="קופת חולים"
+            variant="standard"
+            value={updateHMO || ""}
+            onChange={(e) => setUpdateHMO(e.target.value)}
+          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={["DatePicker"]}>
+              <DatePicker label="birth date" id="birth_date" />
+            </DemoContainer>
+          </LocalizationProvider>
         </CardContent>
         <CardActions>
-            <Button onClick={()=>updateHandler()}>עדכן</Button>
-          </CardActions>
+          <Button onClick={() => updateHandler()}>עדכן</Button>
+        </CardActions>
       </Card>
     </div>
   );
