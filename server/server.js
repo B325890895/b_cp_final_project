@@ -7,6 +7,8 @@ const port = process.env.PORT;
 
 //const loginRouter= require("loginRouter");
 const userRouter = require("./API/router/User.router");
+const appointmentRouter = require("./API/router/Appointment.router");
+const alertRouter = require("./API/router/Alert.router");
 
 server.use(express.json());
 
@@ -14,6 +16,8 @@ server.use(express.json());
 server.use(express.json());
 
 server.use("/user", userRouter);
+server.use("/appointment", appointmentRouter);
+server.use("/alert", alertRouter);
 
 server.use((err, req, res, next) => {
   console.log(err.stack);
