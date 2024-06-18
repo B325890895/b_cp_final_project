@@ -6,7 +6,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-
+const URL_API='http://localhost:3000';
 function AddClient() {
   const [addClientButton, setAddClientButton] = useState(true)
   const [addClientForm, setAddClientForm] = useState(false);
@@ -15,6 +15,9 @@ function AddClient() {
   const [userNameValid, setUserNameValid] = useState(false);
   const [emailValid, setEmailValid] = useState(true);
   const [alertAddClient, setAlertAddClient] = useState(false);
+  const [disabledAddButton, setDisabledAddButton] = useState(true);
+  const [focusUserName, setFocusUserName] = useState(false);
+  const [focusedEmail, setFocusedEmail] = useState(false);
   useEffect(
     () => {
       if (userName.length > 0) {
@@ -36,6 +39,12 @@ function AddClient() {
       }
     },
     [email]
+  )
+  useEffect(
+    () => {
+      setDisabledAddButton(!(emailValid && userNameValid))
+    }
+    , [userNameValid, emailValid,userName,email]
   )
   // const userName = useRef("")
   async function addClientToDatabase() {
@@ -71,7 +80,7 @@ function AddClient() {
       setAlertAddClient(false);
     }
   }
-  function sendEmail(){
+  function sendEmail() {
     //בקשה לסרבר שישלח מייל למשתמש
   }
   function addClient() {
@@ -96,6 +105,7 @@ function AddClient() {
             </Typography>
             <TextField
               error={!userNameValid}
+              // focus={()=>{setFocusUserName(true)}}
               autoFocus
               required
               id="username"
@@ -105,6 +115,7 @@ function AddClient() {
             />
             <TextField
               error={!emailValid}
+              // focused={setFocusUserName(true)}
               required
               id="email"
               label="כתובת מייל"
@@ -115,8 +126,8 @@ function AddClient() {
             />
           </CardContent>
           <CardActions>
-            <Button size="small" type="submit" disabled={!(userNameValid && emailValid)} onClick={addClientToDatabase}>הוספה</Button>
-            <Button size="small" onClick={() => { setAddClientForm(false); setAddClientButton(true) }}>ביטול</Button>
+            <Button size="small" type="submit" disabled={disabledAddButton} onClick={addClientToDatabase}>הוספה</Button>
+            <Button size="small" onClick={() => { setAddClientForm(false);setAddClientButton(true), setDisabledAddButton(true) }}>ביטול</Button>
           </CardActions>
         </Card>}
       {alertAddClient &&
@@ -136,7 +147,7 @@ function AddClient() {
           </DialogContent>
           <DialogActions>
             <Button onClick={cancel}>ביטול והסרת המשתמש</Button>
-            <Button onClick={()=>setAlertAddClient(false)}>אל תשלח מייל</Button>
+            <Button onClick={() => setAlertAddClient(false)}>אל תשלח מייל</Button>
             <Button onClick={sendEmail} autoFocus>
               אישור ושליחה
             </Button>
