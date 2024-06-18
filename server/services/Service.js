@@ -1,4 +1,4 @@
-const dataSecurity = require('./dataSecurity');
+//const dataSecurity = require('./dataSecurity');
 class Service {
 
     constructor(repository) {
@@ -76,5 +76,18 @@ class Service {
                 throw new Error('Invalid input type');
         }
     }
+
+    async ssxDataSecurity(data) {
+        console.log("ssx", data);
+            const whiteListCharacters = /^[\p{L}\p{Script=Hebrew}0-9@/.-]*$/u;
+            for (const key in data) {
+                if (Object.hasOwnProperty.call(object, key)) {
+                    const element = object[key];
+                    if(! whiteListCharacters.test(element))
+                        return false;
+                }
+            }
+            return true;
+        }
 }
 module.exports = { Service };

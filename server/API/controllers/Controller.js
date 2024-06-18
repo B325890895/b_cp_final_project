@@ -26,9 +26,9 @@ class Controller {
     try {
       const response = await this.service.create(req.body);
       if (response) {
-        return res.status(200).send(true);
+              return res.status( response.statusCode ).json( response );
+        //return res.status(200).send(true);
       }
-      return res.status(400);
     } catch (error) {
       next(error);
     }

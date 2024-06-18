@@ -54,8 +54,5 @@ class usersService extends Service {
     // }
 
   }
-  async abc(id) {
-    console.log("abc", id);
-    return true;
-}}
+}
 module.exports = new usersService(userRepository);
