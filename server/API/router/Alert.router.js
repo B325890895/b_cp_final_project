@@ -1,24 +1,24 @@
 const express = require("express");
 require("dotenv").config();
 const router = express.Router();
-const AlertController = require("../controllers/Users.controller");
+const AlertController = require("../controllers/Alert.controller");
 
 router.
     route("/")
-    .get(UsersController.readAll)
+    .get(AlertController.readAll)
     .post((req, res, next) => {
-        UsersController.create(req, res, next)
+        AlertController.create(req, res, next)
     });
     
 
 router.
     route("/:id")
     .get((req,res,next)=>{
-        UsersController.read(req, res, next)})
+        AlertController.read(req, res, next)})
     .put((req,res,next)=>{
-        UsersController.update(req, res, next)})
+        AlertController.update(req, res, next)})
     .delete((req, res, next) => {
-        UsersController.delete(req, res, next)});
+        AlertController.delete(req, res, next)});
 
 module.exports = router;
 
