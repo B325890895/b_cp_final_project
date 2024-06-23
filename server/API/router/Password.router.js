@@ -3,7 +3,7 @@ require("dotenv").config();
 const router = express.Router();
 const PasswordController = require("../controllers/Password.controller");
 
-router.post("/", (req, res, next) => {
+router.post("/",async (req, res, next) => {
     console.log("Welcome");
     PasswordController.create(req, res, next)
 });

@@ -2,24 +2,28 @@ const bcrypt = require('bcrypt');
 const { Service } = require("./Service");
 const passwordRepository = require("../repository/Password.repository");
 const { DataSecurity } = require("./dataSecurity");
+const nodemailer = require("nodemailer");
+
 class passwordService extends Service {
   constructor(repository) {
     super(repository);
   }
   async create(passwordInfo) {
-
-    if (!ssxDataSecurity(passwordInfo)) {
-      return { statusCode: 400 }
-    }
+    console.log(passwordInfo);
+    // if (!ssxDataSecurity(passwordInfo)) {
+    //   return { statusCode: 400 }
+    // }
     //validation to email and user name
-    if (!validation(userName, email))
+    if (!this.validation(passwordInfo.userName, passwordInfo.email))
       return { statusCode: 400 }
-    const password = generatePassword(8);
-    console.log(password);
-    const hashPassword = bcrypt.hash(password);
-    const response = this.repository.create({ userName: passwordInfo.userName, password: hashPassword })
+    // const password = generatePassword(8);
+    const password = "password1111"
+    const salt = 6;
+    const hashPassword = await bcrypt.hash(password, salt);
+   
+    const response = await this.repository.create({ userName: passwordInfo.userName, password: hashPassword })
     if (response.json) {
-      sendEmail(passwordInfo.email, passwordInfo.userName, password);
+      await this.sendEmail(passwordInfo.email, passwordInfo.userName, password);
       return response
     } else {
       return { statusCode: 500 }
@@ -53,9 +57,9 @@ class passwordService extends Service {
       // from: process.env.EMAIL_USER,
       from: "nbkslp1@gmail.com",
       to: "batyablau@gmail.com",
-      subject: "",
-      text: `ברכותינו,\n החשבון שלך לאתר של בת שבע כ"ץ נוצר \n
-            שם המשתמש שלכם הוא:${userName}\n הסיסמא שלכם היא:#${password}\n`
+      subject: `ברכותינו,\n  החשבון שלך לאתר של בת שבע כ"ץ נוצר בהצלחה \n`,
+      text:
+        `שם המשתמש שלך הוא:${userName}\n הסיסמא שלך היא:#${password}\n`
     };
     try {
       await transporter.sendMail(mailOptions);
@@ -64,10 +68,10 @@ class passwordService extends Service {
       console.error('Failed to send email:', error);
     }
   }
-}
-function validation(userName, email) {
-  if (!(userName.length > 0) && (/^[\u0590-\u05FF\s]*$/.test(str) || /^[a-zA-Z\s]*$/.test(str)) && (email.length > 0) && (/\S+@\S+\.\S+/.test(email)))
-    return false;
-  return true;
+  validation(userName, email) {
+    if (!(userName.length > 0) && (/^[\u0590-\u05FF\s]*$/.test(str) || /^[a-zA-Z\s]*$/.test(str)) && (email.length > 0) && (/\S+@\S+\.\S+/.test(email)))
+      return false;
+    return true;
+  }
 }
 module.exports = new passwordService(passwordRepository);
