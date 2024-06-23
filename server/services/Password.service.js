@@ -8,21 +8,21 @@ class passwordService extends Service {
   }
   async create(passwordInfo) {
 
-    if(!ssxDataSecurity(passwordInfo)){
-      return {statusCode:400}
+    if (!ssxDataSecurity(passwordInfo)) {
+      return { statusCode: 400 }
     }
     //validation to email and user name
-    if(!validation(userName,email))
-      return {statusCode:400}
+    if (!validation(userName, email))
+      return { statusCode: 400 }
     const password = generatePassword(8);
     console.log(password);
-    const hashPassword =bcrypt.hash(password);
-    const response=this.repository.create({userName:passwordInfo.userName, password:hashPassword})
+    const hashPassword = bcrypt.hash(password);
+    const response = this.repository.create({ userName: passwordInfo.userName, password: hashPassword })
     if (response.json) {
-       sendEmail(passwordInfo.email, passwordInfo.userName,password);
-       return response
-    }else{
-      return {statusCode:500}
+      sendEmail(passwordInfo.email, passwordInfo.userName, password);
+      return response
+    } else {
+      return { statusCode: 500 }
     }
 
 
@@ -38,33 +38,35 @@ class passwordService extends Service {
     return password;
   }
 
-async sendEmail(toEmail,userName, password) {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: "nbkslp1@gmail.com",
-                pass: "awzd wail fyzo mwwq"
-               
-            }
-        });
+  async sendEmail(toEmail, userName, password) {
+    console.log("sendEmailFunction");
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: "nbkslp1@gmail.com",
+        pass: "awzd wail fyzo mwwq"
 
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: toEmail,
-            subject: "",
-            text: `ברכותינו,\n החשבון שלך לאתר של בת שבע כ"ץ נוצר \n
+      }
+    });
+
+    const mailOptions = {
+      // from: process.env.EMAIL_USER,
+      from: "nbkslp1@gmail.com",
+      to: "batyablau@gmail.com",
+      subject: "",
+      text: `ברכותינו,\n החשבון שלך לאתר של בת שבע כ"ץ נוצר \n
             שם המשתמש שלכם הוא:${userName}\n הסיסמא שלכם היא:#${password}\n`
-        };
-        try {
-            await transporter.sendMail(mailOptions);
-            console.log('Email sent successfully!');
-        } catch (error) {
-            console.error('Failed to send email:', error);
-        }
+    };
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log('Email sent successfully!');
+    } catch (error) {
+      console.error('Failed to send email:', error);
     }
+  }
 }
-function validation(userName,email){
-  if(!(userName.length > 0)&&(/^[\u0590-\u05FF\s]*$/.test(str)||/^[a-zA-Z\s]*$/.test(str))&& (email.length > 0) && (/\S+@\S+\.\S+/.test(email)) )
+function validation(userName, email) {
+  if (!(userName.length > 0) && (/^[\u0590-\u05FF\s]*$/.test(str) || /^[a-zA-Z\s]*$/.test(str)) && (email.length > 0) && (/\S+@\S+\.\S+/.test(email)))
     return false;
   return true;
 }

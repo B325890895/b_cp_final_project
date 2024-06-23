@@ -35,6 +35,7 @@ class Controller {
   }
 
   async update(req, res, next) {
+    console.log("update controller");
     const { id } = req.params;
     try {
       const response = await this.service.update(id, req.body);

@@ -2,7 +2,7 @@ const { query } = require("express");
 const Repository = require("./Repository");
 const { default: mongoose } = require("mongoose");
 const userConnection = process.env.CONNECTION_URL;
-const userModel = require("./models/Appointment.model");
+const userModel = require("./models/Password.model");
 class AppointmentRepository extends Repository {
   constructor(connection, model) {
     super(connection, model);
