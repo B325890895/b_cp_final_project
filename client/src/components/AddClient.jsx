@@ -12,7 +12,7 @@ function AddClient() {
   const [addClientForm, setAddClientForm] = useState(false);
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [userNameValid, setUserNameValid] = useState(false);
+  const [userNameValid, setUserNameValid] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
   const [alertAddClient, setAlertAddClient] = useState(false);
   const [disabledAddButton, setDisabledAddButton] = useState(true);
@@ -105,7 +105,6 @@ function AddClient() {
             </Typography>
             <TextField
               error={!userNameValid}
-              // focus={()=>{setFocusUserName(true)}}
               autoFocus
               required
               id="username"
@@ -115,7 +114,6 @@ function AddClient() {
             />
             <TextField
               error={!emailValid}
-              // focused={setFocusUserName(true)}
               required
               id="email"
               label="כתובת מייל"
