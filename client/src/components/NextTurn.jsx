@@ -15,11 +15,9 @@ function NextTurn() {
     async () => await importCloseAppointmentFromDatabase();
   }, []);
 
-  const importCloseAppointmentFromDatabase = async () => {
+  async function importCloseAppointmentFromDatabase() {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_URL}/appointment/${userId}`
-      );
+      const response = await fetch(`${process.env.REACT_APP_URL}/appointment/${userName}/next`  );
       if (!response.ok) {
         throw Error("Did not received expected data");
       }
@@ -30,12 +28,14 @@ function NextTurn() {
     } finally {
       setIsLoading(false);
     }
+
+
   };
 
   function deleteAppointmentHandler() {
     if (confirm("האם אתה בטוח שברצונך לבטל את התור?")) {
       console.log("the appointment will be canceled");
-      //  deleteAppointmentFromDatabase();
+       deleteAppointmentFromDatabase();
     } else {
       console.log("the appointmemt will not be canceled");
     }

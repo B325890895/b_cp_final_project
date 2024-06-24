@@ -6,6 +6,11 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
 const URL_API='http://localhost:3000';
 function AddClient() {
   const [addClientButton, setAddClientButton] = useState(true)
@@ -60,15 +65,14 @@ function AddClient() {
       console.log("Error:", error);
     });
     if (response.status == 200) {
-      alert("הלקוח נוסף בהצלחה");
       setAlertAddClient(true);
     }
   }
   async function cancel() {
     console.log("cencel add delete client");
-    const response = await fetch(`${URL_API}/deleteClient`, {
-      method: "POST",
-      body: JSON.stringify({ userName, email }),
+    const response = await fetch(`${URL_API}/password`, {
+      method: "DELETE",
+      body: JSON.stringify({ "userName":userName }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
@@ -78,6 +82,8 @@ function AddClient() {
     if (response.status === 200) {
       console.log("לקוח נמחק בהצלחה")
       setAlertAddClient(false);
+      setAddClientForm(false);setAddClientButton(true), setDisabledAddButton(true)
+      
     }
   }
   function sendEmail() {
@@ -131,7 +137,7 @@ function AddClient() {
       {alertAddClient &&
         <Dialog
           open={open}
-          onClose={handleClose}
+          // onClose={handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -139,16 +145,13 @@ function AddClient() {
             {`הוספת בהצלחה את משתמש ${userName}`}
           </DialogTitle>
           <DialogContent>
-            <DialogContentText id="">
-              {`אם תאשר כרגע ישלח מייל לכתובת${email} שבו ינתן שם המשתמש והסיסמה`}
+            <DialogContentText >
+              {`נשלח כרגע מייל למשתמש`}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={cancel}>ביטול והסרת המשתמש</Button>
-            <Button onClick={() => setAlertAddClient(false)}>אל תשלח מייל</Button>
-            <Button onClick={sendEmail} autoFocus>
-              אישור ושליחה
-            </Button>
+            <Button onClick={()=>{setAlertAddClient(false),setAddClientForm(false),setAddClientButton(true)}} autoFocus> אישור  </Button>
           </DialogActions>
         </Dialog>
       }

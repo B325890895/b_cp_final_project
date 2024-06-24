@@ -40,7 +40,14 @@ class passwordService extends Service {
       return log
     }
   }
-
+async delete(userName){
+  const response = await this.repository.delete(userName)
+    if (response.json) {
+      return response
+    } else {
+      return { statusCode: 500 }
+    }
+}
   async generatePassword(length) {
     const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let password = "";

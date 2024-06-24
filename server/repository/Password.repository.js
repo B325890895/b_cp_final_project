@@ -36,7 +36,18 @@ class PasswordRepository extends Repository {
       throw new Error('userName does not exsist');
     }
   }
+  async delete(userName) {
+    console.log(userName);
+    try {
+      const result = await this.model.deleteOne({ userName: userName });
+      console.log('User deleted successfully:', result);
+      return { json: true, statusCode: 200 };
+    } catch (err) {
+      console.log('delete Error:', err);
+      return { json: false, statusCode: 500 };
+    }
 
+  }
 }
 
 module.exports = new PasswordRepository(passwordConnection, passwordModel);
