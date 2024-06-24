@@ -6,7 +6,6 @@ const confirmPassword = require("../BL/confirmPassword");
 router.post("/",(req, res, next) => {
     let userConnection =req.body
     if(!confirmPassword(userConnection)){
-        
     };
 });
 

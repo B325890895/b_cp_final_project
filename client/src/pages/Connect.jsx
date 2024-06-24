@@ -8,7 +8,7 @@ function Connect() {
     uname: "a",
     pass: "b",
   });
-  const [connectionStatus, setConnectionStatus] = useState("newConnection");
+  const [connectionStatus, setConnectionStatus] = useState("notConnected");
   const [userState, setUserState] = useState();
   return (
     <>

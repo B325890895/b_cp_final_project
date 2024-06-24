@@ -2,7 +2,7 @@ import React from 'react';
 //import './pages_css/Login.css';
 //import dotenv from 'dotenv'
 //ליבא קובץ סENV כמו שצריך
-
+const URL_API='http://localhost:3000'
 
 
 function Login ({setConnectionStatus, setUserConnectionInfo}) {
@@ -11,12 +11,12 @@ function Login ({setConnectionStatus, setUserConnectionInfo}) {
         event.preventDefault();
 
         let userConnectionInfo={
-          uname:document.forms[0].uname.value,
-          pass:document.forms[0].pass.value
+          userName:document.forms[0].uname.value,
+          password:document.forms[0].pass.value
         }
         console.log(userConnectionInfo);
 
-        const response = await fetch(`${URL_API}/login`, {
+        const response = await fetch(`${URL_API}/login/${userName}`, {
           method: "POST",
           body: JSON.stringify({ uname, pass }),
           headers: {

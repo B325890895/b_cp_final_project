@@ -4,11 +4,12 @@ const router = express.Router();
 const PasswordController = require("../controllers/Password.controller");
 
 router.post("/",async (req, res, next) => {
-    console.log("Welcome");
     PasswordController.create(req, res, next)
 });
-
-
+router.post("/:userName",async (req, res, next) => {
+    console.log("password router")
+    PasswordController.read(req, res, next)
+})
 
 router.
     route("/:id")

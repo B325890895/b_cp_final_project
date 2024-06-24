@@ -18,9 +18,8 @@ class passwordService extends Service {
       return { statusCode: 400 }
     // const password = generatePassword(8);
     const password = "password1111"
-    const salt = 6;
+    let salt = 4;
     const hashPassword = await bcrypt.hash(password, salt);
-   
     const response = await this.repository.create({ userName: passwordInfo.userName, password: hashPassword })
     if (response.json) {
       await this.sendEmail(passwordInfo.email, passwordInfo.userName, password);
@@ -28,8 +27,18 @@ class passwordService extends Service {
     } else {
       return { statusCode: 500 }
     }
+  }
 
 
+  async read(userName, password) {
+    const log = await this.repository.read(userName, password);
+    if (log.json) {
+      //token
+      return log
+    }
+    else {
+      return log
+    }
   }
 
   async generatePassword(length) {

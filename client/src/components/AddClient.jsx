@@ -50,7 +50,7 @@ function AddClient() {
   async function addClientToDatabase() {
     console.log("i will add the new client to the database");
     //here we need to do the reqesst and create a new client in the password data base
-    const response = await fetch(`${URL_API}/addClient`, {
+    const response = await fetch(`http://localhost:3000/password`, {
       method: "POST",
       body: JSON.stringify({ userName, email }),
       headers: {
@@ -59,7 +59,7 @@ function AddClient() {
     }).catch((error) => {
       console.log("Error:", error);
     });
-    if (response.status === 200) {
+    if (response.status == 200) {
       alert("הלקוח נוסף בהצלחה");
       setAlertAddClient(true);
     }
