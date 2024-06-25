@@ -12,12 +12,14 @@ function NextTurn() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    async () => await importCloseAppointmentFromDatabase();
+      importCloseAppointmentFromDatabase();
   }, []);
 
   async function importCloseAppointmentFromDatabase() {
+    console.log("ff");
     try {
-      const response = await fetch(`${process.env.REACT_APP_URL}/appointment/${userName}/next`  );
+      const response = await fetch(`http://localhost:3000/appointment/${userName}/next`  );
+     console.log(response);
       if (!response.ok) {
         throw Error("Did not received expected data");
       }
