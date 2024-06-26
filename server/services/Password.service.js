@@ -8,24 +8,17 @@ class passwordService extends Service {
   constructor(repository) {
     super(repository);
   }
-  async create(passwordInfo) {
-    console.log(passwordInfo);
-    // if (!ssxDataSecurity(passwordInfo)) {
-    //   return { statusCode: 400 }
-    // }
-    //validation to email and user name
-    if (!this.validation(passwordInfo.userName, passwordInfo.email))
+  async create(userName,newPassword) {
+    console.log(userName,newPassword);
+    if (!this.validation(userName,newPassword))
       return { statusCode: 400 };
-    const password = await this.generatePassword(9);
-   // let salt =  Math.random();
     let salt = await bcrypt.genSalt(4);
-    const hashPassword = await bcrypt.hash(password,salt);
+    const hashPassword = await bcrypt.hash(newPassword,salt);
     const response = await this.repository.create({
-      userName: passwordInfo.userName,
+      userName: userName,
       password: hashPassword,
     });
     if (response.json) {
-      await this.sendEmail(passwordInfo.email, passwordInfo.userName, password);
       return response;
     } else {
       return { statusCode: 500 };
@@ -36,8 +29,8 @@ class passwordService extends Service {
     //
     const login = await this.repository.read(userName, password);
     if (login.json) {
-      const token = new Date().getTime();
-      login.token = token;
+      // const token = new Date().getTime();
+      // login.token = token;
       return login;
     } else {
       return login;
@@ -51,40 +44,8 @@ class passwordService extends Service {
       return { statusCode: 500 };
     }
   }
-  async generatePassword(length) {
-    const charset =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let password = "";
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * charset.length);
-      password += charset.charAt(randomIndex);
-    }
-    return password;
-  }
 
-  async sendEmail(toEmail, userName, password) {
-    console.log("sendEmailFunction");
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
 
-    const mailOptions = {
-      from:process.env.EMAIL_USER,
-      to: toEmail,
-      subject: `ברכותינו,\n  החשבון שלך לאתר של בת שבע כ"ץ נוצר בהצלחה \n`,
-      text: `שם המשתמש שלך הוא:${userName}\n הסיסמא שלך היא:#${password}\n`,
-    };
-    try {
-      await transporter.sendMail(mailOptions);
-      console.log("Email sent successfully!");
-    } catch (error) {
-      console.error("Failed to send email:", error);
-    }
-  }
   validation(userName, email) {
     if (
       !(userName.length > 0) &&

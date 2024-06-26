@@ -1,65 +1,152 @@
-import React from "react";
+import React,{useState} from "react";
+//import dotenv from 'dotenv'
+//ליבא קובץ סENV כמו שצריך
+const URL_API = "http://localhost:3000";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Alert from '@mui/material/Alert';
 
-function Singup({ userConnectionInfo }) {
+function Login({ setConnectionStatus, setUserConnectionInfo }) {
+  const [passwordAlert,setPasswordAlert] =useState(false);
   const handleSubmit = async (event) => {
     // Prevent page reload
     event.preventDefault();
-    let userConnection = {
-      uname: document.forms[0].uname.value,
-      oldPass: document.forms[0].oldPass.value,
-      newPass: document.forms[0].newPass.value,
-      verifyPass: document.forms[0].verifyPass.value,
+  
+    let userConnectionInfo = {
+      userName: document.forms[0].userName.value,
+      password: document.forms[0].password.value,
+      newPassword: document.forms[0].newPassword.value,
+      validationNewPassword: document.forms[0].validationNewPassword.value
     };
-    if(userConnection.newPass !== userConnection.verifyPass){
-        alert("Passwords do not match");
-        return;
+    console.log(userConnectionInfo);
+    if(userConnectionInfo.newPassword!=userConnectionInfo.validationNewPassword) {
+      setPasswordAlert(true)
+      return;
     }
-    else{
-        let response = await fetch(`${URL_API}/login`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userConnection),
-        });
-        if (response.status === 200) {
-          alert("Password changed successfully");
-          //go to the home page
-        }
-        else{
-            alert("Password change failed");
-        }
+
+    const response = await fetch(
+      `${URL_API}/templatePassword/${userConnectionInfo.userName}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          password: userConnectionInfo.password,
+          newPassword: userConnectionInfo.newPassword,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    ).catch((error) => {
+      console.log("Error:", error);
+    });
+
+    if (response.status == 200) {
+      const data = await response.json();
+      console.log("successfully connected:", data);
+      //go to home page
+      setConnectionStatus("connected");
+    }
+    // } else if (response.status === 400) {
+    else {
+      console.log("Error in server");
     }
   };
+  function logIn() {
+    setConnectionStatus("notConnected");
+  }
+  function closeAlert(){
+    setPasswordAlert(false);
+  }
+
   return (
-    <div className="Login">
-      <form onSubmit={handleSubmit}>
-        <div className="input-container">
-          <label>Username </label>
-          <input type="text" name="uname" value={userConnectionInfo.uname} />
-        </div>
-        <div className="input-container">
-          <label>Old password </label>
-          <input
-            type="password"
-            name="oldPass"
-            value={userConnectionInfo.pass}
+    <Container component="main" maxWidth="xs" dir="rtl">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          כניסה ראשונית למערכת
+        </Typography>
+        {passwordAlert && (<Alert variant="outlined" severity="error" onClose={closeAlert} dir="rtl" sx={{width:"100%"}}>
+      סימאות לא תואמות
+     </Alert>)}
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="userName"
+            label="שם משתמש"
+            name="userName"
+            autoComplete="userName"
+            autoFocus
           />
-        </div>
-        <div className="input-container">
-          <label>New password </label>
-          <input type="password" name="newPass" required />
-        </div>
-        <div className="input-container">
-          <label>Verify password </label>
-          <input type="password" name="verifyPass" required />
-        </div>
-        <div className="button-container">
-          <input type="submit" />
-        </div>
-      </form>
-    </div>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="סיסמא שהתקבלה מהמערכת"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="סיסמא חדשה"
+            type="password"
+            id="newPassword"
+            autoComplete="current-password"
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="אימות סיסמא חדשה"
+            type="password"
+            id="validationNewPassword"
+            autoComplete="current-password"
+          />
+          {/* <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          /> */}
+          <Grid item xs>
+            <Link href="#" variant="body2" onClick={logIn}>
+              כבר נכנסת בעבר למערכת? לחץ כאן{" "}
+            </Link>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            התחבר
+          </Button>
+        </Box>
+      </Box>
+    </Container>
   );
 }
-
-export default Singup;
+export default Login;

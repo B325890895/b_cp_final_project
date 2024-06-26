@@ -1,5 +1,5 @@
 const { Controller } = require("./Controller");
-const PasswordService = require('../../services/Password.service');
+const PasswordService = require('../../services/TemporaryPassword.service');
 class PasswordController extends Controller {
   constructor(service) {
     super(service)
@@ -7,11 +7,10 @@ class PasswordController extends Controller {
   async read(req, res, next) {
     const { userName } = req.params;
     const password = req.body.password;
+    const newPassword =req.body.newPassword
     try {
-      const response = await this.service.read(userName, password);
+      const response = await this.service.read(userName, password, newPassword);
       return res.status( response.statusCode ).json( response );
-
-      // return res.json(response);
     } catch (error) {
       next(error);
     }
@@ -21,7 +20,6 @@ class PasswordController extends Controller {
     try {
       const response = await this.service.delete(userName);
       return res.status( response.statusCode ).json( response );
-      // return res.json(response);
     } catch (error) {
       next(error);
     }

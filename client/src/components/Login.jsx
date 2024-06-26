@@ -7,8 +7,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -27,7 +27,7 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
     }
     console.log(userConnectionInfo);
 
-    const response = await fetch(`${URL_API}/login/${userConnectionInfo.userName}`, {
+    const response = await fetch(`${URL_API}/password/${userConnectionInfo.userName}`, {
       method: "POST",
       body: JSON.stringify({ "password": userConnectionInfo.password }),
       headers: {
@@ -43,22 +43,17 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
       //go to home page
       setConnectionStatus("connected");
     }
-    else if (response.status === 205) {
-      console.log("first time entering the password most be changed");
-      setUserConnectionInfo(userConnectionInfo);
-      setConnectionStatus("newConnection");
-
-    }
-    else if (response.status === 400) {
+    // else if (response.status === 400) {
+    else{
       console.log("Error in server");
     }
-
-
   };
 
-
+ function singUp(){
+  setConnectionStatus("newConnection")
+ }
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" dir="rtl">
       <CssBaseline />
       <Box
         sx={{
@@ -72,7 +67,7 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          התחברות
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -80,7 +75,7 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
             required
             fullWidth
             id="userName"
-            label="User Name"
+            label="שם משתמש"
             name="userName"
             autoComplete="userName"
             autoFocus
@@ -90,7 +85,7 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="סיסמא"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -99,21 +94,26 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           /> */}
+            <Grid item xs>
+              <Link href="#" variant="body2" onClick={singUp}>
+              כניסה ראשונה למערכת? לחץ כאן
+              </Link>
+            </Grid>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Log In
+            התחבר
           </Button>
-          {/* <Grid container>
+          <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
-                Forgot password?
+                שכחת סיסמא?
               </Link>
             </Grid>
-          </Grid> */}
+          </Grid>
         </Box>
       </Box>
     </Container>

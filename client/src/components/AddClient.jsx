@@ -55,7 +55,7 @@ function AddClient() {
   async function addClientToDatabase() {
     console.log("i will add the new client to the database");
     //here we need to do the reqesst and create a new client in the password data base
-    const response = await fetch(`http://localhost:3000/password`, {
+    const response = await fetch(`http://localhost:3000/temporaryPassword`, {
       method: "POST",
       body: JSON.stringify({ userName, email }),
       headers: {
@@ -69,7 +69,7 @@ function AddClient() {
     }
   }
   async function cancel() {
-    console.log("cencel add delete client");
+    console.log("cancel add delete client");
     const response = await fetch(`${URL_API}/password`, {
       method: "DELETE",
       body: JSON.stringify({ "userName":userName }),

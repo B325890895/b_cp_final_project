@@ -20,7 +20,10 @@ function Connect() {
       )}
       {connectionStatus == "connected"}
       {connectionStatus == "newConnection" && (
-        <Singup userConnectionInfo={userConnectionInfo} />
+        <Singup
+          setConnectionStatus={setConnectionStatus}
+          userConnectionInfo={userConnectionInfo}
+        />
       )}
     </>
   );

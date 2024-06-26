@@ -11,7 +11,7 @@ import { Link, Outlet } from "react-router-dom";
 import "./components_css/NavBar.css";
 
 function NavBar() {
-  const userState = "client";
+  const userState = "manager";
   const navItemsClient = [
     { name: "בית", link: "home" },
     { name: "תשלום", link: "payment" },

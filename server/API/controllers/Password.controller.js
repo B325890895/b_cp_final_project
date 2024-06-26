@@ -10,8 +10,6 @@ class PasswordController extends Controller {
     try {
       const response = await this.service.read(userName, password);
       return res.status( response.statusCode ).json( response );
-
-      // return res.json(response);
     } catch (error) {
       next(error);
     }
@@ -21,7 +19,6 @@ class PasswordController extends Controller {
     try {
       const response = await this.service.delete(userName);
       return res.status( response.statusCode ).json( response );
-      // return res.json(response);
     } catch (error) {
       next(error);
     }

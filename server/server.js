@@ -4,11 +4,13 @@ const server = express();
 
 const port = process.env.PORT;
 //const port =3000;
-const loginRouter= require("./API/router/Password.router");
+//const loginRouter= require("./API/router/Password.router");
 const userRouter = require("./API/router/User.router");
 const appointmentRouter = require("./API/router/Appointment.router");
 const alertRouter = require("./API/router/Alert.router");
 const passwordRouter = require("./API/router/Password.router");
+const temporaryPasswordRouter = require("./API/router/TemporaryPassword.router");
+
 server.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173"); // Update this with your frontend URL
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
@@ -23,6 +25,7 @@ server.use("/login", passwordRouter);
 server.use("/user", userRouter);
 server.use("/appointment", appointmentRouter);
 server.use("/alert", alertRouter);
+server.use("/temporaryPassword", temporaryPasswordRouter);
 server.use("/password", passwordRouter);
 
 

@@ -3,7 +3,7 @@ import NextTurn from "../components/NextTurn";
 import Alert from "../components/Alert";
 import AddClient from "../components/AddClient";
 function Home() {
-  const userState = "client";
+  const userState = "manager";
   return (
     <>
       <h1>Home</h1>
