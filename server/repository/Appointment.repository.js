@@ -38,12 +38,12 @@ class AppointmentRepository extends Repository {
     throw new Error('Could not find object with id' + data.id);
 
   }
-  async delete(id) {
-    console.log(id);
-    let object = await this.model.deleteOne({ user_id: id });
+  async delete(userName,date) {
+    console.log(userName, date);
+    let object = await this.model.deleteOne({ userName: userName, date: date });
     if (object)
-      return object;
-    throw new Error('Could not find object with id ' + id);
+      return {statusCode:200};
+    return {statusCode:500}
   }
   async exist(id) {
     const doesObjectExist = await this.model.exists({ user_id: id })

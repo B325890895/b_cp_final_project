@@ -16,5 +16,13 @@ class AppointmentController extends Controller {
             next(error);
         }
     }
+    async delete(req, res, next){ 
+        try {
+            const response = await this.service.delete(req.params);
+            return res.status(response.statusCode);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 module.exports = new AppointmentController(AppointmentService);

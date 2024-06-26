@@ -61,7 +61,18 @@ class usersService extends Service {
       console.log(err);
       return { statusCode: 500 }
     }
-
   }
+ async updatecanCeledAppointments(userName,date){
+  try {
+    let userExist = await this.repository.exist(userName)
+    if ((userExist))
+      return this.repository.updateCanceledAppointments(userName,date);
+    throw new Error("user is not exists");
+  } 
+  catch (err) {
+    console.log(err);
+    throw new Error(500);
+  }
+ }
 }
 module.exports = new usersService(userRepository);

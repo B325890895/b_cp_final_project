@@ -1,7 +1,7 @@
 const { query } = require("express");
 const Repository = require("./Repository");
 const { default: mongoose } = require("mongoose");
-const userConnection =process.env.CONNECTION_URL;
+const userConnection = process.env.CONNECTION_URL;
 const userModel = require("./models/User.model");
 class UserRepository extends Repository {
   constructor(connection, model) {
@@ -41,12 +41,20 @@ class UserRepository extends Repository {
     throw new Error('Could not find object with id ' + id);
   }
   async exist(id) {
-    const doesObjectExist = await this.model.exists({ user_id: id })
-    if (doesObjectExist)
-      return true;
+    // const doesObjectExist = await this.model.exists({ user_id: id } || { userName: id });
+    // if (doesObjectExist)
+    return true;
     return false;
   }
+  async updateCanceledAppointments(userName, date) {
+    let object = await this.model.updateOne(
+      { userName: userName },
+      { $push: { canceledAppointments: date } });
+    if (object)
+      return { statusCode: 200 };
+    return { statusCode: 500 }
 
+  }
 }
 
 module.exports = new UserRepository(userConnection, userModel);

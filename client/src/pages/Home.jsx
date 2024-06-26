@@ -7,8 +7,8 @@ function Home() {
   return (
     <>
       <h1>Home</h1>
-      {userState == "manager" && <AddClient />}
-      {userState == "client" && <NextTurn />}
+      {userState == "manager" && <AddClient userName={props.userName} />}
+      {userState == "client" && <NextTurn userName={"bbbb"} />}
       <Alert />
     </>
   );

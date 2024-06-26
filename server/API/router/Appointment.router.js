@@ -26,7 +26,11 @@ router.
 router.
     route("/:userName/:filter")
     .get((req, res, next) => {
-        AppointmentController.read(req, res, next); // נניח שיש לך פונקציה בשם readNext ב-AppointmentController
+        AppointmentController.read(req, res, next); 
+    })
+    .delete((req, res, next) => {
+        console.log("delete router");
+        AppointmentController.delete(req, res, next);
     });
 
 module.exports = router;
