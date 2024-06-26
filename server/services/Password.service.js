@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const { Service } = require("./Service");
 const passwordRepository = require("../repository/Password.repository");
 const { DataSecurity } = require("./dataSecurity");
@@ -15,41 +15,45 @@ class passwordService extends Service {
     // }
     //validation to email and user name
     if (!this.validation(passwordInfo.userName, passwordInfo.email))
-      return { statusCode: 400 }
-    // const password = generatePassword(8);
-    const password = "password1111"
-    let salt = 4;
-    const hashPassword = await bcrypt.hash(password, salt);
-    const response = await this.repository.create({ userName: passwordInfo.userName, password: hashPassword })
+      return { statusCode: 400 };
+    const password = await this.generatePassword(9);
+   // let salt =  Math.random();
+    let salt = await bcrypt.genSalt(4);
+    const hashPassword = await bcrypt.hash(password,salt);
+    const response = await this.repository.create({
+      userName: passwordInfo.userName,
+      password: hashPassword,
+    });
     if (response.json) {
       await this.sendEmail(passwordInfo.email, passwordInfo.userName, password);
-      return response
+      return response;
     } else {
-      return { statusCode: 500 }
+      return { statusCode: 500 };
     }
   }
-
 
   async read(userName, password) {
-    const log = await this.repository.read(userName, password);
-    if (log.json) {
-      //token
-      return log
-    }
-    else {
-      return log
+    //
+    const login = await this.repository.read(userName, password);
+    if (login.json) {
+      const token = new Date().getTime();
+      login.token = token;
+      return login;
+    } else {
+      return login;
     }
   }
-async delete(userName){
-  const response = await this.repository.delete(userName)
+  async delete(userName) {
+    const response = await this.repository.delete(userName);
     if (response.json) {
-      return response
+      return response;
     } else {
-      return { statusCode: 500 }
+      return { statusCode: 500 };
     }
-}
+  }
   async generatePassword(length) {
-    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charset =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let password = "";
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * charset.length);
@@ -61,31 +65,33 @@ async delete(userName){
   async sendEmail(toEmail, userName, password) {
     console.log("sendEmailFunction");
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
-        user: "nbkslp1@gmail.com",
-        pass: "awzd wail fyzo mwwq"
-
-      }
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
     });
 
     const mailOptions = {
-      // from: process.env.EMAIL_USER,
-      from: "nbkslp1@gmail.com",
-      to: "batyablau@gmail.com",
+      from:process.env.EMAIL_USER,
+      to: toEmail,
       subject: `ברכותינו,\n  החשבון שלך לאתר של בת שבע כ"ץ נוצר בהצלחה \n`,
-      text:
-        `שם המשתמש שלך הוא:${userName}\n הסיסמא שלך היא:#${password}\n`
+      text: `שם המשתמש שלך הוא:${userName}\n הסיסמא שלך היא:#${password}\n`,
     };
     try {
       await transporter.sendMail(mailOptions);
-      console.log('Email sent successfully!');
+      console.log("Email sent successfully!");
     } catch (error) {
-      console.error('Failed to send email:', error);
+      console.error("Failed to send email:", error);
     }
   }
   validation(userName, email) {
-    if (!(userName.length > 0) && (/^[\u0590-\u05FF\s]*$/.test(str) || /^[a-zA-Z\s]*$/.test(str)) && (email.length > 0) && (/\S+@\S+\.\S+/.test(email)))
+    if (
+      !(userName.length > 0) &&
+      (/^[\u0590-\u05FF\s]*$/.test(str) || /^[a-zA-Z\s]*$/.test(str)) &&
+      email.length > 0 &&
+      /\S+@\S+\.\S+/.test(email)
+    )
       return false;
     return true;
   }
