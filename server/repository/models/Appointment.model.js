@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema({
-    user_id: {
-        type: 'number',
+const appointmentSchema = mongoose.Schema({
+    userName: {
+        type: 'string',
         required: true,
     },
     date:{
-        type: 'date',
-        required: true
-    },
-    time:{
         type: 'string',
-        required: true
+        required: true,
+    },
+    hour:{
+        type: 'string',
+        required: true,
     },
     status:{
         type:'number',
@@ -19,4 +19,4 @@ const userSchema = mongoose.Schema({
         max:3
     }
 });
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('appointment', appointmentSchema);

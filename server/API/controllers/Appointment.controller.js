@@ -6,9 +6,10 @@ class AppointmentController extends Controller {
     }
     async read(req, res, next) {
         let params ={}
-        if(req.params.userName)params.userName = req.params.userName;
+        if(req.params.userName!=undefined){params.userName = req.params.userName};
         if(req.params.filter)params.filter = req.params.filter;
         try {
+            console.log(req.params.filter, req.params.userName,params);
             const response = await this.service.read(params);
             return res.json(response);
         } catch (error) {

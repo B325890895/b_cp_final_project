@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
     type: "number",
     required: true,
   },
-  name: {
+  userName: {
     type: "String",
     required: true,
   },
@@ -41,6 +41,18 @@ const userSchema = mongoose.Schema({
     type: "string",
     required: true,
   },
+  day:{
+    type:"string",
+    required:true
+  },
+  hour:{
+    type:"string",
+    required:true
+  },
+  canceledAppointments:{
+    type:"array",
+    required:true
+  }
   //טיפולים
   // appointment:{type:mongoose.SchemaType.objectId,ref:'Appointment'}
 });
