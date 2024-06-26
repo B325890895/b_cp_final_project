@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 require("dotenv").config();
 class Repository {
-
     constructor(connection, model) {
-
         mongoose.connect(connection)
         .then(() => {
             console.log('MongoDB connected');
@@ -25,12 +23,12 @@ class Repository {
             return objects;
         throw new Error("Couldn't read all");
     }
-    async read(id) {
-        let object = await this.model.findOne({});
-        if (object)
-            return object;
-        throw new Error('Could not find object'); 
-    }
+    // async read(id) {
+    //     let object = await this.model.findOne({});
+    //     if (object)
+    //         return object;
+    //     throw new Error('Could not find object'); 
+    // }
 
     async update(id,data) {
         let object = await this.model.updateOne({id:id,data:data});

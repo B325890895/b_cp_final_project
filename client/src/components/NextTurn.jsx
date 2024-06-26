@@ -12,14 +12,22 @@ function NextTurn() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-      importCloseAppointmentFromDatabase();
+    importCloseAppointmentFromDatabase();
   }, []);
 
   async function importCloseAppointmentFromDatabase() {
-    console.log("ff");
     try {
-      const response = await fetch(`http://localhost:3000/appointment/${userName}/next`  );
-     console.log(response);
+      console.log("ff");
+
+      const response = await fetch(`http://localhost:3000/appointment/${userName}/next`,{
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }).catch((error) => {
+        console.log("Error:", error);
+      });
+      console.log(response);
       if (!response.ok) {
         throw Error("Did not received expected data");
       }
@@ -37,7 +45,7 @@ function NextTurn() {
   function deleteAppointmentHandler() {
     if (confirm("האם אתה בטוח שברצונך לבטל את התור?")) {
       console.log("the appointment will be canceled");
-       deleteAppointmentFromDatabase();
+      deleteAppointmentFromDatabase();
     } else {
       console.log("the appointmemt will not be canceled");
     }
@@ -69,16 +77,16 @@ function NextTurn() {
   return (
     <>
       <Card>
-        {fetchError&&
-<Error/>}
-{isLoading &&
-<Loading/>}
+        {fetchError &&
+          <Error />}
+        {isLoading &&
+          <Loading />}
         {!fetchError && !isLoading && (
           <>
-           התור הקרוב התקיים ביום {appointmentDate.day}
-           <br/>
+            התור הקרוב התקיים ביום {appointmentDate.day}
+            <br />
             בתאריך {appointmentDate.date}
-            <br/>
+            <br />
             בשעה{appointmentDate.time}
             <CardContent></CardContent>
             <CardActions>

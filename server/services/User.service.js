@@ -7,7 +7,6 @@ class usersService extends Service {
   }
 
   async create(userInfo) {
-    console.log(userInfo, "create");
     if (this.repository)
       try {
         // if (!DataSecurity.ssx(userInfo)) {
@@ -38,7 +37,6 @@ class usersService extends Service {
   //   let user = this.repository.read(id);
   // }
   async delete(id) {
-    console.log(id, "delete", "userservice");
     super.delete(id);
     // if (this.repository) {
     //   try {
@@ -52,6 +50,17 @@ class usersService extends Service {
     //     throw new Error(500);
     //   }
     // }
+
+  }
+  async read(userName) {
+    console.log("user ser", userName);
+    try {
+      return await this.repository.read(userName);
+    }
+    catch (err) {
+      console.log(err);
+      return { statusCode: 500 }
+    }
 
   }
 }

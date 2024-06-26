@@ -1,7 +1,7 @@
 const { query } = require("express");
 const Repository = require("./Repository");
 const { default: mongoose } = require("mongoose");
-const userConnection = process.env.CONNECTION_URL;
+const userConnection =process.env.CONNECTION_URL;
 const userModel = require("./models/User.model");
 class UserRepository extends Repository {
   constructor(connection, model) {
@@ -15,19 +15,15 @@ class UserRepository extends Repository {
       return objects;
     throw new Error("Couldn't read all");
   }
-  async read(userName, filter) {
-    if (userName && filter == "next") {
-      let currentDate = new Date();
-      let user = await this.model.findOne({
-        username: userName,
-        date: { $gt: currentDate }
-      }).sort({ date: 1 }); // מיון לפי תאריך בסדר עולה
-      if (user) return user;
-      throw new Error("Could not find object with username " + userName + " and upcoming date");
+  async read(userName) {
+    try {
+      let object = await this.model.findOne({ userName: userName });
+      return await this.model.findOne({ userName: userName });
     }
-    let user = await this.model.findOne({ user_id: id });
-    if (user) return user;
-    throw new Error("Could not find object with id " + id);
+    catch (err) {
+      console.log("user not found");
+      return { json: false, statusCode: 500 };
+    }
   }
 
   async update(id, data) {
