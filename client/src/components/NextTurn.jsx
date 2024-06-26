@@ -5,8 +5,8 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-
-function NextTurn() {
+const URL_API="http://localhost:3000";
+function NextTurn(props) {
   const [appointmentDate, setAppointmentDate] = useState({});
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,9 +17,9 @@ function NextTurn() {
 
   async function importCloseAppointmentFromDatabase() {
     try {
-      console.log("ff");
+      console.log(props.userName);
 
-      const response = await fetch(`http://localhost:3000/appointment/${userName}/next`,{
+      const response = await fetch(`${URL_API}/appointment/${props.userName}/next`, {
         method: "GET",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -52,9 +52,9 @@ function NextTurn() {
   }
 
   async function deleteAppointmentFromDatabase() {
+    console.log(appointmentDate,`${URL_API}/appointment/${appointmentDate.userName}/${appointmentDate.date}`);
     try {
-      const response = await fetch(
-        `${URL_API}/appointment/${appointmentDate.id}`,
+      const response = await fetch( `${URL_API}/appointment/${appointmentDate.userName}/${encodeURIComponent(appointmentDate.date)}`,
         {
           method: "DELETE",
           headers: {
@@ -87,7 +87,7 @@ function NextTurn() {
             <br />
             בתאריך {appointmentDate.date}
             <br />
-            בשעה{appointmentDate.time}
+            בשעה{appointmentDate.hour}
             <CardContent></CardContent>
             <CardActions>
               <Button onClick={deleteAppointmentHandler}>לביטול התור</Button>
