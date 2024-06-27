@@ -5,7 +5,7 @@ class Controller {
   async readAll(req, res, next) {
     try {
       const response = await this.service.readAll(req.query);
-      return res.status(response.statusCode).json(response);
+      return res.status(response.statusCode).json(response.json);
     } catch (error) {
       next(error);
     }
@@ -15,7 +15,7 @@ class Controller {
     const { id } = req.params;
     try {
       const response = await this.service.read(id);
-      return res.status( response.statusCode ).json( response );
+      return res.status( response.statusCode ).json( response.json );
     } catch (error) {
       next(error);
     }
@@ -25,7 +25,7 @@ class Controller {
     try {
       const response = await this.service.create(req.body);
       if (response) {
-              return res.status( response.statusCode ).json( response );
+              return res.status( response.statusCode ).json( response.json );
       }
     } catch (error) {
       next(error);
@@ -37,7 +37,7 @@ class Controller {
     const { id } = req.params;
     try {
       const response = await this.service.update(id, req.body);
-      return res.status( response.statusCode ).json( response );
+      return res.status( response.statusCode ).json( response.json );
     } catch (error) {
       next(error);
     }
@@ -49,7 +49,7 @@ class Controller {
         console.log(this.service);
         try {
             const response = await this.service.delete(id);
-            return res.status( response.statusCode ).json( response );
+            return res.status( response.statusCode ).json( response.json );
 
         } catch ( error ) {
             next( error );

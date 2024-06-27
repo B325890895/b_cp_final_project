@@ -51,7 +51,6 @@ function AddClient() {
     }
     , [userNameValid, emailValid,userName,email]
   )
-  // const userName = useRef("")
   async function addClientToDatabase() {
     console.log("i will add the new client to the database");
     //here we need to do the reqesst and create a new client in the password data base
@@ -70,7 +69,7 @@ function AddClient() {
   }
   async function cancel() {
     console.log("cancel add delete client");
-    const response = await fetch(`${URL_API}/password`, {
+    const response = await fetch(`${URL_API}/temporaryPassword`, {
       method: "DELETE",
       body: JSON.stringify({ "userName":userName }),
       headers: {
@@ -85,9 +84,6 @@ function AddClient() {
       setAddClientForm(false);setAddClientButton(true), setDisabledAddButton(true)
       
     }
-  }
-  function sendEmail() {
-    //בקשה לסרבר שישלח מייל למשתמש
   }
   function addClient() {
     setAddClientForm(!addClientForm)

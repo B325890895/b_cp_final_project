@@ -1,20 +1,20 @@
-import React from 'react';
+import React from "react";
 //import './pages_css/Login.css';
 //import dotenv from 'dotenv'
 //ליבא קובץ סENV כמו שצריך
-const URL_API = 'http://localhost:3000'
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
+const URL_API = "http://localhost:3000";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
 // import FormControlLabel from '@mui/material/FormControlLabel';
 // import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
 function Login({ setConnectionStatus, setUserConnectionInfo }) {
   const handleSubmit = async (event) => {
@@ -23,17 +23,20 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
 
     let userConnectionInfo = {
       userName: document.forms[0].userName.value,
-      password: document.forms[0].password.value
-    }
+      password: document.forms[0].password.value,
+    };
     console.log(userConnectionInfo);
 
-    const response = await fetch(`${URL_API}/password/${userConnectionInfo.userName}`, {
-      method: "POST",
-      body: JSON.stringify({ "password": userConnectionInfo.password }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    }).catch((error) => {
+    const response = await fetch(
+      `${URL_API}/password/${userConnectionInfo.userName}`,
+      {
+        method: "POST",
+        body: JSON.stringify({ password: userConnectionInfo.password }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    ).catch((error) => {
       console.log("Error:", error);
     });
 
@@ -44,26 +47,26 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
       setConnectionStatus("connected");
     }
     // else if (response.status === 400) {
-    else{
+    else {
       console.log("Error in server");
     }
   };
 
- function singUp(){
-  setConnectionStatus("newConnection")
- }
+  function singUp() {
+    setConnectionStatus("newConnection");
+  }
   return (
     <Container component="main" maxWidth="xs" dir="rtl">
       <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -94,11 +97,11 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           /> */}
-            <Grid item xs>
-              <Link href="#" variant="body2" onClick={singUp}>
+          <Grid item xs>
+            <Link href="#" variant="body2" onClick={singUp}>
               כניסה ראשונה למערכת? לחץ כאן
-              </Link>
-            </Grid>
+            </Link>
+          </Grid>
           <Button
             type="submit"
             fullWidth

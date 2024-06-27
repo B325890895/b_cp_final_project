@@ -10,6 +10,7 @@ import HMO from "./pages/HMO";
 import PageNotFound from "./pages/PageNotFound";
 import Payment from "./pages/Payment";
 import NavBar from "./components/NavBar";
+import Clients from "./pages/Clients";
 
 
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/hmo" element={<HMO />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/clients" element={<Clients/>}/>
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>

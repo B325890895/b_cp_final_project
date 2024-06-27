@@ -7,7 +7,10 @@ function Home() {
   return (
     <>
       <h1>Home</h1>
-      {userState == "manager" && <AddClient userName={props.userName} />}
+      {/* to ask batya what did she do here */}
+      {/* {userState == "manager" && <AddClient userName={props.userName} />} */}
+      {userState == "manager" && <AddClient />}
+
       {userState == "client" && <NextTurn userName={"bbbb"} />}
       <Alert />
     </>

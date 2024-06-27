@@ -17,6 +17,7 @@ server.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
+
 server.use(express.json());
 
 server.use(express.json());

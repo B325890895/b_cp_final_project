@@ -31,9 +31,9 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
       setPasswordAlert(true)
       return;
     }
-
+try {
     const response = await fetch(
-      `${URL_API}/templatePassword/${userConnectionInfo.userName}`,
+      `${URL_API}/temporaryPassword/${userConnectionInfo.userName}`,
       {
         method: "POST",
         body: JSON.stringify({
@@ -47,7 +47,7 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
     ).catch((error) => {
       console.log("Error:", error);
     });
-
+    
     if (response.status == 200) {
       const data = await response.json();
       console.log("successfully connected:", data);
@@ -58,6 +58,9 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
     else {
       console.log("Error in server");
     }
+  }catch (e) {
+    console.log(e);
+  }
   };
   function logIn() {
     setConnectionStatus("notConnected");
@@ -97,12 +100,12 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
             autoComplete="userName"
             autoFocus
           />
-          <TextField
+             <TextField
             margin="normal"
             required
             fullWidth
             name="password"
-            label="סיסמא שהתקבלה מהמערכת"
+            label="סיסמא שהתקבלה במערכת"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -111,7 +114,7 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
             margin="normal"
             required
             fullWidth
-            name="password"
+            name="newPassword"
             label="סיסמא חדשה"
             type="password"
             id="newPassword"
@@ -121,16 +124,12 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
             margin="normal"
             required
             fullWidth
-            name="password"
+            name="validationNewPassword"
             label="אימות סיסמא חדשה"
             type="password"
             id="validationNewPassword"
             autoComplete="current-password"
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Grid item xs>
             <Link href="#" variant="body2" onClick={logIn}>
               כבר נכנסת בעבר למערכת? לחץ כאן{" "}

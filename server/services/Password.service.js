@@ -29,8 +29,9 @@ class passwordService extends Service {
     //
     const login = await this.repository.read(userName, password);
     if (login.json) {
-      // const token = new Date().getTime();
-      // login.token = token;
+    if(userName=="204203038"){
+      //declare the user is manager
+    }
       return login;
     } else {
       return login;

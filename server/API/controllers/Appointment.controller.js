@@ -11,7 +11,7 @@ class AppointmentController extends Controller {
         try {
             console.log(req.params.filter, req.params.userName,params);
             const response = await this.service.read(params);
-            return res.json(response);
+            return res.status( response.statusCode ).json( response.json );
         } catch (error) {
             next(error);
         }
