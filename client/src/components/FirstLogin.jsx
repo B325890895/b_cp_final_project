@@ -1,4 +1,6 @@
 import React,{useState} from "react";
+import { useNavigate } from "react-router-dom";
+
 //import dotenv from 'dotenv'
 //ליבא קובץ סENV כמו שצריך
 const URL_API = "http://localhost:3000";
@@ -14,7 +16,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from '@mui/material/Alert';
 
-function Login({ setConnectionStatus, setUserConnectionInfo }) {
+function Login({ setConnectionStatus, setUserState }) {
+  const navigate = useNavigate();
   const [passwordAlert,setPasswordAlert] =useState(false);
   const handleSubmit = async (event) => {
     // Prevent page reload
@@ -51,8 +54,8 @@ try {
     if (response.status == 200) {
       const data = await response.json();
       console.log("successfully connected:", data);
-      //go to home page
-      setConnectionStatus("connected");
+      setUserState(data.userState);
+      navigate("/Home");
     }
     // } else if (response.status === 400) {
     else {

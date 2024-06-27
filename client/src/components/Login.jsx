@@ -1,7 +1,10 @@
 import React from "react";
 //import './pages_css/Login.css';
 //import dotenv from 'dotenv'
-//ליבא קובץ סENV כמו שצריך
+// import dotenv from "dotenv"
+// dotenv.config({path:'../../.env'});
+// const URL_API = process.env.REACT_APP_URL;
+import { useNavigate } from "react-router-dom";
 const URL_API = "http://localhost:3000";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -15,8 +18,13 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import info from '../assets/currentUserInfo.json'
 
-function Login({ setConnectionStatus, setUserConnectionInfo }) {
+
+function Login({ setConnectionStatus, setUserState }) {
+  const navigate = useNavigate();
+
+
   const handleSubmit = async (event) => {
     // Prevent page reload
     event.preventDefault();
@@ -43,8 +51,8 @@ function Login({ setConnectionStatus, setUserConnectionInfo }) {
     if (response.status === 200) {
       const data = await response.json();
       console.log("successfully connected:", data);
-      //go to home page
-      setConnectionStatus("connected");
+      setUserState(data.userState);
+      navigate("/Home");
     }
     // else if (response.status === 400) {
     else {

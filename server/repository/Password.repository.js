@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const { query } = require("express");
 const Repository = require("./Repository");
 const { default: mongoose } = require("mongoose");
@@ -10,8 +10,7 @@ class PasswordRepository extends Repository {
   }
   async create(data) {
     let object = await this.model.create(data);
-    if (object)
-      return { json: true, statusCode: 200 };
+    if (object) return { json: true, statusCode: 200 };
     return { json: false, statusCode: 500 };
   }
   async read(userName, password) {
@@ -21,32 +20,36 @@ class PasswordRepository extends Repository {
       try {
         const result = await bcrypt.compare(password, object.password);
         if (result) {
-          console.log('סיסמה נכונה');
-          return { json: true, statusCode: 200 };
+          console.log("סיסמה נכונה");
+          return {
+            json: {
+              request: true,
+              userState: "",
+            },
+            statusCode: 200,
+          };
         } else {
-          console.log('סיסמה שגויה');
+          console.log("סיסמה שגויה");
           return { json: false, statusCode: 500 };
         }
       } catch (err) {
         console.error(err);
-        throw new Error('Error comparing passwords');
+        throw new Error("Error comparing passwords");
       }
-    }
-    else {
-      throw new Error('userName does not exsist');
+    } else {
+      throw new Error("userName does not exsist");
     }
   }
   async delete(userName) {
     console.log(userName);
     try {
       const result = await this.model.deleteOne({ userName: userName });
-      console.log('User deleted successfully:', result);
+      console.log("User deleted successfully:", result);
       return { json: true, statusCode: 200 };
     } catch (err) {
-      console.log('delete Error:', err);
+      console.log("delete Error:", err);
       return { json: false, statusCode: 500 };
     }
-
   }
 }
 

@@ -31,6 +31,10 @@ class passwordService extends Service {
     if (login.json) {
     if(userName=="204203038"){
       //declare the user is manager
+      login.json.userState="manager"
+    }else{
+      //declare the user is regular user
+      login.json.userState="client"
     }
       return login;
     } else {

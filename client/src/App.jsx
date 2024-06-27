@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Connect from "./pages/Connect";
@@ -15,14 +15,14 @@ import Clients from "./pages/Clients";
 
 
 function App() {
-  
+  const [userState,setUserState]=useState("");
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/connect" element={<Connect />} />
-          <Route element={<NavBar />}>
+          <Route path="/connect" element={<Connect setUserState={setUserState}/>} />
+          <Route element={<NavBar userState={userState}/>}>
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/calendar" element={<Calendar />} />

@@ -10,8 +10,9 @@ import Button from "@mui/material/Button";
 import { Link, Outlet } from "react-router-dom";
 import "./components_css/NavBar.css";
 
-function NavBar() {
-  const userState = "manager";
+
+function NavBar({userState}) {
+  console.log(userState);
   const navItemsClient = [
     { name: "בית", link: "home" },
     { name: "תשלום", link: "payment" },

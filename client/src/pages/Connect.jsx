@@ -1,28 +1,22 @@
 import React, { useState } from "react";
 import "./pages_css/Login.css";
 import Login from "../components/Login";
-import Singup from "../components/Singup";
+import FirstLogin from "../components/FirstLogin";
 
-function Connect() {
-  const [userConnectionInfo, setUserConnectionInfo] = useState({
-    uname: "a",
-    pass: "b",
-  });
+function Connect({setUserState}) {
   const [connectionStatus, setConnectionStatus] = useState("notConnected");
-  const [userState, setUserState] = useState();
   return (
     <>
       {connectionStatus == "notConnected" && (
         <Login
           setConnectionStatus={setConnectionStatus}
-          setUserConnectionInfo={setUserConnectionInfo}
+          setUserState={setUserState}
         />
       )}
-      {connectionStatus == "connected"}
       {connectionStatus == "newConnection" && (
-        <Singup
+        <FirstLogin
           setConnectionStatus={setConnectionStatus}
-          userConnectionInfo={userConnectionInfo}
+          setUserState={setUserState}
         />
       )}
     </>
