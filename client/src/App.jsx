@@ -11,19 +11,21 @@ import PageNotFound from "./pages/PageNotFound";
 import Payment from "./pages/Payment";
 import NavBar from "./components/NavBar";
 import Clients from "./pages/Clients";
+import CreateProfile from "./pages/CreateProfile";
 
 
 
 function App() {
-  const [userState,setUserState]=useState("");
+  const [userState,setUserState]=useState("client");
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/connect" element={<Connect setUserState={setUserState}/>} />
+          <Route path="/createProfile" element={<CreateProfile />} />
           <Route element={<NavBar userState={userState}/>}>
-            <Route path="/home" element={<Home />} />
+            <Route path="/home" element={<Home userState={userState}/>} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/hmo" element={<HMO />} />
