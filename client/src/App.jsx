@@ -12,6 +12,7 @@ import Payment from "./pages/Payment";
 import NavBar from "./components/NavBar";
 import Clients from "./pages/Clients";
 import CreateProfile from "./pages/CreateProfile";
+import ViewClient from "./pages/ViewClient"
 
 
 
@@ -31,6 +32,7 @@ function App() {
             <Route path="/hmo" element={<HMO />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/clients" element={<Clients/>}/>
+            <Route path="/clients/:id" element={<ViewClient />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>

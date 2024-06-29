@@ -170,18 +170,6 @@ function Clients() {
           </Demo>
         </Grid>
       )}
-      {/* {!isLoading &&
-        !fetchError &&
-        clientList.map((client, key) => {
-          return (
-            <SingleClient
-              client={client}
-              clientList={clientList}
-              setClientList={setClientList}
-              key={client.id}
-            />
-          );
-        })} */}
     </>
   );
 }

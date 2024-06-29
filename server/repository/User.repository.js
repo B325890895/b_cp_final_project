@@ -10,7 +10,7 @@ class UserRepository extends Repository {
 
   async readAll() {
     console.log("i got to user repository");
-    let objects = await this.model.find({},'-canceledAppointments -_id -__v');
+    let objects = await this.model.find({},'user_id userName');
     console.log(objects);
     if (objects)
       return {json: objects,statusCode: 200};
