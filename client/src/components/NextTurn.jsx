@@ -3,18 +3,22 @@ import Error from "./Error";
 import Loading from "./Loading";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 const URL_API = "http://localhost:3000";
 function NextTurn(props) {
   const [appointmentDate, setAppointmentDate] = useState({});
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [toGetAppointment, setToGetAppointment] = useState(false)
   useEffect(() => {
     importCloseAppointmentFromDatabase();
   }, []);
-
+  useEffect(() => {
+    if(toGetAppointment){
+      importCloseAppointmentFromDatabase();
+      setToGetAppointment(false)
+    }
+  }, [toGetAppointment]);
   async function importCloseAppointmentFromDatabase() {
     try {
       const response = await fetch(`${URL_API}/appointment/${props.userName}/next`, {
@@ -23,12 +27,10 @@ function NextTurn(props) {
           "Content-type": "application/json; charset=UTF-8",
         },
       }).catch((error) => {
-        console.log("Error:", error);
+        return false;
       });
-      console.log(response);
       if (!response.ok) {
         setAppointmentDate(undefined, response)
-        console.log("Error:", response);
         return;
       }
       const result = await response.json();
@@ -42,10 +44,15 @@ function NextTurn(props) {
 
   async function deleteAppointmentHandler() {
     if (confirm("האם אתה בטוח שברצונך לבטל את התור?")) {
-      console.log("the appointment will be canceled");
-      await deleteAppointmentFromDatabase();
-      const nextAppointment=await importCloseAppointmentFromDatabase();
-      setAppointmentDate(nextAppointment);
+      const responseDelete = await deleteAppointmentFromDatabase();
+      if (!responseDelete) {
+        throw new Error("Error deleting appointment");
+      }
+      else {
+        console.log("Appointment deleted");
+        setToGetAppointment(true)
+        // const nextAppointment = await importCloseAppointmentFromDatabase();
+      }
     } else {
       console.log("the appointmemt will not be canceled");
     }
@@ -53,6 +60,7 @@ function NextTurn(props) {
 
   async function deleteAppointmentFromDatabase() {
     try {
+      console.log(encodeURIComponent(appointmentDate.date));
       const response = await fetch(`${URL_API}/appointment/${appointmentDate.userName}/${encodeURIComponent(appointmentDate.date)}`,
         {
           method: "DELETE",
@@ -60,35 +68,38 @@ function NextTurn(props) {
             "Content-type": "application/json",
           },
         }
-      );
-      if (!response.ok) {
-        throw Error("Failed to update post");
+      )
+      console.log("");
+      if (response.status != 200) {
+        return false;
       } else {
         alert("התור בוטל בהצלחה");
+        return true
       }
     } catch (err) {
+
       setFetchError(err.message);
+      return false;
     } finally {
       setIsLoading(false);
     }
+
   }
 
   return (
     <>
       <Card>
-        {fetchError &&
-          <Error />}
-        {isLoading &&
-          <Loading />}
+        {fetchError && <Error />}
+        {isLoading && <Loading />}
+        {appointmentDate&&appointmentDate.dateCenceled && appointmentDate.dateCenceled.length == 1 && (<>תורך בתאריך {appointmentDate.dateCenceled[0]}התבטל<br /></>)}
+        {appointmentDate&&appointmentDate.dateCenceled && appointmentDate.dateCenceled.length > 1 && (<>תורך בתאריכים {appointmentDate.dateCenceled.map((date) => { return date + " " })}התבטלו<br /></>)}
         {!fetchError && !isLoading && appointmentDate != undefined && (
           <>
-            התור הקרוב התקיים ביום {appointmentDate.day}
-            <br />
-            בתאריך {appointmentDate.date}
-            <br />
+            התור הקרוב התקיים ביום {appointmentDate.day} <br />
+            בתאריך {appointmentDate.date} <br />
             בשעה{appointmentDate.hour}
             <CardActions>
-              <Button onClick={ deleteAppointmentHandler}>לביטול התור</Button>
+              <Button onClick={deleteAppointmentHandler}>לביטול התור</Button>
             </CardActions>
           </>
         )}

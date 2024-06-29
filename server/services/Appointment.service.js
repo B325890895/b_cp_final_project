@@ -10,42 +10,41 @@ class AppointmentService extends Service {
   }
   async read(params) {
     if (params.userName && params.filter == "next") {
-      console.log("Reading user information for:", params.userName); // הוסף פלט לבדיקת הערך המועבר
       const userInformation = await userInfo.read(params.userName);
       if (!userInformation) {
         throw new Error('User not found');
       }
-      let dateNextAppointment = this.getDate(userInformation.day, new Date());
-      while (userInformation.canceledAppointments.includes(dateNextAppointment)) {
-        let [day, month, year] = dateNextAppointment.split('/').map(Number);
-        let date = new Date(year, month - 1, day);
-        date.setDate(date.getDate() + 1);
-        dateNextAppointment = this.getDate(userInformation.day, date);
-        console.log(dateNextAppointment);
-      }
-      // const appointment = await this.repository.read(params.userName, dateNextAppointment, userInformation.hour);
+      let dateNextAppointment = this.getDate(userInformation.day, userInformation.hour, new Date());
       let appointmentWithDay = {
         userName: params.userName,
         day: this.translateDay(userInformation.day),
         hour: userInformation.hour,
-        date: dateNextAppointment,
-        status: 1
+        date: "",
+        status: 1,
+        dateCenceled: []
       };
-
-      console.log(appointmentWithDay);
-      return appointmentWithDay;
+      console.log(dateNextAppointment);
+      while (userInformation.canceledAppointments.includes(dateNextAppointment)) {
+        appointmentWithDay.dateCenceled.push(dateNextAppointment);
+        let [day, month, year] = dateNextAppointment.split('/').map(Number);
+        let date = new Date(year, month - 1, day+7);
+        date.setDate(date.getDate() + 1);
+        dateNextAppointment = this.getDate(userInformation.day, userInformation.hour, date);
+        console.log(dateNextAppointment);
+      }
+      appointmentWithDay.date = dateNextAppointment;
+      return { "statusCode": 200, "dateNextAppointment": appointmentWithDay };
     }
+    return { statusCode: 500 }
   }
   async delete(params) {
-    console.log("delete appointment", params);
     const regexDate = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/\d{4}$/;
     if (params.userName && regexDate.test(params.filter)) {
       // const res = await this.repository.delete(params.userName, params.filter);
       // if (res.statusCode === 200) {
-      console.log("delete appointment service");
       const userInformation = await userInfo.updatecanCeledAppointments(params.userName, params.filter);
-      if (!userInformation) {
-        throw new Error('User not found');
+      if (userInformation.statusCode != 200) {
+        return { statusCode: 500 }
       }
       return { statusCode: 200 }
     }
@@ -54,19 +53,33 @@ class AppointmentService extends Service {
     }
   }
 
-  getDate(dayName,currentDate) {
+  getDate(dayName, hour, currentDate) {
     const now = currentDate;
-    const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(dayName);
+    const arrayDayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const today = now // לקבוע את היום הראשון של השבוע
+    const dayOfWeek = arrayDayOfWeek.indexOf(dayName);
+    const [hourOfAppointment, minuteshourOfAppointment] = hour.split(':').map(Number);
     if (dayOfWeek === -1) {
       throw new Error('Invalid day name');
     }
-    const today = startOfWeek(now); // לקבוע את היום הראשון של השבוע
     let nextOccurrence = setDay(today, dayOfWeek);
-    if (nextOccurrence <= now) {
+    if (!((dayOfWeek + arrayDayOfWeek.indexOf(now.getDay())) < 7)) {
+      today = startOfWeek(now);
+      if (((nextOccurrence.getDate() == now.getDate()) && (hourOfAppointment < now.getHours() + 1)) || (nextOccurrence.getDate() < now.getDate())) {
+        console.log("aaaa");
+        nextOccurrence = addWeeks(nextOccurrence, 1);
+      }
+      console.log(nextOccurrence.getDate(), now.getDate(), hourOfAppointment, now.getHours());
+
+    }
+    if (((nextOccurrence.getDate() == now.getDate()) && (hourOfAppointment < now.getHours() + 1))) {
+      console.log("aaaa");
       nextOccurrence = addWeeks(nextOccurrence, 1);
     }
+    console.log(nextOccurrence);
     return nextOccurrence.toLocaleDateString('en-GB');
   }
+
   translateDay(day) {
     const days = {
       "Sunday": "ראשון",

@@ -11,7 +11,7 @@ import { Link, Outlet } from "react-router-dom";
 import "./components_css/NavBar.css";
 
 
-function NavBar({userState}) {
+function NavBar({ userState }) {
   console.log(userState);
   const navItemsClient = [
     { name: "בית", link: "home" },
@@ -71,7 +71,7 @@ function NavBar({userState}) {
               />
             </Typography>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              {navItems.map((item) => (
+              {navItems && navItems.map((item) => (
                 <Button key={item.link} sx={{ color: "#fff" }}>
                   <Link to={item.link.toLowerCase()}>{item.name}</Link>
                 </Button>
