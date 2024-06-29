@@ -16,7 +16,7 @@ import CreateProfile from "./pages/CreateProfile";
 
 
 function App() {
-  const [userState,setUserState]=useState("client");
+  const [userState,setUserState]=useState("manager");
   return (
     <>
       <BrowserRouter>

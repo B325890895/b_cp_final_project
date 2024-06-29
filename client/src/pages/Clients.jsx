@@ -6,8 +6,12 @@ import SingleClient from "../components/SingleClient";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import Grid from "@mui/material/Grid";
+import { styled } from '@mui/material/styles';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+
 
 function Clients() {
   const URL_API = "http://localhost:3000";
@@ -21,7 +25,17 @@ function Clients() {
   useEffect(() => {
     (async () => await fetchClients())();
   }, []);
-
+  const Demo = styled('div')(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+  }));
+  
+  function generate(element) {
+    return [0, 1, 2].map((value) =>
+      React.cloneElement(element, {
+        key: value,
+      }),
+    );
+    }
   //to update the names of the properties in the filter properly
   useEffect(() => {
     if (searchTerm == "" && searchClientId == "") {
@@ -40,7 +54,7 @@ function Clients() {
   }, [searchTerm, searchClientId]);
   const fetchClients = async () => {
     try {
-      const response = await fetch(`${URL_API}/users`);
+      const response = await fetch(`${URL_API}/user`);
       if (!response.ok) {
         throw Error("Did not received expected data");
       }
@@ -142,7 +156,21 @@ function Clients() {
         onChange={(e) => setSearchPostId(e.target.value)}
         placeholder="הכנס ת.ז. לחיפוש"
       />
-      {!isLoading &&
+      {!isLoading && !fetchError && (
+        <Grid item xs={12} md={6}>
+          <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+            רשימת לקוחות{" "}
+          </Typography>
+          <Demo>
+          <List>
+          </List>
+      {jsonClientList.map(client => {return(
+       <SingleClient client={client}/>);
+      })}
+          </Demo>
+        </Grid>
+      )}
+      {/* {!isLoading &&
         !fetchError &&
         clientList.map((client, key) => {
           return (
@@ -153,7 +181,7 @@ function Clients() {
               key={client.id}
             />
           );
-        })}
+        })} */}
     </>
   );
 }

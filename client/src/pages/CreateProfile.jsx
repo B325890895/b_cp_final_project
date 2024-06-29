@@ -6,7 +6,6 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-import FormControl from "@mui/material/FormControl";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import PersonIcon from "@mui/icons-material/Person";
@@ -22,19 +21,24 @@ import "./pages_css/CreateProfile.css";
 
 function CreateProfile() {
   const [hmo, setHmo] = useState("");
+  const [birthDate, setBirthDate] = useState();
   const navigate = useNavigate();
+  const URL_API="http://localhost:3000"
 
 
-  const handleChange = (event) => {
-    setHmo(event.target.value);
+  // const handleHmoChange = (event) => {
+  //   setHmo(event.target.value);
+  // };
+  const handleBirthDateChange = (event) => {
+    setBirthDate(event.target.value);
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
     let userProfile = {
       user_id: document.forms[0].user_id.value,
       userName: document.forms[0].user_name.value,
-      HMO: hmo,
-      birthDate: document.forms[0].birth_date.value,
+      HMO:  document.forms[0].hmo.value,
+      birthDate: birthDate,
       email: document.forms[0].user_email.value,
       father: {
         name: document.forms[0].father_name.value,
@@ -65,7 +69,8 @@ function CreateProfile() {
     }
   };
   return (
-    <>
+     <div className="form-container">
+    
       <Box
         dir="rtl"
         component="form"
@@ -100,9 +105,9 @@ function CreateProfile() {
           <Select
             labelId="hmoLabel"
             id="hmo"
-            value={hmo}
+            // value={hmo}
             label="קופת חולים *"
-            onChange={handleChange}
+            // onChange={handleHmoChange}
           >
             <MenuItem value="">
               <em>None</em>
@@ -116,13 +121,13 @@ function CreateProfile() {
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <CalendarMonthIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePicker"]}>
               <MobileDatePicker
+              inputFormat="DD-MM-YYYY"
                 slotProps={{ textField: { variant: "standard" } }}
                 label="תאריך לידה"
                 id="birth_date"
+                onChange={handleBirthDateChange}
               />
-            </DemoContainer>
           </LocalizationProvider>
         </Box>
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
@@ -179,7 +184,7 @@ function CreateProfile() {
         </Button>
         ={" "}
       </Box>
-    </>
+    </div>
   );
 }
 

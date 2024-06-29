@@ -9,10 +9,11 @@ class UserRepository extends Repository {
   }
 
   async readAll() {
-    //the name of the function that reads all the data
-    let objects = await this.model.readAll();
+    console.log("i got to user repository");
+    let objects = await this.model.find({},'-canceledAppointments -_id -__v');
+    console.log(objects);
     if (objects)
-      return objects;
+      return {json: objects,statusCode: 200};
     throw new Error("Couldn't read all");
   }
   async read(userName) {
