@@ -4,7 +4,6 @@ const server = express();
 
 const port = process.env.PORT;
 //const port =3000;
-//const loginRouter= require("./API/router/Password.router");
 const userRouter = require("./API/router/User.router");
 const appointmentRouter = require("./API/router/Appointment.router");
 const alertRouter = require("./API/router/Alert.router");
@@ -22,7 +21,6 @@ server.use(express.json());
 
 server.use(express.json());
 
-server.use("/login", passwordRouter);
 server.use("/user", userRouter);
 server.use("/appointment", appointmentRouter);
 server.use("/alert", alertRouter);

@@ -55,7 +55,7 @@ try {
       const data = await response.json();
       console.log("successfully connected:", data);
       setUserState(data.userState);
-      navigate("/Home");
+      navigate("/createProfile ");
     }
     // } else if (response.status === 400) {
     else {

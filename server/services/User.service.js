@@ -33,9 +33,7 @@ class usersService extends Service {
       throw new Error(500);
     }
   }
-  // async read(id) {
-  //   let user = this.repository.read(id);
-  // }
+
   async delete(id) {
     super.delete(id);
     // if (this.repository) {
