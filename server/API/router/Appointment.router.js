@@ -29,7 +29,6 @@ router.
         AppointmentController.read(req, res, next); 
     })
     .delete((req, res, next) => {
-        console.log("delete router");
         AppointmentController.delete(req, res, next);
     });
 

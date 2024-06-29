@@ -11,7 +11,7 @@ class AppointmentController extends Controller {
         try {
             console.log(req.params.filter, req.params.userName,params);
             const response = await this.service.read(params);
-            return res.status( response.statusCode ).json( response.json );
+            return res.status( response.statusCode ).json( response.dateNextAppointment );
         } catch (error) {
             next(error);
         }
@@ -19,7 +19,8 @@ class AppointmentController extends Controller {
     async delete(req, res, next){ 
         try {
             const response = await this.service.delete(req.params);
-            return res.status(response.statusCode);
+            console.log("co",response.statusCode);
+            return res.status(response.statusCode).json( response.json );
         } catch (error) {
             next(error);
         }
