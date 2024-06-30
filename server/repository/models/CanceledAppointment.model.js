@@ -18,7 +18,7 @@ const CanceledAppointmentSchema = mongoose.Schema({
         required: true,
         validate: {
             validator: function(v) {
-              return v === 'meneger' || v === 'client';
+              return v === 'manager' || v === 'client';
             },
             message: props => `${props.value} is not the specific string!`
           }

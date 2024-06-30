@@ -3,6 +3,7 @@ import ReportAlert from "./ReportAlert";
 import AppointmentAlert from "./AppointmentAlert";
 
 function Alert() {
+  console.log("alert");
   const userState = "manager";
   if (userState == "manager") {
     return (

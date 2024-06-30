@@ -5,22 +5,24 @@ class AppointmentController extends Controller {
         super(service)
     }
     async read(req, res, next) {
-        let params ={}
-        if(req.params.userName!=undefined){params.userName = req.params.userName};
-        if(req.params.filter)params.filter = req.params.filter;
+        let params = {};
+        if (req.params.userName != undefined) {
+            params.userName = req.params.userName
+        };
+        if (req.params.filter) params.filter = req.params.filter;
         try {
-            console.log(req.params.filter, req.params.userName,params);
+            console.log(req.params.filter, req.params.userName, params);
             const response = await this.service.read(params);
-            return res.status( response.statusCode ).json( response.dateNextAppointment );
+            return res.status(response.statusCode).json(response.dateNextAppointment);
         } catch (error) {
             next(error);
         }
     }
-    async delete(req, res, next){ 
+    async delete(req, res, next) {
         try {
             const response = await this.service.delete(req.params);
-            console.log("co",response.statusCode);
-            return res.status(response.statusCode).json( response.json );
+            console.log("co", response.statusCode);
+            return res.status(response.statusCode).json(response.json);
         } catch (error) {
             next(error);
         }

@@ -49,7 +49,6 @@ function NextTurn(props) {
         throw new Error("Error deleting appointment");
       }
       else {
-        console.log("Appointment deleted");
         setToGetAppointment(true)
         // const nextAppointment = await importCloseAppointmentFromDatabase();
       }
@@ -60,7 +59,6 @@ function NextTurn(props) {
 
   async function deleteAppointmentFromDatabase() {
     try {
-      console.log(encodeURIComponent(appointmentDate.date));
       const response = await fetch(`${URL_API}/appointment/${appointmentDate.userName}/${encodeURIComponent(appointmentDate.date)}`,
         {
           method: "DELETE",

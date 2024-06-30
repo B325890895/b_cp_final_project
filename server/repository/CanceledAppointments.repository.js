@@ -6,14 +6,17 @@ class AppointmentRepository extends Repository {
         super(connection, model);
     }
     async readAll() {
-        return await this.model.find({ });
+        const response = await this.model.find({});
+        return response;
 
     }
-    async read(params) {
-        return await this.model.findOne({ userName: params.userName });
+    async read(userName) {
+        return await this.model.findOne({ userName: userName });
     }
 
     async delete(userName, date) {
+        return await this.model.deleteOne({ userName: userName,date: date });
+
     }
 }
 
