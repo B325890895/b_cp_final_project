@@ -24,7 +24,7 @@ router.
     });
 
 router.
-    route("/:userName/:filter")
+    route("/:filter1/:filter2")
     .get((req, res, next) => {
         AppointmentController.read(req, res, next); 
     })

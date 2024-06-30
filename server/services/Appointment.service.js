@@ -2,14 +2,14 @@ const { Service } = require("./Service");
 const AppointmentRepository = require("../repository/Appointment.repository");
 const { DataSecurity } = require("./dataSecurity");
 const { parse, addDays, addWeeks, addMonths, getDay, setDay, startOfWeek } = require('date-fns');
-const userInfo = require('./User.service')
-
+const userInfo = require('./User.service');
+const CanceledAppointment= require('./CanceledAppointment.servies');
 class AppointmentService extends Service {
   constructor(repository) {
     super(repository);
   }
   async read(params) {
-    if (params.userName && params.filter == "next") {
+    if (params.filter1 && params.filter2 == "next") {
       const userInformation = await userInfo.read(params.userName);
       if (!userInformation) {
         throw new Error('User not found');
@@ -35,6 +35,7 @@ class AppointmentService extends Service {
       appointmentWithDay.date = dateNextAppointment;
       return { "statusCode": 200, "dateNextAppointment": appointmentWithDay };
     }
+
     return { statusCode: 500 }
   }
   async delete(params) {

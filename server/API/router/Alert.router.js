@@ -19,7 +19,11 @@ router.
         AlertController.update(req, res, next)})
     .delete((req, res, next) => {
         AlertController.delete(req, res, next)});
-
+router.
+    route("/appintment/:filter")
+    .get((req, res, next) => {
+        AlertController.read(req, res, next); 
+    })
 module.exports = router;
 
 
