@@ -26,7 +26,7 @@ function CreateProfile() {
   //   setHmo(event.target.value);
   // };
   const handleBirthDateChange = (event) => {
-    setBirthDate(event.target.value);
+    // setBirthDate(event.target.value);
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -34,7 +34,7 @@ function CreateProfile() {
       user_id: document.forms[0].user_id.value,
       userName: document.forms[0].user_name.value,
       HMO: document.forms[0].hmo.value,
-      birthDate: birthDate,
+      // birthDate: birthDate,
       email: document.forms[0].user_email.value,
       father: {
         name: document.forms[0].father_name.value,
