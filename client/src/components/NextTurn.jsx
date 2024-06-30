@@ -9,28 +9,51 @@ function NextTurn(props) {
   const [appointmentDate, setAppointmentDate] = useState({});
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [toGetAppointment, setToGetAppointment] = useState(false)
+  const [toGetAppointment, setToGetAppointment] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  function getHoursBetweenDates(futureDate) {
+    const now = new Date();
+    const difference = future.getTime() - now.getTime();
+    const hoursDifference = difference / (1000 * 60 * 60);
+    return Math.round(hoursDifference * 100) / 100;
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+  const handleOpenAlert = () => {
+    setOpen(true);
+  };
+
   useEffect(() => {
     importCloseAppointmentFromDatabase();
   }, []);
   useEffect(() => {
-    if(toGetAppointment){
+    if (toGetAppointment) {
       importCloseAppointmentFromDatabase();
-      setToGetAppointment(false)
+      setToGetAppointment(false);
     }
   }, [toGetAppointment]);
   async function importCloseAppointmentFromDatabase() {
     try {
-      const response = await fetch(`${URL_API}/appointment/${props.userName}/next`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }).catch((error) => {
+      const response = await fetch(
+        `${URL_API}/appointment/${props.userName}/next`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      ).catch((error) => {
         return false;
       });
       if (!response.ok) {
-        setAppointmentDate(undefined, response)
+        setAppointmentDate(undefined, response);
         return;
       }
       const result = await response.json();
@@ -40,48 +63,72 @@ function NextTurn(props) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   async function deleteAppointmentHandler() {
-    if (confirm("האם אתה בטוח שברצונך לבטל את התור?")) {
-      const responseDelete = await deleteAppointmentFromDatabase();
-      if (!responseDelete) {
-        throw new Error("Error deleting appointment");
+    if (getHoursBetweenDates(appointmentDate) >= 24) {
+      if (confirm("האם אתה בטוח שברצונך לבטל את התור?")) {
+        const responseDelete = await deleteAppointmentFromDatabase();
+        if (!responseDelete) {
+          throw new Error("Error deleting appointment");
+        } else {
+          console.log("Appointment deleted");
+          setToGetAppointment(true);
+          // const nextAppointment = await importCloseAppointmentFromDatabase();
+        }
+      } else {
+        console.log("the appointment will not be canceled");
       }
-      else {
-        setToGetAppointment(true)
-        // const nextAppointment = await importCloseAppointmentFromDatabase();
+    } else if (getHoursBetweenDates(appointmentDate) >= 4) {
+      if (
+        confirm(
+          "ישנם פחות מארבע שעות עד לטיפול, ביטול יגררור תשלום חלקי האם אתה בטוח שברצונך לבטל את הטיפול?"
+        )
+      ) {
+        const responseDelete = await deleteAppointmentFromDatabase();
+        if (!responseDelete) {
+          throw new Error("Error deleting appointment");
+        } else {
+          console.log("Appointment deleted");
+          setToGetAppointment(true);
+          // const nextAppointment = await importCloseAppointmentFromDatabase();
+        }
+      } else {
+        console.log("the appointment will not be canceled");
       }
     } else {
-      console.log("the appointmemt will not be canceled");
+      alert("ישנם פחות מארבע שעות עד לתור, לא ניתן לבטל את התור באתר אלא רק במספר הטלפון אף תחויבו בתשלום מלא עבור טיפול זה , עמכם הסליחה")
     }
   }
 
   async function deleteAppointmentFromDatabase() {
     try {
-      const response = await fetch(`${URL_API}/appointment/${appointmentDate.userName}/${encodeURIComponent(appointmentDate.date)}`,
+      console.log(encodeURIComponent(appointmentDate.date));
+      const response = await fetch(
+        `${URL_API}/appointment/${
+          appointmentDate.userName
+        }/${encodeURIComponent(appointmentDate.date)}`,
         {
           method: "DELETE",
           headers: {
             "Content-type": "application/json",
           },
         }
-      )
+      );
       console.log("");
       if (response.status != 200) {
         return false;
       } else {
-        alert("התור בוטל בהצלחה");
-        return true
+        // alert("התור בוטל בהצלחה");
+        handelOpenAlert();
+        return true;
       }
     } catch (err) {
-
       setFetchError(err.message);
       return false;
     } finally {
       setIsLoading(false);
     }
-
   }
 
   return (
@@ -89,8 +136,26 @@ function NextTurn(props) {
       <Card>
         {fetchError && <Error />}
         {isLoading && <Loading />}
-        {appointmentDate&&appointmentDate.dateCenceled && appointmentDate.dateCenceled.length == 1 && (<>תורך בתאריך {appointmentDate.dateCenceled[0]}התבטל<br /></>)}
-        {appointmentDate&&appointmentDate.dateCenceled && appointmentDate.dateCenceled.length > 1 && (<>תורך בתאריכים {appointmentDate.dateCenceled.map((date) => { return date + " " })}התבטלו<br /></>)}
+        {appointmentDate &&
+          appointmentDate.dateCenceled &&
+          appointmentDate.dateCenceled.length == 1 && (
+            <>
+              תורך בתאריך {appointmentDate.dateCenceled[0]}התבטל
+              <br />
+            </>
+          )}
+        {appointmentDate &&
+          appointmentDate.dateCenceled &&
+          appointmentDate.dateCenceled.length > 1 && (
+            <>
+              תורך בתאריכים{" "}
+              {appointmentDate.dateCenceled.map((date) => {
+                return date + " ";
+              })}
+              התבטלו
+              <br />
+            </>
+          )}
         {!fetchError && !isLoading && appointmentDate != undefined && (
           <>
             התור הקרוב התקיים ביום {appointmentDate.day} <br />
@@ -101,10 +166,21 @@ function NextTurn(props) {
             </CardActions>
           </>
         )}
-        {appointmentDate == undefined && <CardActions>אין תורים בקרוב</CardActions>}
-
+        {appointmentDate == undefined && (
+          <CardActions>אין תורים בקרוב</CardActions>
+        )}
+        {open && (
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              variant="outlined"
+              sx={{ width: "100%" }}
+            >
+התור בוטל בהצלחה!            </Alert>
+          </Snackbar>
+        )}
       </Card>
-
     </>
   );
 }

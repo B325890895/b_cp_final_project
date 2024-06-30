@@ -30,18 +30,30 @@ function ShowProfile({userDetail,setProfileState}) {
               <h1> {userDetail.name}</h1>
               <h3>מספר זהות: {userDetail.userId}</h3>
               <h3>תאריך לידה: {userDetail.birthDate}</h3>
-              <div>
+              <h3>כתובת מייל: {userDetail.email}</h3>
+              <h3>קופת חולים:{userDetail.HMO}</h3>
+             
+              <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "20vw" },
+          }}
+          className="card"
+        >
                 <h2>פרטי אב:</h2>
                 <h3>שם האב: {userDetail.father.name}</h3>
                 <h3>מספר טלפון: {userDetail.father.phoneNumber}</h3>
-              </div>
-              <div>
+             </Box>
+             <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "20vw" },
+          }}
+          className="card"
+        >
                 <h2>פרטי האם:</h2>
                 <h3>שם האם: {userDetail.mother.name}</h3>
                 <h3>מספר טלפון: {userDetail.mother.phoneNumber}</h3>
-              </div>
-              <h3>כתובת מייל: {userDetail.email}</h3>
-              <h3>קופת חולים:{userDetail.HMO}</h3>
+              </Box>
+            
             </div>
           </CardContent>
           <CardActions>

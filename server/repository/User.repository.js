@@ -50,7 +50,7 @@ class UserRepository extends Repository {
   async updateCanceledAppointments(userName, date) {
     let object = await this.model.updateOne(
       { userName: userName },
-      { $push: { canceledAppointments: date } });
+      { $push: { canceledAppointments: date} });
     if (object)
       return { statusCode: 200 };
     return { statusCode: 500 }

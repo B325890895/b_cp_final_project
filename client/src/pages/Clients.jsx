@@ -28,14 +28,7 @@ function Clients() {
   const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
   }));
-  
-  function generate(element) {
-    return [0, 1, 2].map((value) =>
-      React.cloneElement(element, {
-        key: value,
-      }),
-    );
-    }
+
   //to update the names of the properties in the filter properly
   useEffect(() => {
     if (searchTerm == "" && searchClientId == "") {
