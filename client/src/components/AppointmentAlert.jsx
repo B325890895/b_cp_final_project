@@ -12,7 +12,7 @@ function AppointmentAlert() {
 
   async function getUsersThatCanceledAppointment() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_URL}/alert/report`);
+      const response = await fetch(`${process.env.REACT_APP_URL}/alert/appointment`);
       if (!response.ok) {
         throw Error("Did not received expected data");
       }

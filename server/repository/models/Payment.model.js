@@ -9,14 +9,10 @@ const appointmentSchema = mongoose.Schema({
         type: 'string',
         required: true,
     },
-    // hour:{
-    //     type: 'string',
-    //     required: true,
-    // },
-    status:{
-        type:'number',
-        min:0,
-        max:3
+    appointments:{
+        type: 'array',
+        required: true,
+        default: []
     }
 });
 module.exports = mongoose.model('appointment', appointmentSchema);

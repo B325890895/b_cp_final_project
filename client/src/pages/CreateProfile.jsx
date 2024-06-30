@@ -69,22 +69,25 @@ function CreateProfile() {
     }
   };
   return (
-     <div className="form-container">
-    
-      <Box
-        dir="rtl"
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 1, width: "25vw" },
-        }}
-        noValidate
-        autoComplete="off"
-        className="card"
-        onSubmit={handleSubmit}
-      >
-        <h2>ברוכים הבאים לאתר</h2>
-        <h3>רק כמה פרטים אישיים ואנחנו מוכנים</h3>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+      <div className="form-container">
+        <div className="header">
+          <h2>ברוכים הבאים לאתר</h2>
+          <h3>רק כמה פרטים אישיים ואנחנו מוכנים</h3>
+        </div>
+        <div className="form-content">
+          <div className="left-column">
+            <Box
+              dir="rtl"
+              component="form"
+              sx={{
+                "& > :not(style)": { m: 1, width: "100%" },
+              }}
+              noValidate
+              autoComplete="off"
+              className="card"
+              onSubmit={handleSubmit}
+            >
+      <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <ConfirmationNumberIcon
             sx={{ color: "action.active", mr: 1, my: 0.5 }}
           />
@@ -133,15 +136,17 @@ function CreateProfile() {
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <EmailIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
           <TextField id="user_email" label="כתובת מייל" variant="standard" />
-        </Box>
-        <Box
-          sx={{
-            "& > :not(style)": { m: 1, width: "20vw" },
-          }}
-          className="card"
-        >
-          <h3>פרטי אב</h3>
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+        </Box>            </Box>
+          </div>
+          <div className="right-column">
+            <Box
+              sx={{
+                "& > :not(style)": { m: 1, width: "100%" },
+              }}
+              className="card"
+            >
+              <h3>פרטי אב</h3>
+              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <PersonIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <TextField id="father_name" label="שם" variant="standard" />
           </Box>
@@ -152,16 +157,15 @@ function CreateProfile() {
               label="מספר טלפון"
               variant="standard"
             />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            "& > :not(style)": { m: 1, width: "20vw" },
-          }}
-          className="card"
-        >
-          <h3>פרטי אם</h3>
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+          </Box>               </Box>
+            <Box
+              sx={{
+                "& > :not(style)": { m: 1, width: "100%" },
+              }}
+              className="card"
+            >
+              <h3>פרטי אם</h3>
+              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <PersonIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <TextField id="mother_name" label="שם" variant="standard" />
           </Box>
@@ -172,20 +176,20 @@ function CreateProfile() {
               label="מספר טלפון"
               variant="standard"
             />
-          </Box>
-        </Box>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          אישור
-        </Button>
-        ={" "}
-      </Box>
-    </div>
-  );
+          </Box>             </Box>
+          </div>
+        </div>
+        <div className="footer">
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ mt: 3, mb: 2, width: "200px" }}
+          >
+            אישור
+          </Button>
+        </div>
+      </div>
+    );
 }
 
 export default CreateProfile;

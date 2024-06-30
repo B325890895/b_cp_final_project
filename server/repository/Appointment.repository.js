@@ -1,12 +1,19 @@
 const { query } = require("express");
 const Repository = require("./Repository");
 const { default: mongoose } = require("mongoose");
-const apoointmentConnection = process.env.CONNECTION_URL;
+const appointmentConnection = process.env.CONNECTION_URL;
 const appointmentModel = require("./models/Appointment.model");
 class AppointmentRepository extends Repository {
   constructor(connection, model) {
     super(connection, model);
   }
+
+  async create(appointmentThatExist) {
+    let object = await this.model.create(appointmentThatExist);
+    if (object)
+        return {json:true,statusCode:200};
+    return {json:false,statusCode:500};
+}
 
   async readAll() {
     //the name of the function that reads all the data
@@ -34,7 +41,7 @@ class AppointmentRepository extends Repository {
   async update(id, data) {
     let object = await this.model.updateOne({ user_id: id }, { $set: data });
     if (object)
-      return object;
+      return {json:object,statusCode: 200};
     throw new Error('Could not find object with id' + data.id);
 
   }
@@ -48,10 +55,9 @@ class AppointmentRepository extends Repository {
   async exist(id) {
     const doesObjectExist = await this.model.exists({ user_id: id })
     if (doesObjectExist)
-      return true;
-    return false;
+      return {json:true,statusCode:200};
+    return {json:false,statusCode:500};
   }
-
 }
 
-module.exports = new AppointmentRepository(apoointmentConnection, appointmentModel);
+module.exports = new AppointmentRepository(appointmentConnection, appointmentModel);
