@@ -6,16 +6,13 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-import EmailIcon from "@mui/icons-material/Email";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import PersonIcon from "@mui/icons-material/Person";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
-import HMobiledataIcon from "@mui/icons-material/HMobiledata";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
 
 import "./pages_css/CreateProfile.css";
 
@@ -23,8 +20,7 @@ function CreateProfile() {
   const [hmo, setHmo] = useState("");
   const [birthDate, setBirthDate] = useState();
   const navigate = useNavigate();
-  const URL_API="http://localhost:3000"
-
+  const URL_API = "http://localhost:3000";
 
   // const handleHmoChange = (event) => {
   //   setHmo(event.target.value);
@@ -37,7 +33,7 @@ function CreateProfile() {
     let userProfile = {
       user_id: document.forms[0].user_id.value,
       userName: document.forms[0].user_name.value,
-      HMO:  document.forms[0].hmo.value,
+      HMO: document.forms[0].hmo.value,
       birthDate: birthDate,
       email: document.forms[0].user_email.value,
       father: {
@@ -50,146 +46,296 @@ function CreateProfile() {
       },
     };
     console.log(userProfile);
-    try{
-    const response = await fetch(`${URL_API}/users`, {
-      method: "POST",
-      body: JSON.stringify(userProfile),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Successfully created user:", data);
-      navigate("/Home");
-    } else {
-      console.log("Error in server");
-    }}catch (err) {
+    try {
+      const response = await fetch(`${URL_API}/users`, {
+        method: "POST",
+        body: JSON.stringify(userProfile),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Successfully created user:", data);
+        navigate("/Home");
+      } else {
+        console.log("Error in server");
+      }
+    } catch (err) {
       console.log(err.message);
     }
   };
   return (
-      <div className="form-container">
-        <div className="header">
-          <h2>ברוכים הבאים לאתר</h2>
-          <h3>רק כמה פרטים אישיים ואנחנו מוכנים</h3>
-        </div>
-        <div className="form-content">
-          <div className="left-column">
-            <Box
-              dir="rtl"
-              component="form"
-              sx={{
-                "& > :not(style)": { m: 1, width: "100%" },
-              }}
-              noValidate
-              autoComplete="off"
-              className="card"
-              onSubmit={handleSubmit}
+    <Container component="main" maxWidth="lg" dir="rtl">
+      <CssBaseline />
+      <Box className="form-container">
+        <Box className="headers">
+          <Typography component="h1" variant="h3">
+            ברוכים הבאים לאתר
+          </Typography>
+          <Typography component="h1" variant="h5">
+            רק כמה פרטים אישיים ואנחנו מוכנים
+          </Typography>
+        </Box>
+        
+        <Box component="form" onSubmit={handleSubmit} noValidate className="form-content">
+          <Box className="left-side">
+          <Box id="profile">
+            <TextField
+              required
+              fullWidth
+              autoFocus
+              margin="normal"
+              name="user_id"
+              id="user_id"
+              label="מספר זהות"
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="father_name"
+              label="שם מלא"
+              name="userName"
+              autoFocus
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="user_email"
+              label="כתובת מייל"
+              name="user_email"
+              autoFocus
+            />
+            <InputLabel id="hmoLabel">קופת חולים</InputLabel>
+            <Select
+              labelId="hmoLabel"
+              id="hmo"
+              // value={hmo}
+              // onChange={handleHmoChange}
+              label="קופת חולים"
+              fullWidth
             >
-      <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <ConfirmationNumberIcon
-            sx={{ color: "action.active", mr: 1, my: 0.5 }}
-          />
-          <TextField id="user_id" label="מספר זהות" variant="standard" />
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <PersonIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-          <TextField id="user_name" label="שם" variant="standard" />
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <HMobiledataIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-          <InputLabel
-            // slotProps={{ textField: { variant: "standard" } }}
-            id="hmoLabel"
-          >
-            קופת חולים
-          </InputLabel>
-          <Select
-            labelId="hmoLabel"
-            id="hmo"
-            // value={hmo}
-            label="קופת חולים *"
-            // onChange={handleHmoChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={1}>מאוחדת</MenuItem>
-            <MenuItem value={2}>כללית</MenuItem>
-            <MenuItem value={3}>לאומית</MenuItem>
-            <MenuItem value={4}>מכבי</MenuItem>
-          </Select>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <CalendarMonthIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={1}>מאוחדת</MenuItem>
+              <MenuItem value={2}>כללית</MenuItem>
+              <MenuItem value={3}>לאומית</MenuItem>
+              <MenuItem value={4}>מכבי</MenuItem>
+            </Select>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <MobileDatePicker
-              inputFormat="DD-MM-YYYY"
-                slotProps={{ textField: { variant: "standard" } }}
+                autoFocus
+                fullWidth
+                margin="normal"
+                inputFormat="DD-MM-YYYY"
                 label="תאריך לידה"
                 id="birth_date"
                 onChange={handleBirthDateChange}
               />
-          </LocalizationProvider>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <EmailIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-          <TextField id="user_email" label="כתובת מייל" variant="standard" />
-        </Box>            </Box>
-          </div>
-          <div className="right-column">
-            <Box
-              sx={{
-                "& > :not(style)": { m: 1, width: "100%" },
-              }}
-              className="card"
-            >
-              <h3>פרטי אב</h3>
-              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <PersonIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-            <TextField id="father_name" label="שם" variant="standard" />
+            </LocalizationProvider>
           </Box>
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <LocalPhoneIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+          </Box>
+          
+          <Box className="right-side">
+            <Box id="father">
+              <Typography component="h1" variant="h6">
+                פרטי אב
+              </Typography>
+              <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="father_name"
+              label="שם מלא"
+              name="father_name"
+              autoFocus
+            />
             <TextField
+              margin="normal"
+              required
+              fullWidth
               id="father_phoneNumber"
               label="מספר טלפון"
-              variant="standard"
+              name="userName"
+              autoFocus
+            />            </Box>
+            <Box id="mother">
+              <Typography component="h1" variant="h6">
+                פרטי אם
+              </Typography>
+              <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="mother_name"
+              label="שם מלא"
+              name="mother_name"
+              autoFocus
             />
-          </Box>               </Box>
-            <Box
-              sx={{
-                "& > :not(style)": { m: 1, width: "100%" },
-              }}
-              className="card"
-            >
-              <h3>פרטי אם</h3>
-              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <PersonIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-            <TextField id="mother_name" label="שם" variant="standard" />
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <LocalPhoneIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <TextField
+              margin="normal"
+              required
+              fullWidth
               id="mother_phoneNumber"
               label="מספר טלפון"
-              variant="standard"
-            />
-          </Box>             </Box>
-          </div>
-        </div>
-        <div className="footer">
+              name="mother_phoneNumber"
+              autoFocus
+            />            </Box>
+          </Box>
+        </Box>
+        
+        <Box className="submit-button">
           <Button
             type="submit"
+            fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, width: "200px" }}
+            sx={{ mt: 3, mb: 2 }}
           >
-            אישור
+            שמירת פרטים
           </Button>
-        </div>
-      </div>
-    );
+        </Box>
+      </Box>
+    </Container>
+  )
+  //   <Container component="main" maxWidth="xs" dir="rtl">
+  //     <CssBaseline />
+  //     <Box
+  //       sx={{
+  //         marginTop: 8,
+  //         display: "flex",
+  //         flexDirection: "column",
+  //         alignItems: "center",
+  //       }}
+  //     >
+  //       <Typography component="h1" variant="h3">
+  //         ברוכים הבאים לאתר
+  //       </Typography>
+  //       <Typography component="h1" variant="h5">
+  //         רק כמה פרטים אישיים ואנחנו מוכנים
+  //       </Typography>
+  //       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+  //         <Box id="profile">
+  //           <TextField
+  //             required
+  //             fullWidth
+  //             autoFocus
+  //             margin="normal"
+  //             name="user_id"
+  //             id="user_id"
+  //             label="מספר זהות"
+  //           />
+
+  //           <TextField
+  //             margin="normal"
+  //             required
+  //             fullWidth
+  //             id="father_name"
+  //             label="שם מלא"
+  //             name="userName"
+  //             autoFocus
+  //           />
+
+  //           <TextField
+  //             margin="normal"
+  //             required
+  //             fullWidth
+  //             id="user_email"
+  //             label="כתובת מייל"
+  //             name="user_email"
+  //             autoFocus
+  //           />
+  //           <InputLabel id="hmoLabel">קופת חולים</InputLabel>
+  //           <Select
+  //             labelId="hmoLabel"
+  //             id="hmo"
+  //             // value={hmo}
+  //             // onChange={handleHmoChange}
+  //             label="קופת חולים"
+  //             fullWidth
+  //           >
+  //             <MenuItem value="">
+  //               <em>None</em>
+  //             </MenuItem>
+  //             <MenuItem value={1}>מאוחדת</MenuItem>
+  //             <MenuItem value={2}>כללית</MenuItem>
+  //             <MenuItem value={3}>לאומית</MenuItem>
+  //             <MenuItem value={4}>מכבי</MenuItem>
+  //           </Select>
+  //           <LocalizationProvider dateAdapter={AdapterDayjs}>
+  //             <MobileDatePicker
+  //               autoFocus
+  //               fullWidth
+  //               margin="normal"
+  //               inputFormat="DD-MM-YYYY"
+  //               label="תאריך לידה"
+  //               id="birth_date"
+  //               onChange={handleBirthDateChange}
+  //             />
+  //           </LocalizationProvider>
+  //         </Box>
+  //         <Box>
+  //           <Typography component="h1" variant="h6">
+  //             פרטי אב
+  //           </Typography>
+  //           <TextField
+  //             margin="normal"
+  //             required
+  //             fullWidth
+  //             id="father_name"
+  //             label="שם מלא"
+  //             name="father_name"
+  //             autoFocus
+  //           />
+  //           <TextField
+  //             margin="normal"
+  //             required
+  //             fullWidth
+  //             id="father_phoneNumber"
+  //             label="מספר טלפון"
+  //             name="userName"
+  //             autoFocus
+  //           />
+  //         </Box>
+  //         <Box id="mother">
+  //         <Typography component="h1" variant="h6">
+  //             פרטי אם
+  //           </Typography>
+  //           <TextField
+  //             margin="normal"
+  //             required
+  //             fullWidth
+  //             id="mother_name"
+  //             label="שם מלא"
+  //             name="mother_name"
+  //             autoFocus
+  //           />
+  //           <TextField
+  //             margin="normal"
+  //             required
+  //             fullWidth
+  //             id="mother_phoneNumber"
+  //             label="מספר טלפון"
+  //             name="mother_phoneNumber"
+  //             autoFocus
+  //           />
+  //         </Box>
+  //         <Button
+  //           type="submit"
+  //           fullWidth
+  //           variant="contained"
+  //           sx={{ mt: 3, mb: 2 }}
+  //         >
+  //           שמירת פרטים
+  //         </Button>
+  //       </Box>
+  //     </Box>
+  //   </Container>
+  // );
 }
 
 export default CreateProfile;

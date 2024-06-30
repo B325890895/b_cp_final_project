@@ -1,61 +1,74 @@
 .form-container {
-  height: 100vh;
-  overflow-y: auto;
-  padding: 20px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.headers {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .form-content {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 1200px;
 }
 
-.card {
-  width: 45%;
-  margin-bottom: 20px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, .25);
-  border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.45);
-  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(15px);
-}
-
-.left-column {
+.left-side {
   width: 45%;
 }
 
-.right-column {
+.right-side {
   width: 45%;
-  display: flex;
-  flex-direction: column;
 }
 
-.header, .footer {
+.submit-button {
   width: 100%;
-  text-align: center;
-  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .form-content {
     flex-direction: column;
   }
-  .card, .left-column, .right-column {
+  
+  .left-side, .right-side {
     width: 100%;
   }
-  .form-container {
+}
+
+/* תנאי לגודל של סמארטפון */
+@media (max-width: 600px) {
+  body {
     height: auto;
+    overflow-y: auto;
   }
-  .card {
-    margin-bottom: 10px;
+
+  .form-container {
+    padding-bottom: 2rem;
   }
-  .MuiTextField-root, .MuiSelect-root {
-    width: 90% !important;
+
+  .form-content {
+    overflow-y: visible;
+  }
+
+  .left-side, .right-side {
+    margin-bottom: 1rem;
+  }
+
+  /* הקטנת גודל הכותרות */
+  .headers h1 {
+    font-size: 1.5rem !important; /* עבור הכותרת הראשית */
+  }
+
+  .headers h5 {
+    font-size: 1rem !important; /* עבור הכותרת המשנית */
+  }
+
+  h6 {
+    font-size: 0.9rem !important; /* עבור כותרות הקטגוריות (פרטי אב, פרטי אם) */
   }
 }
