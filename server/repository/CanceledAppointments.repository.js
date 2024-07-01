@@ -12,7 +12,7 @@ class AppointmentRepository extends Repository {
     }
     async read(user_id) {
         const a=await this.model.findOne({ user_id: user_id });
-        console.log(a);     
+        console.log(a,"a");     
          return await this.model.findOne({ user_id: user_id });
     }
 

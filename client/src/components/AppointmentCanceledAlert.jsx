@@ -5,7 +5,7 @@ import Error from "./Error";
 const URL_API = "http://localhost:3000";
 
 function AppointmentCanceledAlert({ alertInfo }) {
-    console.log(alertInfo);
+    console.log(alertInfo, "Appointment");
     const [alertState, setAlertState] = useState(true);
     
     async function hendlerClose() {
