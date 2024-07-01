@@ -13,14 +13,14 @@ class Repository {
     async create(data) {
         let object = await this.model.create(data);
         if (object)
-            return true;
-        return false;
+            return {json:true,statusCode:200};
+        return {json:false,statusCode:500};
     }
     async readAll() {
         //the name of the function that reads all the data
         let objects = await this.model.readAll();
         if (objects)
-            return objects;
+            return  {json:objects,statusCode:200};
         throw new Error("Couldn't read all");
     }
     // async read(id) {
@@ -33,14 +33,14 @@ class Repository {
     async update(id,data) {
         let object = await this.model.updateOne({id:id,data:data});
         if (object)
-            return object;
+            return  {json:object,statusCode:200};
         throw new Error('Could not find object with id'+ data.id);
 
     }
     async delete(id) {
         let object = await this.model.deleteOne({  id: id });
         if (object)
-            return object;
+            return {json:object,statusCode:200};
         throw new Error('Could not find object with id ' + id);
     }
 

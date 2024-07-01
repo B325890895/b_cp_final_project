@@ -42,8 +42,8 @@ class UserRepository extends Repository {
     throw new Error('Could not find object with id ' + id);
   }
   async exist(id) {
-    // const doesObjectExist = await this.model.exists({ user_id: id } || { userName: id });
-    // if (doesObjectExist)
+    const doesObjectExist = await this.model.exists({ user_id: id } || { userName: id });
+    if (doesObjectExist)
     return true;
     return false;
   }

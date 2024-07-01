@@ -22,20 +22,20 @@ function CreateProfile() {
   const navigate = useNavigate();
   const URL_API = "http://localhost:3000";
 
-  // const handleHmoChange = (event) => {
-  //   setHmo(event.target.value);
-  // };
-  const handleBirthDateChange = (name,newValue) => {
-    console.log(newValue);
-    // setBirthDate();
+  const handleHmoChange = (event) => {
+    setHmo(event.target.value);
   };
+  // const handleBirthDateChange = (name,newValue) => {
+  //   console.log(newValue);
+  //   // setBirthDate();
+  // };
   const handleSubmit = async (event) => {
-    console.log(birthDate);
     event.preventDefault();
+    console.log("hi i will now submit");
     let userProfile = {
       user_id: document.forms[0].user_id.value,
       userName: document.forms[0].user_name.value,
-      HMO: document.forms[0].hmo.value,
+      HMO: hmo,
       // birthDate: birthDate,
       email: document.forms[0].user_email.value,
       father: {
@@ -49,7 +49,7 @@ function CreateProfile() {
     };
     console.log(userProfile);
     try {
-      const response = await fetch(`${URL_API}/users`, {
+      const response = await fetch(`${URL_API}/user`, {
         method: "POST",
         body: JSON.stringify(userProfile),
         headers: {
@@ -80,7 +80,9 @@ function CreateProfile() {
           </Typography>
         </Box>
         
-        <Box component="form" onSubmit={handleSubmit} noValidate className="form-content">
+        <Box component="form" onSubmit={handleSubmit} noValidate
+        //  className="form-content"
+         >
           <Box className="left-side">
           <Box id="profile">
             <TextField
@@ -97,9 +99,9 @@ function CreateProfile() {
               margin="normal"
               required
               fullWidth
-              id="father_name"
+              id="user_name"
               label="שם מלא"
-              name="userName"
+              name="user_name"
               autoFocus
             />
 
@@ -117,7 +119,7 @@ function CreateProfile() {
               labelId="hmoLabel"
               id="hmo"
               // value={hmo}
-              // onChange={handleHmoChange}
+              onChange={handleHmoChange}
               label="קופת חולים"
               fullWidth
             >
@@ -137,7 +139,7 @@ function CreateProfile() {
                 inputFormat="DD-MM-YYYY"
                 label="תאריך לידה"
                 id="birth_date"
-                onChange={handleBirthDateChange}
+                // onChange={handleBirthDateChange}
               />
             </LocalizationProvider>
           </Box>
@@ -163,7 +165,7 @@ function CreateProfile() {
               fullWidth
               id="father_phoneNumber"
               label="מספר טלפון"
-              name="userName"
+              name="father_phoneNumber"
               autoFocus
             />            </Box>
             <Box id="mother">
@@ -189,8 +191,6 @@ function CreateProfile() {
               autoFocus
             />            </Box>
           </Box>
-        </Box>
-        
         <Box className="submit-button">
           <Button
             type="submit"
@@ -200,6 +200,8 @@ function CreateProfile() {
           >
             שמירת פרטים
           </Button>
+        </Box>
+        
         </Box>
       </Box>
     </Container>

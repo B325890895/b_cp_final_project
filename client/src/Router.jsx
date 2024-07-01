@@ -14,7 +14,7 @@ import Clients from "./pages/Clients";
 import CreateProfile from "./pages/CreateProfile";
 import ViewClient from "./pages/ViewClient"
 function Router() {
-  const [userState, setUserState] = useState("client");
+  const [userState, setUserState] = useState("manager");
 
   return (
     <>

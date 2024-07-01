@@ -19,12 +19,16 @@ function ViewClient() {
     (async () => await fetchClient())();
   }, []);
   const fetchClient = async () => {
+    console.log("i am going to bring the clients datailes");
     try {
+      console.log("i am in the try");
       const response = await fetch(`${URL_API}/user/${clientId}`);
       if (!response.ok) {
         throw Error("Did not received clients data from server");
       }
+      log(response)
       const result = await response.json();
+      console.log(result);
       setClient(result);
     } catch (err) {
       setFetchError(err.message);
@@ -37,7 +41,9 @@ function ViewClient() {
     <>
     {/* {isLoading && <Loading />} */}
     {/* {fetchError && <Error message={fetchError} />} */}
-    {!isLoading && !fetchError && (
+    {
+    !isLoading && !fetchError &&
+     (
 
     <Container component="main" maxWidth="lg" dir="rtl">
       <CssBaseline />

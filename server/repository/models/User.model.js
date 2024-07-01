@@ -15,7 +15,8 @@ const userSchema = mongoose.Schema({
   // },
   birthDate: {
     type: "date",
-    required: true,
+    //to make it require make sure in create profile that it takes the value from date picker
+    // required: true,
   },
   HMO: {
     type: "string",
@@ -47,11 +48,9 @@ const userSchema = mongoose.Schema({
   },
   day: {
     type: "string",
-    required: true,
   },
   hour: {
     type: "string",
-    required: true,
   },
   canceledAppointments: {
     type: "array",

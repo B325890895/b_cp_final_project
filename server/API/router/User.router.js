@@ -6,7 +6,6 @@ const UsersController = require("../controllers/Users.controller");
 router
   .route("/")
   .get((req, res, next) => {
-    console.log("GET all users");
     UsersController.readAll(req, res, next);
   })
   .post((req, res, next) => {
