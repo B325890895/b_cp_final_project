@@ -6,9 +6,9 @@ function Home({userState}) {
   return (
     <>
       {/* to ask batya what did she do here */}
-      {/* {userState == "manager" && <AddClient userName={props.userName} />} */}
+      {/* {userState == "manager" && <AddClient user_id={props.user_id} />} */}
       {userState == "manager" && <AddClient/>}
-      {userState == "client" && <NextTurn  />}
+      {userState == "client" && <NextTurn user_id={"325890895"} />}
       <Alert  userState={userState} />
     </>
   );

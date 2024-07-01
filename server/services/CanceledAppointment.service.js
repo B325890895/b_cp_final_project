@@ -5,8 +5,8 @@ class CanceledAppointmentServies extends Service {
     constructor(repository) {
         super(repository);
     }
-    async read(userName) {
-        if (userName == "manager") {
+    async read(user_id) {
+        if (user_id == "manager") {
             const response = await canceledAppointmentRepository.readAll()
             if (response) {
                 const result = response.filter(appointment => !this.isDatePassed(appointment.date));
@@ -20,15 +20,14 @@ class CanceledAppointmentServies extends Service {
             }
             return { statusCode: 500, json: {} };
         }
-
-        const response = await canceledAppointmentRepository.read(userName)
+        const response = await canceledAppointmentRepository.read(user_id);
         if (response) {
             return { statusCode: 200, json: response.json };
         }
         return { statusCode: 500, json: {} };
     }
-    async delete(userName, date) {
-        const response = await canceledAppointmentRepository.delete(userName, date);
+    async delete(user_id, date) {
+        const response = await canceledAppointmentRepository.delete(user_id, date);
         if (response) {
             return { statusCode: 200, json: response };
         }

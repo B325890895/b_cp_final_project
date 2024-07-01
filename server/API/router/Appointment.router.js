@@ -12,7 +12,7 @@ router.
 
 
 router.
-    route("/:userName")
+    route("/:user_id")
     .get((req, res, next) => {
         AppointmentController.read(req, res, next)
     })

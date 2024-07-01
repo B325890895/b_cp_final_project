@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const appointmentSchema = mongoose.Schema({
-    userName: {
+    user_id: {
         type: 'string',
         required: true,
     },

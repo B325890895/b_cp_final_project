@@ -9,17 +9,16 @@ class UserRepository extends Repository {
   }
 
   async readAll() {
-    console.log("i got to user repository");
     let objects = await this.model.find({},'user_id userName');
     console.log(objects);
     if (objects)
       return {json: objects,statusCode: 200};
     throw new Error("Couldn't read all");
   }
-  async read(userName) {
+  async read(user_id) {
+    console.log("userrepository",user_id);
     try {
-      let object = await this.model.findOne({ userName: userName });
-      return await this.model.findOne({ userName: userName });
+      return await this.model.findOne({ user_id: user_id });
     }
     catch (err) {
       console.log("user not found");
@@ -41,15 +40,10 @@ class UserRepository extends Repository {
       return object;
     throw new Error('Could not find object with id ' + id);
   }
-  async exist(id) {
-    const doesObjectExist = await this.model.exists({ user_id: id } || { userName: id });
-    if (doesObjectExist)
-    return true;
-    return false;
-  }
-  async updateCanceledAppointments(userName, date) {
+  
+  async updateCanceledAppointments(user_id, date) {
     let object = await this.model.updateOne(
-      { userName: userName },
+      { user_id: user_id },
       { $push: { canceledAppointments: date} });
     if (object)
       return { statusCode: 200 };

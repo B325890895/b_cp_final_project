@@ -2,11 +2,7 @@ const { Service } = require("./Service");
 const AppointmentRepository = require("../repository/Appointment.repository");
 const { DataSecurity } = require("./dataSecurity");
 const {
-  parse,
-  addDays,
   addWeeks,
-  addMonths,
-  getDay,
   setDay,
   startOfWeek,
 } = require("date-fns");
@@ -22,13 +18,15 @@ class AppointmentService extends Service {
       if (!userInformation) {
         throw new Error("User not found");
       }
+      //לעדכן את מערך תורים מבוטלים
       let dateNextAppointment = this.getDate(
         userInformation.day,
         userInformation.hour,
         new Date()
       );
       let appointmentWithDay = {
-        userName: params.userName,
+        user_id: params.filter1,
+        userName:userInformation.userName,
         day: this.translateDay(userInformation.day),
         hour: userInformation.hour,
         date: "",
@@ -56,33 +54,34 @@ class AppointmentService extends Service {
   }
   async delete(params) {
     const regexDate = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/\d{4}$/;
-    if (params.userName && regexDate.test(params.filter)) {
-      let hoursUntilTheAppointment = getHoursBetweenDates(params.filter);
+    if (params.filter1 && regexDate.test(params.filter2)) {
+      let hoursUntilTheAppointment = await this.getHoursBetweenDates(params.filter2);
       let userInformation;
       if (hoursUntilTheAppointment >= 24) {
-        userInformation = await userInfo.updateCanceledAppointments(
-          params.userName,
-          params.filter
+        userInformation = await userInfo.updatecanCeledAppointments(
+          params.filter1,
+          params.filter2
         );
+
       } else if (
         hoursUntilTheAppointment < 24 &&
         hoursUntilTheAppointment >= 4
       ) {
         userInformation = await userInfo.updateCanceledAppointments(
-          params.userName,
-          params.filter
+          params.filter1,
+          params.filter2
         );
         //to add the appointment to appointment collection
         const addAppointmentToCollection = await this.repository.create({
-          "userName": params.userName,
-          "date": params.filter,
-          "status":0
+          "user_id": params.filter1,
+          "date": params.filter2,
+          "status": 0
         });
       } else if (hoursUntilTheAppointment < 4) {
         return { statusCode: 500 };
       }
 
-      if (userInformation.statusCode != 200 &&addAppointmentToCollection.statusCode != 200) {
+      if (userInformation.statusCode != 200 && addAppointmentToCollection.statusCode != 200) {
         return { statusCode: 500 };
       }
       return { statusCode: 200 };
@@ -92,35 +91,24 @@ class AppointmentService extends Service {
   }
 
   getDate(dayName, hour, currentDate) {
+    console.log(dayName, hour, currentDate);
     const now = currentDate;
-    const arrayDayOfWeek = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
+    const arrayDayOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
     const today = now; // לקבוע את היום הראשון של השבוע
     const dayOfWeek = arrayDayOfWeek.indexOf(dayName);
-    const [hourOfAppointment, minuteshourOfAppointment] = hour
-      .split(":")
-      .map(Number);
+    const [hourOfAppointment, minuteshourOfAppointment] = hour.split(":").map(Number);
     if (dayOfWeek === -1) {
       throw new Error("Invalid day name");
     }
     let nextOccurrence = setDay(today, dayOfWeek);
     if (!(dayOfWeek + arrayDayOfWeek.indexOf(now.getDay()) < 7)) {
       today = startOfWeek(now);
-      if (
-        (nextOccurrence.getDate() == now.getDate() &&
-          hourOfAppointment < now.getHours() + 1) ||
+      if ((nextOccurrence.getDate() == now.getDate() && hourOfAppointment < now.getHours() + 1) ||
         nextOccurrence.getDate() < now.getDate()
       ) {
         nextOccurrence = addWeeks(nextOccurrence, 1);
       }
-     
+
     }
     if (
       nextOccurrence.getDate() == now.getDate() &&
@@ -145,8 +133,10 @@ class AppointmentService extends Service {
   }
 
   async getHoursBetweenDates(futureDate) {
+    const [day, month, year] = futureDate.split("/").map(Number);
+    const futureDateFormatDate = new Date(year, month - 1, day);
     const now = new Date();
-    const difference = future.getTime() - now.getTime();
+    const difference = futureDateFormatDate - now.getTime();
     const hoursDifference = difference / (1000 * 60 * 60);
     return Math.round(hoursDifference * 100) / 100;
   }

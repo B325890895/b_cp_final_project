@@ -2,19 +2,18 @@ import React, { useEffect } from "react";
 import ReportAlert from "./ReportAlert";
 import AppointmentAlert from "./AppointmentAlert";
 
-function Alert({userState}) {
-  console.log("alert");
+function Alert({userState,user_id}) {
   if (userState == "manager") {
     return (
       <>
         <ReportAlert />
-        <AppointmentAlert />
+        <AppointmentAlert userState={"manager"} user_id={"manager"}/>
       </>
     );
   }
   if (userState == "client") {
     return (<>       
-     <AppointmentAlert />
+     <AppointmentAlert userState={"client"} user_id={"325890895"}/>
     </>)
   }
 }

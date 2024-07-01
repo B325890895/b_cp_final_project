@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const CanceledAppointmentSchema = mongoose.Schema({
-    userName: {
+    user_id: {
         type: 'string',
         required: true,
     },
@@ -24,4 +24,4 @@ const CanceledAppointmentSchema = mongoose.Schema({
         //   }
     }
 });
-module.exports = mongoose.model('CanceledAppointment', CanceledAppointmentSchema);
+module.exports = mongoose.model('canceled appointments', CanceledAppointmentSchema);

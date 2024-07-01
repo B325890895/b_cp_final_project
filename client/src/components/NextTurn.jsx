@@ -4,6 +4,8 @@ import Loading from "./Loading";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 const URL_API = "http://localhost:3000";
 function NextTurn(props) {
   const [appointmentDate, setAppointmentDate] = useState({});
@@ -14,7 +16,10 @@ function NextTurn(props) {
 
   function getHoursBetweenDates(futureDate) {
     const now = new Date();
-    const difference = future.getTime() - now.getTime();
+    const [day, month, year] = futureDate.date.split("/").map(Number);
+    const [hours, minutes] = futureDate.hour.split(":").map(Number);
+    const futureDateFormatDate = new Date(year, month - 1, day, hours, minutes);
+    const difference = futureDateFormatDate - now.getTime();
     const hoursDifference = difference / (1000 * 60 * 60);
     return Math.round(hoursDifference * 100) / 100;
   }
@@ -26,7 +31,7 @@ function NextTurn(props) {
 
     setOpen(false);
   };
-  const handleOpenAlert = () => {
+  const handelOpenAlert = () => {
     setOpen(true);
   };
 
@@ -42,7 +47,7 @@ function NextTurn(props) {
   async function importCloseAppointmentFromDatabase() {
     try {
       const response = await fetch(
-        `${URL_API}/appointment/${props.userName}/next`,
+        `${URL_API}/appointment/${props.user_id}/next`,
         {
           method: "GET",
           headers: {
@@ -69,10 +74,10 @@ function NextTurn(props) {
     if (getHoursBetweenDates(appointmentDate) >= 24) {
       if (confirm("האם אתה בטוח שברצונך לבטל את התור?")) {
         const responseDelete = await deleteAppointmentFromDatabase();
+        console.log(responseDelete);
         if (!responseDelete) {
           throw new Error("Error deleting appointment");
         } else {
-          console.log("Appointment deleted");
           setToGetAppointment(true);
           // const nextAppointment = await importCloseAppointmentFromDatabase();
         }
@@ -103,10 +108,8 @@ function NextTurn(props) {
 
   async function deleteAppointmentFromDatabase() {
     try {
-      console.log(encodeURIComponent(appointmentDate.date));
       const response = await fetch(
-        `${URL_API}/appointment/${
-          appointmentDate.userName
+        `${URL_API}/appointment/${appointmentDate.user_id
         }/${encodeURIComponent(appointmentDate.date)}`,
         {
           method: "DELETE",
@@ -115,10 +118,13 @@ function NextTurn(props) {
           },
         }
       );
-      console.log("");
+      console.log(response);
       if (response.status != 200) {
         return false;
-      } else {
+      }
+      else {
+        console.log(" delete");
+
         // alert("התור בוטל בהצלחה");
         handelOpenAlert();
         return true;
@@ -177,7 +183,8 @@ function NextTurn(props) {
               variant="outlined"
               sx={{ width: "100%" }}
             >
-התור בוטל בהצלחה!            </Alert>
+              התור בוטל בהצלחה!
+            </Alert>
           </Snackbar>
         )}
       </Card>
