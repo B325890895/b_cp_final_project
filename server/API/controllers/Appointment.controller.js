@@ -9,9 +9,11 @@ class AppointmentController extends Controller {
         if (req.params.userName != undefined) {
             params.userName = req.params.userName
         };
-        if (req.params.filter) params.filter = req.params.filter;
+        if (req.params.filter1) params.filter1 = req.params.filter1;
+        if (req.params.filter2) params.filter2= req.params.filter2;
+
         try {
-            console.log(req.params.filter, req.params.userName, params);
+            console.log("controler",req.params.filter1, req.params.filter2, params);
             const response = await this.service.read(params);
             return res.status(response.statusCode).json(response.dateNextAppointment);
         } catch (error) {

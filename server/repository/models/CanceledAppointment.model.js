@@ -16,12 +16,12 @@ const CanceledAppointmentSchema = mongoose.Schema({
     canceledBy:{
         type: 'string',
         required: true,
-        validate: {
-            validator: function(v) {
-              return v === 'manager' || v === 'client';
-            },
-            message: props => `${props.value} is not the specific string!`
-          }
+        // validate: {
+        //     validator: function(v) {
+        //       return v === 'manager' || v === 'client';
+        //     },
+        //     message: props => `${props.value} is not the specific string!`
+        //   }
     }
 });
 module.exports = mongoose.model('Canceled Appointment', CanceledAppointmentSchema);

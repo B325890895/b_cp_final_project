@@ -15,7 +15,22 @@ class AppointmentRepository extends Repository {
     }
 
     async delete(userName, date) {
-        return await this.model.deleteOne({ userName: userName,date: date });
+        return await this.model.deleteOne({ userName: userName, date: date });
+    }
+    async update(canceledAppointmentsUpdated) {
+        try {
+            console.log(canceledAppointmentsUpdated);
+            await this.model.deleteMany({});
+            const a = await this.model.find({});
+            console.log(a,"a");
+            await this.model.insertMany(canceledAppointmentsUpdated);
+            const b = await this.model.find({});
+            console.log(b,"b");
+            return { statusCode: 200 }
+        }
+        catch (error) {
+            return { statusCode: 500 }
+        }
 
     }
 }

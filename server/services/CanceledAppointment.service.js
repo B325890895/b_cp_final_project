@@ -9,7 +9,14 @@ class CanceledAppointmentServies extends Service {
         if (userName == "manager") {
             const response = await canceledAppointmentRepository.readAll()
             if (response) {
-                return { statusCode: 200, json: response };
+                const result = response.filter(appointment => !this.isDatePassed(appointment.date));
+                const responseUpdate = await canceledAppointmentRepository.update(result);
+                console.log(responseUpdate.statusCode,"service");
+                if (responseUpdate.statusCode!=200) {
+                    console.log("not found");
+                    return { statusCode: 500, json: {} };
+                }
+                return { statusCode: 200, json: result };
             }
             return { statusCode: 500, json: {} };
         }
@@ -21,14 +28,16 @@ class CanceledAppointmentServies extends Service {
         return { statusCode: 500, json: {} };
     }
     async delete(userName, date) {
-        console.log("service");
         const response = await canceledAppointmentRepository.delete(userName, date);
         if (response) {
             return { statusCode: 200, json: response };
         }
         return { statusCode: 500, json: {} };
     }
-
+    isDatePassed(dateString) {
+        const [day, month, year] = dateString.split('/').map(Number);
+        return new Date(year, month - 1, day) < new Date();
+    }
 }
 
 module.exports = new CanceledAppointmentServies(canceledAppointmentRepository);

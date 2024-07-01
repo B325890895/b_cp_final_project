@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import ReportAlert from "./ReportAlert";
 import AppointmentAlert from "./AppointmentAlert";
 
-function Alert() {
+function Alert({userState}) {
   console.log("alert");
-  const userState = "manager";
   if (userState == "manager") {
     return (
       <>
@@ -14,9 +13,10 @@ function Alert() {
     );
   }
   if (userState == "client") {
+    return (<>       
+     <AppointmentAlert />
+    </>)
   }
-
-  return <></>;
 }
 
 export default Alert;

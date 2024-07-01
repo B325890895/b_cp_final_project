@@ -1,6 +1,6 @@
 const { Controller } = require("./Controller");
 const alertService = require('../../services/User.service');
-const cenceledAppointment = require('../../services/CanceledAppointment.servies');
+const cenceledAppointment = require('../../services/CanceledAppointment.service');
 class AlertController extends Controller {
     constructor(service) {
         super(service)
@@ -9,7 +9,6 @@ class AlertController extends Controller {
         try {
             if (req.params.filter) {
                 const response = await cenceledAppointment.read(req.params.filter);
-
                 return res.status(response.statusCode).json(response.json);
             }
             if (req.params.id) {
