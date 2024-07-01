@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Connect from "./pages/Connect";
@@ -13,23 +13,23 @@ import NavBar from "./components/NavBar";
 import Clients from "./pages/Clients";
 import CreateProfile from "./pages/CreateProfile";
 import ViewClient from "./pages/ViewClient"
-function Router  ()  {
-    const [userState,setUserState]=useState("manager");
+function Router() {
+  const [userState, setUserState] = useState("client");
 
   return (
     <>
-            <BrowserRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/connect" element={<Connect setUserState={setUserState}/>} />
+          <Route path="/connect" element={<Connect setUserState={setUserState} />} />
           <Route path="/createProfile" element={<CreateProfile />} />
-          <Route element={<NavBar userState={userState}/>}>
-            <Route path="/home" element={<Home userState={userState}/>} />
+          <Route element={<NavBar userState={userState} />}>
+            <Route path="/home" element={<Home userState={userState} />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/hmo" element={<HMO />} />
             <Route path="/payment" element={<Payment />} />
-            <Route path="/clients" element={<Clients/>}/>
+            <Route path="/clients" element={<Clients />} />
             <Route path="/clients/:id" element={<ViewClient />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />

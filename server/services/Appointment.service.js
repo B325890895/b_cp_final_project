@@ -18,7 +18,7 @@ class AppointmentService extends Service {
   }
   async read(params) {
     if (params.filter1 && params.filter2 == "next") {
-      const userInformation = await userInfo.read(params.userName);
+      const userInformation = await userInfo.read(params.filter1);
       if (!userInformation) {
         throw new Error("User not found");
       }
@@ -35,7 +35,6 @@ class AppointmentService extends Service {
         status: 1,
         dateCenceled: [],
       };
-      console.log(dateNextAppointment);
       while (
         userInformation.canceledAppointments.includes(dateNextAppointment)
       ) {
@@ -48,7 +47,6 @@ class AppointmentService extends Service {
           userInformation.hour,
           date
         );
-        console.log(dateNextAppointment);
       }
       appointmentWithDay.date = dateNextAppointment;
       return { statusCode: 200, dateNextAppointment: appointmentWithDay };
@@ -120,24 +118,16 @@ class AppointmentService extends Service {
           hourOfAppointment < now.getHours() + 1) ||
         nextOccurrence.getDate() < now.getDate()
       ) {
-        console.log("aaaa");
         nextOccurrence = addWeeks(nextOccurrence, 1);
       }
-      console.log(
-        nextOccurrence.getDate(),
-        now.getDate(),
-        hourOfAppointment,
-        now.getHours()
-      );
+     
     }
     if (
       nextOccurrence.getDate() == now.getDate() &&
       hourOfAppointment < now.getHours() + 1
     ) {
-      console.log("aaaa");
       nextOccurrence = addWeeks(nextOccurrence, 1);
     }
-    console.log(nextOccurrence);
     return nextOccurrence.toLocaleDateString("en-GB");
   }
 

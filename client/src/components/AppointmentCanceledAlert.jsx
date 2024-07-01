@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import Alert from '@mui/material/Alert';
 import { Await } from "react-router-dom";
 import Error from "./Error";
-const URL_API = "https://localhost:3000";
+const URL_API = "http://localhost:3000";
 
 function AppointmentCanceledAlert({ alertInfo }) {
+    console.log(alertInfo);
     const [alertState, setAlertState] = useState(true);
-    useEffect(() => {
-        // console.log(alertInfo);
-        console.log(encodeURIComponent(alertInfo.date));
-    }, [])
+    
     async function hendlerClose() {
         setAlertState(false);
         const response = await deleteAppointmentCanceled();
@@ -18,7 +16,7 @@ function AppointmentCanceledAlert({ alertInfo }) {
         }
     }
     async function deleteAppointmentCanceled() {
-        return (await fetch(`${URL_API}/alert/appointment/${alertInfo.userName}/${encodeURIComponent(alertInfo.date)}`, {
+        return (await fetch(`${URL_API}/alert/appintment/${alertInfo.userName}/${encodeURIComponent(alertInfo.date)}`, {
             method: "DELETE",
             Headers: {
                 "Content-type": "application/json; charset=UTF-8",
