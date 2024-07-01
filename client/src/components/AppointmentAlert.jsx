@@ -7,6 +7,7 @@ const URL_API = "http://localhost:3000";
 
 async function fetchAppointments(userName) {
   const response = await fetch(`${URL_API}/alert/appintment/${userName}`);
+  console.log(response);
   if (!response.ok) {
     throw new Error("Did not receive expected data");
   }

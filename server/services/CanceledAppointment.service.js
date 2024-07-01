@@ -20,8 +20,7 @@ class CanceledAppointmentServies extends Service {
             }
             return { statusCode: 500, json: {} };
         }
-
-        const response = await canceledAppointmentRepository.read(userName)
+        const response = await canceledAppointmentRepository.read(userName);
         if (response) {
             return { statusCode: 200, json: response.json };
         }

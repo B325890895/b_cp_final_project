@@ -18,6 +18,7 @@ class AppointmentService extends Service {
       if (!userInformation) {
         throw new Error("User not found");
       }
+      //לעדכן את מערך תורים מבוטלים
       let dateNextAppointment = this.getDate(
         userInformation.day,
         userInformation.hour,
@@ -53,13 +54,14 @@ class AppointmentService extends Service {
   async delete(params) {
     const regexDate = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/\d{4}$/;
     if (params.filter1 && regexDate.test(params.filter2)) {
-      let hoursUntilTheAppointment =await this.getHoursBetweenDates(params.filter2);
+      let hoursUntilTheAppointment = await this.getHoursBetweenDates(params.filter2);
       let userInformation;
       if (hoursUntilTheAppointment >= 24) {
         userInformation = await userInfo.updatecanCeledAppointments(
           params.filter1,
           params.filter2
         );
+
       } else if (
         hoursUntilTheAppointment < 24 &&
         hoursUntilTheAppointment >= 4
@@ -68,7 +70,6 @@ class AppointmentService extends Service {
           params.filter1,
           params.filter2
         );
-        console.log("userInformation");
         //to add the appointment to appointment collection
         const addAppointmentToCollection = await this.repository.create({
           "userName": params.filter1,
@@ -89,30 +90,19 @@ class AppointmentService extends Service {
   }
 
   getDate(dayName, hour, currentDate) {
+    console.log(dayName, hour, currentDate);
     const now = currentDate;
-    const arrayDayOfWeek = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
+    const arrayDayOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
     const today = now; // לקבוע את היום הראשון של השבוע
     const dayOfWeek = arrayDayOfWeek.indexOf(dayName);
-    const [hourOfAppointment, minuteshourOfAppointment] = hour
-      .split(":")
-      .map(Number);
+    const [hourOfAppointment, minuteshourOfAppointment] = hour.split(":").map(Number);
     if (dayOfWeek === -1) {
       throw new Error("Invalid day name");
     }
     let nextOccurrence = setDay(today, dayOfWeek);
     if (!(dayOfWeek + arrayDayOfWeek.indexOf(now.getDay()) < 7)) {
       today = startOfWeek(now);
-      if (
-        (nextOccurrence.getDate() == now.getDate() &&
-          hourOfAppointment < now.getHours() + 1) ||
+      if ((nextOccurrence.getDate() == now.getDate() && hourOfAppointment < now.getHours() + 1) ||
         nextOccurrence.getDate() < now.getDate()
       ) {
         nextOccurrence = addWeeks(nextOccurrence, 1);

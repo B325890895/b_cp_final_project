@@ -11,7 +11,9 @@ class AppointmentRepository extends Repository {
 
     }
     async read(userName) {
-        return await this.model.findOne({ userName: userName });
+        const a=await this.model.findOne({ userName: userName });
+        console.log(a);     
+         return await this.model.findOne({ userName: userName });
     }
 
     async delete(userName, date) {
