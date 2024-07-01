@@ -24,4 +24,4 @@ const CanceledAppointmentSchema = mongoose.Schema({
           }
     }
 });
-module.exports = mongoose.model('Canceled Appointment', CanceledAppointmentSchema);
+module.exports = mongoose.model('CanceledAppointment', CanceledAppointmentSchema);
