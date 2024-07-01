@@ -14,7 +14,11 @@ function NextTurn(props) {
 
   function getHoursBetweenDates(futureDate) {
     const now = new Date();
-    const difference = future.getTime() - now.getTime();
+    const [day, month, year] = futureDate.date.split("/").map(Number);
+    const [hours, minutes] = futureDate.hour.split(":").map(Number);
+    const futureDateFormatDate = new Date(year, month - 1, day, hours, minutes);
+    console.log(futureDateFormatDate);
+    const difference = futureDateFormatDate - now.getTime();
     const hoursDifference = difference / (1000 * 60 * 60);
     return Math.round(hoursDifference * 100) / 100;
   }
@@ -57,6 +61,7 @@ function NextTurn(props) {
         return;
       }
       const result = await response.json();
+      console.log(response, result);
       setAppointmentDate(result);
     } catch (err) {
       setFetchError(err.message);
@@ -103,10 +108,9 @@ function NextTurn(props) {
 
   async function deleteAppointmentFromDatabase() {
     try {
-      console.log(encodeURIComponent(appointmentDate.date));
+      console.log(appointmentDate);
       const response = await fetch(
-        `${URL_API}/appointment/${
-          appointmentDate.userName
+        `${URL_API}/appointment/${appointmentDate.userName
         }/${encodeURIComponent(appointmentDate.date)}`,
         {
           method: "DELETE",
@@ -118,7 +122,8 @@ function NextTurn(props) {
       console.log("");
       if (response.status != 200) {
         return false;
-      } else {
+      } 
+      else {
         // alert("התור בוטל בהצלחה");
         handelOpenAlert();
         return true;
@@ -177,7 +182,7 @@ function NextTurn(props) {
               variant="outlined"
               sx={{ width: "100%" }}
             >
-התור בוטל בהצלחה!            </Alert>
+              התור בוטל בהצלחה!            </Alert>
           </Snackbar>
         )}
       </Card>

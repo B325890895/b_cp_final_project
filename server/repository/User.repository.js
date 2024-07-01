@@ -48,6 +48,7 @@ class UserRepository extends Repository {
     return false;
   }
   async updateCanceledAppointments(userName, date) {
+    console.log("updateCanceledAppointments");
     let object = await this.model.updateOne(
       { userName: userName },
       { $push: { canceledAppointments: date} });
