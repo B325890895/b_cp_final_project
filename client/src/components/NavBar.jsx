@@ -15,17 +15,17 @@ function NavBar({ userState }) {
   console.log(userState);
   const navItemsClient = [
     { name: "בית", link: "home" },
-    { name: "תשלום", link: "payment" },
+    // { name: "תשלום", link: "payment" },
     { name: "התחייבות חברת החולים", link: "hmo" },
     { name: "לוח שנה", link: "calendar" },
     { name: "אזור אישי", link: "profile" },
   ];
   const navItemsManager = [
     { name: "בית", link: "home" },
-    { name: "צפיה בקבלות", link: "payment" },
+    // { name: "צפיה בקבלות", link: "payment" },
     { name: "צפיה בלקוחות", link: "clients" },
     { name: "לוח שנה", link: "calendar" },
-    { name: "אזור אישי", link: "profile" },
+    // { name: "אזור אישי", link: "profile" },
   ];
   let navItems = null;
   switch (userState) {

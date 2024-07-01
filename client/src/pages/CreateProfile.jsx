@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { MobileDatePicker } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -25,10 +25,12 @@ function CreateProfile() {
   // const handleHmoChange = (event) => {
   //   setHmo(event.target.value);
   // };
-  const handleBirthDateChange = (event) => {
-    // setBirthDate(event.target.value);
+  const handleBirthDateChange = (name,newValue) => {
+    console.log(newValue);
+    // setBirthDate();
   };
   const handleSubmit = async (event) => {
+    console.log(birthDate);
     event.preventDefault();
     let userProfile = {
       user_id: document.forms[0].user_id.value,
@@ -128,7 +130,7 @@ function CreateProfile() {
               <MenuItem value={4}>מכבי</MenuItem>
             </Select>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <MobileDatePicker
+              <DatePicker
                 autoFocus
                 fullWidth
                 margin="normal"

@@ -1,7 +1,10 @@
 import React from "react";
+import Commitment from "../components/Commitment";
 
 function HMO() {
-  return <div>נתונים על קופת החולים</div>;
+  return (
+    <Commitment/>
+  );
 }
 
 export default HMO;

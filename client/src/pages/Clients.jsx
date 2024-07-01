@@ -135,19 +135,17 @@ function Clients() {
 
       <TextField
         id="standard-basic"
-        label="Standard"
         variant="standard"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="הכנס שם לקוח לחיפוש"
+        label="הכנס שם לקוח לחיפוש"
       />
       <TextField
         id="standard-basic"
-        label="Standard"
         variant="standard"
         value={searchClientId}
         onChange={(e) => setSearchPostId(e.target.value)}
-        placeholder="הכנס ת.ז. לחיפוש"
+        label="הכנס ת.ז. לחיפוש"
       />
       {!isLoading && !fetchError && (
         <Grid item xs={12} md={6}>
