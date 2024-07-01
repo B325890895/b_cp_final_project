@@ -50,27 +50,23 @@ class usersService extends Service {
     // }
 
   }
-  async read(userName) {
-    console.log("user ser", userName);
+  async read(user_id) {
     try {
-      return await this.repository.read(userName);
+      return await this.repository.read(user_id);
     }
     catch (err) {
       console.log(err);
       return { statusCode: 500 }
     }
   }
- async updatecanCeledAppointments(userName,date){
-  try {
-    let userExist = await this.repository.exist(userName)
-    if ((userExist))
-      return this.repository.updateCanceledAppointments(userName,date);
-    throw new Error("user is not exists");
-  } 
-  catch (err) {
-    console.log(err);
-    throw new Error(500);
+  async updatecanCeledAppointments(user_id, date) {
+    try {
+      return this.repository.updateCanceledAppointments(user_id, date);
+    }
+    catch (err) {
+      console.log(err);
+      throw new Error(500);
+    }
   }
- }
 }
 module.exports = new usersService(userRepository);

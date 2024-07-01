@@ -5,16 +5,15 @@ import AppointmentCanceledAlert from "./AppointmentCanceledAlert";
 
 const URL_API = "http://localhost:3000";
 
-async function fetchAppointments(userName) {
-  const response = await fetch(`${URL_API}/alert/appintment/${userName}`);
-  console.log(response);
+async function fetchAppointments(user_id) {
+  const response = await fetch(`${URL_API}/alert/appintment/${user_id}`);
   if (!response.ok) {
     throw new Error("Did not receive expected data");
   }
   return response.json();
 }
 
-function AppointmentAlert({userName,userState}) {
+function AppointmentAlert({user_id,userState}) {
   const [appointment, setAppointment] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
@@ -23,7 +22,7 @@ function AppointmentAlert({userName,userState}) {
   useEffect( () => {
     async function getData() {
       try {
-        const data = await fetchAppointments(userName);
+        const data = await fetchAppointments(user_id);
         setAppointment(data);
       } catch (err) {
         setFetchError(err.message);
@@ -38,7 +37,7 @@ function AppointmentAlert({userName,userState}) {
     <>
       {!fetchError && !isLoading &&
         appointment.map((appint, kay) => {
-          return (appint.canceledBy != userName) &&
+          return (appint.canceledBy != user_id) &&
             <AppointmentCanceledAlert alertInfo={appint} />
         })
       }

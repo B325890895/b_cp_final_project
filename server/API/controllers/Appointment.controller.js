@@ -6,9 +6,6 @@ class AppointmentController extends Controller {
     }
     async read(req, res, next) {
         let params = {};
-        if (req.params.userName != undefined) {
-            params.userName = req.params.userName
-        };
         if (req.params.filter1) params.filter1 = req.params.filter1;
         if (req.params.filter2) params.filter2= req.params.filter2;
 

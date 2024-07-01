@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const CanceledAppointmentSchema = mongoose.Schema({
-    userName: {
+    user_id: {
         type: 'string',
         required: true,
     },

@@ -47,7 +47,7 @@ function NextTurn(props) {
   async function importCloseAppointmentFromDatabase() {
     try {
       const response = await fetch(
-        `${URL_API}/appointment/${props.userName}/next`,
+        `${URL_API}/appointment/${props.user_id}/next`,
         {
           method: "GET",
           headers: {
@@ -62,7 +62,6 @@ function NextTurn(props) {
         return;
       }
       const result = await response.json();
-      console.log(response, result);
       setAppointmentDate(result);
     } catch (err) {
       setFetchError(err.message);
@@ -79,7 +78,6 @@ function NextTurn(props) {
         if (!responseDelete) {
           throw new Error("Error deleting appointment");
         } else {
-          console.log("Appointment deleted");
           setToGetAppointment(true);
           // const nextAppointment = await importCloseAppointmentFromDatabase();
         }
@@ -111,7 +109,7 @@ function NextTurn(props) {
   async function deleteAppointmentFromDatabase() {
     try {
       const response = await fetch(
-        `${URL_API}/appointment/${appointmentDate.userName
+        `${URL_API}/appointment/${appointmentDate.user_id
         }/${encodeURIComponent(appointmentDate.date)}`,
         {
           method: "DELETE",

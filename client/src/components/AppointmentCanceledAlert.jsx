@@ -16,7 +16,7 @@ function AppointmentCanceledAlert({ alertInfo }) {
         }
     }
     async function deleteAppointmentCanceled() {
-        return (await fetch(`${URL_API}/alert/appintment/${alertInfo.userName}/${encodeURIComponent(alertInfo.date)}`, {
+        return (await fetch(`${URL_API}/alert/appintment/${alertInfo.user_id}/${encodeURIComponent(alertInfo.date)}`, {
             method: "DELETE",
             Headers: {
                 "Content-type": "application/json; charset=UTF-8",
@@ -30,7 +30,7 @@ function AppointmentCanceledAlert({ alertInfo }) {
             <Alert
                 severity="info"
                 onClose={async () => await hendlerClose()} >
-                {`${alertInfo.date} ${alertInfo.hour} ${alertInfo.userName} `}
+                {`${alertInfo.date} ${alertInfo.hour} ${alertInfo.user_id} `}
             </Alert >
         }
 

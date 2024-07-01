@@ -25,7 +25,8 @@ class AppointmentService extends Service {
         new Date()
       );
       let appointmentWithDay = {
-        userName: params.filter1,
+        user_id: params.filter1,
+        userName:userInformation.userName,
         day: this.translateDay(userInformation.day),
         hour: userInformation.hour,
         date: "",
@@ -72,7 +73,7 @@ class AppointmentService extends Service {
         );
         //to add the appointment to appointment collection
         const addAppointmentToCollection = await this.repository.create({
-          "userName": params.filter1,
+          "user_id": params.filter1,
           "date": params.filter2,
           "status": 0
         });

@@ -22,20 +22,14 @@ class AppointmentRepository extends Repository {
       return objects;
     throw new Error("Couldn't read all");
   }
-  async read(userName, date, hour) {
+  async read(user_id, date, hour) {
     date = date.toLocaleDateString('en-GB');
-    console.log("repository", userName, date, hour);
     if (date) {
-      const appointment = await this.model.findOne({ userName: userName, date: date, hour: hour });
+      const appointment = await this.model.findOne({ user_id: user_id, date: date, hour: hour });
       console.log(appointment);
       if (appointment) return appointment;
       throw new Error("Could not find object with id " + id);
     }
-    console.log('repository', date);
-    // let appointment = await this.model.findOne({ userName: myUserName });
-    // console.log(appointment);
-    // if (appointment) return appointment;
-    // throw new Error("Could not find object with id " + id);
   }
 
   async update(id, data) {
@@ -45,9 +39,8 @@ class AppointmentRepository extends Repository {
     throw new Error('Could not find object with id' + data.id);
 
   }
-  async delete(userName,date) {
-    console.log(userName, date);
-    let object = await this.model.deleteOne({ userName: userName, date: date });
+  async delete(user_id,date) {
+    let object = await this.model.deleteOne({ user_id: user_id, date: date });
     if (object)
       return {statusCode:200};
     return {statusCode:500}
