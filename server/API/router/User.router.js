@@ -15,7 +15,6 @@ router
 router
   .route("/:id")
   .get((req, res, next) => {
-    console.log("get user router id");
     UsersController.read(req, res, next);
   })
   .put((req, res, next) => {

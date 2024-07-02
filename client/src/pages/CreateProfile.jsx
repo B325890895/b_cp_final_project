@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { DateField } from '@mui/x-date-pickers/DateField';
 
 import "./pages_css/CreateProfile.css";
 
@@ -52,11 +53,12 @@ function CreateProfile({userState}) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("hi i will now submit");
+
     let userProfile = {
       user_id: document.forms[0].user_id.value,
       userName: document.forms[0].user_name.value,
       HMO: hmo,
-      // birthDate: birthDate,
+       birthDate: document.forms[0].birthDate.value,
       email: document.forms[0].user_email.value,
       father: {
         name: document.forms[0].father_name.value,
@@ -149,12 +151,12 @@ function CreateProfile({userState}) {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={1}>מאוחדת</MenuItem>
-              <MenuItem value={2}>כללית</MenuItem>
-              <MenuItem value={3}>לאומית</MenuItem>
-              <MenuItem value={4}>מכבי</MenuItem>
+              <MenuItem value={"מאוחדת"}>מאוחדת</MenuItem>
+              <MenuItem value={"כללית"}>כללית</MenuItem>
+              <MenuItem value={"לאומית"}>לאומית</MenuItem>
+              <MenuItem value={"מכבי"}>מכבי</MenuItem>
             </Select>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 autoFocus
                 fullWidth
@@ -164,7 +166,12 @@ function CreateProfile({userState}) {
                 id="birth_date"
                 // onChange={handleBirthDateChange}
               />
-            </LocalizationProvider>
+            </LocalizationProvider> */}
+               <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer components={['DateField']}>
+        <DateField id="birthDate" label="תאריך לידה" />
+      </DemoContainer>
+    </LocalizationProvider>
           </Box>
           </Box>
           

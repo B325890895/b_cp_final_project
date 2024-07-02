@@ -68,5 +68,15 @@ class usersService extends Service {
       throw new Error(500);
     }
   }
+  async update(id, data) {
+    try {
+      console.log("i got to user service update");
+      return await this.repository.update(id,data);
+    }
+    catch (err) {
+      console.log(err);
+      return { statusCode: 500 }
+    }
+}
 }
 module.exports = new usersService(userRepository);

@@ -34,18 +34,28 @@ class UserRepository extends Repository {
   }
 
   async update(id, data) {
-    let object = await this.model.updateOne({ user_id: id }, { $set: data });
-    if (object)
-      return object;
-    throw new Error('Could not find object with id' + data.id);
+    let object = await this.model.findOneAndUpdate({ user_id: id }, { $set: data });
+    if (object){
+      console.log("i got her and it works perfectly");
+      return {json:object,statusCode: 200};
+    }
+   else{
+     console.log("i couldn't find her");
+     return {statusCode: 500}
+   }
 
   }
   async delete(id) {
     console.log(id);
     let object = await this.model.deleteOne({ user_id: id });
-    if (object)
-      return object;
-    throw new Error('Could not find object with id ' + id);
+    if (object){
+      console.log("i got her and it works perfectly");
+      return {json:true,statusCode: 200};
+    }
+   else{
+     console.log("i couldn't find her");
+     return {statusCode: 500}
+   }
   }
   
   async updateCanceledAppointments(user_id, date) {
