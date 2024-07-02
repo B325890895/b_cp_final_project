@@ -7,29 +7,26 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import ClientDetails from "./ClientDetails";
 
-function ShowProfile({userDetail,setProfileState}) {
+function ShowProfile({ userDetail, setProfileState }) {
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
 
-
+  useEffect(() => console.log(userDetail), [])
   function updateHandler() {
     setProfileState("update")
   }
   return (
     <>
-      {/* {fetchError&&
-    <Error/>}
-    {isLoading &&
-    <Loading/>} */}
+ 
       {!fetchError && !isLoading && (
-        <Card    sx={{
+        <Card sx={{
           "& > :not(style)": { m: 1, width: "80vw" },
         }}>
           <CardContent>
-         <ClientDetails client={userDetail}/>
+            <ClientDetails client={userDetail} />
           </CardContent>
           <CardActions>
-            <Button onClick={()=>updateHandler()}>עידכון</Button>
+            <Button onClick={() => updateHandler()}>עידכון</Button>
           </CardActions>
         </Card>
       )}
