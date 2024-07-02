@@ -153,11 +153,12 @@ function Clients() {
             רשימת לקוחות{" "}
           </Typography>
           <Demo>
-          <List>
-          </List>
-      {jsonClientList.map(client => {return(
-       <SingleClient client={client}/>);
-      })}
+            <List>
+            </List>
+            {jsonClientList.map((client, kay) => {
+              kay = client.name
+              return (<SingleClient client={client} />);
+            })}
           </Demo>
         </Grid>
       )}

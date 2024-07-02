@@ -26,7 +26,7 @@ function Router() {
           <Route element={<NavBar userState={userState} />}>
             <Route path="/home" element={<Home userState={userState} />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/calendar" element={<Calendar userState={userState}/>} />
             <Route path="/hmo" element={<HMO />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/clients" element={<Clients />} />

@@ -1,5 +1,5 @@
 import React from "react";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -10,24 +10,23 @@ import Tooltip from '@mui/material/Tooltip';
 function SingleClient({ client }) {
   const navigate = useNavigate();
 
-  function viewClientHandler(){
-      const clientId =client.user_id ;
-      navigate(`/clients/${clientId}`);
-      }
+  function viewClientHandler() {
+    const clientId = client.user_id;
+    navigate(`/clients/${clientId}`);
+  }
   return (
-    <div>
+    <>
       <ListItem>
         <ListItemIcon>
-        <Tooltip title="צפיה בפרטי לקוח">
-      <IconButton>
-        <VisibilityIcon onClick={viewClientHandler}/>
-      </IconButton>
-    </Tooltip>
+          <Tooltip title="צפיה בפרטי לקוח">
+            <IconButton>
+              <VisibilityIcon onClick={viewClientHandler} />
+            </IconButton>
+          </Tooltip>
         </ListItemIcon>
         <ListItemText primary={client.userName} secondary={client.user_id} />
       </ListItem>
-      ,
-    </div>
+    </>
   );
 }
 

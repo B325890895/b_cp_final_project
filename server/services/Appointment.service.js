@@ -13,11 +13,9 @@ class AppointmentService extends Service {
     super(repository);
   }
   async read(params) {
+    const regex = /^(0?[1-9]|1[0-2])\/(2000|200[1-9]|201[0-9]|202[0-5])$/;
     if (params.filter1 && params.filter2 == "next") {
-      const userInformation = await userInfo.read(params.filter1);
-      if (!userInformation) {
-        throw new Error("User not found");
-      }
+      const userInformation = getUserInfo(params.filter1)
       //לעדכן את מערך תורים מבוטלים
       let dateNextAppointment = this.getDate(
         userInformation.day,
@@ -26,16 +24,14 @@ class AppointmentService extends Service {
       );
       let appointmentWithDay = {
         user_id: params.filter1,
-        userName:userInformation.userName,
+        userName: userInformation.userName,
         day: this.translateDay(userInformation.day),
         hour: userInformation.hour,
         date: "",
         status: 1,
         dateCenceled: [],
       };
-      while (
-        userInformation.canceledAppointments.includes(dateNextAppointment)
-      ) {
+      while (userInformation.canceledAppointments.includes(dateNextAppointment)) {
         appointmentWithDay.dateCenceled.push(dateNextAppointment);
         let [day, month, year] = dateNextAppointment.split("/").map(Number);
         let date = new Date(year, month - 1, day + 7);
@@ -48,6 +44,31 @@ class AppointmentService extends Service {
       }
       appointmentWithDay.date = dateNextAppointment;
       return { statusCode: 200, dateNextAppointment: appointmentWithDay };
+    }
+    if (params.filter1 && regex.test(params.filter2)) {
+      if (params.filter1 == "*") {
+        // const response = await this.repository.read("*");
+        console.log("if");
+      } 
+      else {
+        const [month, year] = dateStr.split('/');
+        const userInformation = getUserInfo(params.filter1);
+        const dates = this.getDates(year, month, userInformation.day);
+        let appointmentsWithDay = []
+        dates.map((date) => {
+          if (!userInformation.canceledAppointments.includes(dateNextAppointment)) {
+            appointmentsWithDay.push({
+              user_id: userInformation.userId,
+              userName: userInformation.userName,
+              day: this.translateDay(userInformation.day),
+              hour: userInformation.hour,
+              date: date,
+              status: 1,
+            }) }
+        })
+        return { statusCode: 200, json: appointmentsWithDay};
+      }
+
     }
 
     return { statusCode: 500 };
@@ -139,6 +160,32 @@ class AppointmentService extends Service {
     const difference = futureDateFormatDate - now.getTime();
     const hoursDifference = difference / (1000 * 60 * 60);
     return Math.round(hoursDifference * 100) / 100;
+  }
+  async getUserInfo(userId) {
+    const userInformation = await userInfo.read(userId);
+    if (!userInformation) {
+      throw new Error("User not found");
+    }
+  }
+  getDates(year, month, dayOfWeek) {
+    month--;
+    const dates = [];
+    const date = new Date(year, month, 1);
+
+    // למצוא את היום הראשון בחודש
+    while (date.getDay() !== dayOfWeek) {
+      date.setDate(date.getDate() + 1);
+    }
+
+    // להוסיף את כל הימים המתאימים לחודש
+    while (date.getMonth() === month) {
+      dateString = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+      console.log(dateString, "dateString");
+      dates.push(dateString);
+      date.setDate(date.getDate() + 7);
+    }
+
+    return dates;
   }
 }
 
