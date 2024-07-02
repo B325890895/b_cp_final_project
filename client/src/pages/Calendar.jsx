@@ -16,26 +16,16 @@ import { Typography } from '@mui/material';
 const URL_API = "http://localhost:3000";
 
 const calendar = ({ userState }) => {
-
+  const userId = useParams().id;
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(null);
   const [showAppoint, setShowAppoint] = useState(null);
-  const [userId, setUserId] = useState(userState);
   const [thisMonthAppointments, setThisMonthAppointments] = useState();
-  const [isLoudingBool, setIsLoadingBool] = useState(true);
+  const [isLoadingBool, setIsLoadingBool] = useState(false);
   const [fetchError, setFetchError] = useState();
   useEffect(() => {
     setTime(null);
   }, [date]);
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      if (userState) {
-        setUserId(userState);
-      }
-      await getAppointmentsInThisMonth(date.getMonth() + 1, date.getFullYear());
-    };
-    fetchAppointments();
-  }, [userState]);
   useEffect(() => {
     console.log(thisMonthAppointments);
     if (thisMonthAppointments) {
@@ -64,13 +54,13 @@ const calendar = ({ userState }) => {
     } catch (err) {
       setFetchError(err.message);
     }
-    // setAppointments(thisMonthAppointments);
+     setAppointments(thisMonthAppointments);
   }
   const handleDateChange = (newDate) => {
     console.log(newDate);
 
     setDate(newDate);
-    // onDateChange(newDate);
+     onDateChange(newDate);
   };
   const dayClick = (date) => {
     console.log(date);
@@ -83,9 +73,9 @@ const calendar = ({ userState }) => {
       setShowAppoint(null);
     }
   }
-  // const handleTimeChange = (newTime) => {
-  //   setTime(newTime);
-  // };
+  const handleTimeChange = (newTime) => {
+    setTime(newTime);
+  };
 
   const tileDisabled = ({ date, view }) => {
     if (view === 'month') {
@@ -97,32 +87,32 @@ const calendar = ({ userState }) => {
   const tileContent = ({ date }) => {
     let remarks;
    
-    // const thisDayAppointments = getThisAppointments(date);
-    // console.log(thisDayAppointments);
-    // let context;
-    // if (thisDayAppointments != undefined) {
-    //   if (userId == "manager") {
-    //     thisDayAppointments.map((appoint) => {
-    //       console.log(appoint);
-    //       context += <Typography variant="h1" component="h6">
-    //         <>{appoint.userName}</>
-    //         <>{appoint.hour}</>
-    //         {(appoint.status == 0) && <>התור בוטל</>}
-    //       </Typography>
-    //     })
-    //   }
-    //   else {
+    const thisDayAppointments = getThisAppointments(date);
+    console.log(thisDayAppointments);
+    let context;
+    if (thisDayAppointments != undefined) {
+      if (userId == "manager") {
+        thisDayAppointments.map((appoint) => {
+          console.log(appoint);
+          context += <Typography variant="h1" component="h6">
+            <>{appoint.userName}</>
+            <>{appoint.hour}</>
+            {(appoint.status == 0) && <>התור בוטל</>}
+          </Typography>
+        })
+      }
+      else {
 
-    //     if (thisDayAppointments.length > 1) {
-    //       throw new Error("error get appointments")
-    //     }
-    //     context = <Typography variant="h1" component="h6">
-    //       <>{appoint.hour}</>
-    //       {(appoint.status == 0) && <>התור בוטל</>}
-    //     </Typography>
-    //   }
-    // }
-    // return context;
+        if (thisDayAppointments.length > 1) {
+          throw new Error("error get appointments")
+        }
+        context = <Typography variant="h1" component="h6">
+          <>{appoint.hour}</>
+          {(appoint.status == 0) && <>התור בוטל</>}
+        </Typography>
+      }
+    }
+    return context;
   }
   function getThisAppointments(date) {
     console.log(thisMonthAppointments);
@@ -149,8 +139,8 @@ const calendar = ({ userState }) => {
   return (
     <>
       {fetchError && <Error />}
-      {isLoudingBool && <Loading />}
-      {!fetchError && !isLoudingBool && <Calendar
+      {isLoadingBool && <Loading />}
+      {!fetchError && !isLoadingBool && <Calendar
         // nextLabel='month>>'
         defaultValue={date}
         onChange={handleDateChange}

@@ -68,6 +68,8 @@ try {
       const data = await response.json();
       console.log("successfully connected:", data);
       setUserState(data.userState);
+      setUserId(userConnectionInfo.userName)
+      localStorage.setItem('userId', userConnectionInfo.userName);
       localStorage.setItem('userState', data.userState);
       if(data.userState=="manager"){
         navigate("/Home");
@@ -75,7 +77,6 @@ try {
         navigate("/createProfile");
       }
     }
-    // } else if (response.status === 400) {
     else {
       console.log("Error in server");
     }
