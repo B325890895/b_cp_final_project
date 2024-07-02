@@ -3,12 +3,12 @@ import NextTurn from "../components/NextTurn";
 import Alert from "../components/Alert";
 import AddClient from "../components/AddClient";
 
-function Home({userState}) {
+function Home({userId,userState}) {
 
   return (
     <>
       {userState == "manager" && <AddClient/>}
-      {userState == "client" && <NextTurn user_id={"325890895"} />}
+      {userState == "client" && <NextTurn user_id={userId} />}
       <Alert  userState={userState} />
     </>
   );

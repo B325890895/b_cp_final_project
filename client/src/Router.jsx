@@ -15,9 +15,12 @@ import CreateProfile from "./pages/CreateProfile";
 import ViewClient from "./pages/ViewClient"
 function Router() {
   const [userState, setUserState] = useState("");
+  const [userId,setUserId]=useState();
   useEffect(() => {
     if (localStorage.getItem("userState")) {
       setUserState(localStorage.getItem("userState"));
+    }  if (localStorage.getItem("userId")) {
+      setUserId(localStorage.getItem("userId"));
     }
   }, []);
 
@@ -26,12 +29,12 @@ function Router() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/connect" element={<Connect setUserState={setUserState} />} />
+          <Route path="/connect" element={<Connect setUserId={setUserId} setUserState={setUserState} />} />
           <Route path="/createProfile" element={<CreateProfile userState={userState}/>} />
           <Route element={<NavBar userState={userState} />}>
-            <Route path="/home" element={<Home userState={userState} />} />
+            <Route path="/home" element={<Home userId={userId} userState={userState} />} />
             <Route path="/profile" element={<Profile userState={userState}/>} />
-            <Route path="/calendar" element={<Calendar userState={userState}/>} />
+            <Route path="/calendar/:id" element={<Calendar userState={userState}/>} />
             <Route path="/hmo" element={<HMO userState={userState}/>} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/clients" element={<Clients userState={userState}/>} />
