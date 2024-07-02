@@ -1,11 +1,8 @@
 const { Service } = require("./Service");
 const AppointmentRepository = require("../repository/Appointment.repository");
+const userService = require("./User.service");
 const { DataSecurity } = require("./dataSecurity");
-const {
-  addWeeks,
-  setDay,
-  startOfWeek,
-} = require("date-fns");
+
 const userInfo = require("./User.service");
 const CanceledAppointment = require("./CanceledAppointment.service");
 class AppointmentService extends Service {
@@ -15,62 +12,42 @@ class AppointmentService extends Service {
   async read(params) {
     const regex = /^(0?[1-9]|1[0-2])\/(2000|200[1-9]|201[0-9]|202[0-5])$/;
     if (params.filter1 && params.filter2 == "next") {
-      const userInformation = getUserInfo(params.filter1)
+      const userInformation = await this.getUserInfo(params.filter1);
+      console.log(userInformation.json.userName, "userInformation.userName");
+      if (!userInformation) {
+        return { statusCode: 500 }
+      }
       //לעדכן את מערך תורים מבוטלים
-      let dateNextAppointment = this.getDate(
-        userInformation.day,
-        userInformation.hour,
-        new Date()
-      );
       let appointmentWithDay = {
         user_id: params.filter1,
-        userName: userInformation.userName,
-        day: this.translateDay(userInformation.day),
-        hour: userInformation.hour,
+        userName: userInformation.json.userName,
+        day: this.translateDay(userInformation.json.day),
+        hour: userInformation.json.hour,
         date: "",
         status: 1,
         dateCenceled: [],
       };
-      while (userInformation.canceledAppointments.includes(dateNextAppointment)) {
-        appointmentWithDay.dateCenceled.push(dateNextAppointment);
-        let [day, month, year] = dateNextAppointment.split("/").map(Number);
-        let date = new Date(year, month - 1, day + 7);
-        date.setDate(date.getDate() + 1);
-        dateNextAppointment = this.getDate(
-          userInformation.day,
-          userInformation.hour,
-          date
-        );
-      }
+      const dateNextAppointment = this.getDate(userInformation, appointmentWithDay);
       appointmentWithDay.date = dateNextAppointment;
-      return { statusCode: 200, dateNextAppointment: appointmentWithDay };
+      return { statusCode: 200, json: appointmentWithDay };
     }
     if (params.filter1 && regex.test(params.filter2)) {
+      const [month, year] = params.filter2.split('/');
+      let appointmentsWithDay = []
       if (params.filter1 == "*") {
-        // const response = await this.repository.read("*");
-        console.log("if");
-      } 
-      else {
-        const [month, year] = dateStr.split('/');
-        const userInformation = getUserInfo(params.filter1);
-        const dates = this.getDates(year, month, userInformation.day);
-        let appointmentsWithDay = []
-        dates.map((date) => {
-          if (!userInformation.canceledAppointments.includes(dateNextAppointment)) {
-            appointmentsWithDay.push({
-              user_id: userInformation.userId,
-              userName: userInformation.userName,
-              day: this.translateDay(userInformation.day),
-              hour: userInformation.hour,
-              date: date,
-              status: 1,
-            }) }
+        const usersResponse = await userService.readAll();
+        const users = usersResponse.json;
+        const appointmentsAtMonthPromises =  users.map(async (user) => {
+          await this.getUserAppointmentsAtMonth(user.user_id, month, year, appointmentsWithDay)
         })
-        return { statusCode: 200, json: appointmentsWithDay};
+        await Promise.all(appointmentsAtMonthPromises);
+        console.log(appointmentsWithDay, "appointmentsAtMonth");
+        return { statusCode: 200, json: appointmentsWithDay };
       }
-
+      else {
+        this.getUserAppointmentsAtMonth(user.user_id, month, year, appointmentsWithDay);
+      }
     }
-
     return { statusCode: 500 };
   }
   async delete(params) {
@@ -78,6 +55,7 @@ class AppointmentService extends Service {
     if (params.filter1 && regexDate.test(params.filter2)) {
       let hoursUntilTheAppointment = await this.getHoursBetweenDates(params.filter2);
       let userInformation;
+      let addAppointmentToCollection;
       if (hoursUntilTheAppointment >= 24) {
         userInformation = await userInfo.updatecanCeledAppointments(
           params.filter1,
@@ -93,7 +71,7 @@ class AppointmentService extends Service {
           params.filter2
         );
         //to add the appointment to appointment collection
-        const addAppointmentToCollection = await this.repository.create({
+        addAppointmentToCollection = await this.repository.create({
           "user_id": params.filter1,
           "date": params.filter2,
           "status": 0
@@ -111,36 +89,37 @@ class AppointmentService extends Service {
     }
   }
 
-  getDate(dayName, hour, currentDate) {
-    console.log(dayName, hour, currentDate);
-    const now = currentDate;
-    const arrayDayOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
-    const today = now; // לקבוע את היום הראשון של השבוע
-    const dayOfWeek = arrayDayOfWeek.indexOf(dayName);
-    const [hourOfAppointment, minuteshourOfAppointment] = hour.split(":").map(Number);
-    if (dayOfWeek === -1) {
-      throw new Error("Invalid day name");
-    }
-    let nextOccurrence = setDay(today, dayOfWeek);
-    if (!(dayOfWeek + arrayDayOfWeek.indexOf(now.getDay()) < 7)) {
-      today = startOfWeek(now);
-      if ((nextOccurrence.getDate() == now.getDate() && hourOfAppointment < now.getHours() + 1) ||
-        nextOccurrence.getDate() < now.getDate()
-      ) {
-        nextOccurrence = addWeeks(nextOccurrence, 1);
+  getDate(userInformation, appointmentWithDay) {
+    userInformation = userInformation.json;
+    const [hours, minutes] = userInformation.hour.split(':').map(Number);
+    const currentDate = new Date();
+    let datesAtThisDay = this.getDates(currentDate.getFullYear(), currentDate.getMonth() + 1, userInformation.day);
+    console.log(datesAtThisDay, "datesAtThisDay");
+    let dateNextAppointment = datesAtThisDay.find((date) => {
+      const [day, month, year] = date.split('/').map(Number);
+      const dateAppointment = new Date(year, month - 1, day, hours, minutes);
+      if (dateAppointment > currentDate) {
+        if (userInformation.canceledAppointments.includes(date)) {
+          appointmentWithDay.dateCenceled.push(date);
+        }
+        return date;
       }
-
+    })
+    while (!dateNextAppointment) {
+      datesAtThisDay = this.getDates(currentDate.getFullYear(), currentDate.getMonth() + 1, userInformation.day);
+      dateNextAppointment = datesAtThisDay.map((date) => {
+        const [day, month, year] = date.split('/').map(Number);
+        const dateAppointment = new Date(year, month - 1, day, hours, minutes);
+        if (dateAppointment > currentDate)
+          console.log(dateAppointment, "dateAppointment");
+        return dateAppointment;
+      })
     }
-    if (
-      nextOccurrence.getDate() == now.getDate() &&
-      hourOfAppointment < now.getHours() + 1
-    ) {
-      nextOccurrence = addWeeks(nextOccurrence, 1);
-    }
-    return nextOccurrence.toLocaleDateString("en-GB");
+    return dateNextAppointment;
   }
 
   translateDay(day) {
+    console.log(day, "day");
     const days = {
       Sunday: "ראשון",
       Monday: "שני",
@@ -163,29 +142,57 @@ class AppointmentService extends Service {
   }
   async getUserInfo(userId) {
     const userInformation = await userInfo.read(userId);
+
     if (!userInformation) {
       throw new Error("User not found");
     }
+    return userInformation;
   }
   getDates(year, month, dayOfWeek) {
-    month--;
+    const arrayDayOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
     const dates = [];
-    const date = new Date(year, month, 1);
-
-    // למצוא את היום הראשון בחודש
-    while (date.getDay() !== dayOfWeek) {
-      date.setDate(date.getDate() + 1);
+    const date = new Date(year, month - 1, 1);
+    const newDate = new Date(date);
+    for (let i = 1; i < 30; i++) {
+      newDate.setDate(newDate.getDate() + 1)
+      if (newDate.getDay() == arrayDayOfWeek.indexOf(dayOfWeek)) {
+        break;
+      }
     }
-
+    date.setDate(newDate.getDate())
     // להוסיף את כל הימים המתאימים לחודש
-    while (date.getMonth() === month) {
-      dateString = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-      console.log(dateString, "dateString");
+    for (let i = 0; i < 5; i++) {
+      if ((date.getMonth() + 1) != month) {
+        break;
+      }
+      console.log(date.getDate(), "187");
+      const dateString = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
       dates.push(dateString);
       date.setDate(date.getDate() + 7);
     }
-
+    console.log(dates.length);
     return dates;
+  }
+  async getUserAppointmentsAtMonth(userId, month, year, appointmentsWithDay) {
+    const userInformation = (await this.getUserInfo(userId)).json;
+    const dates = this.getDates(year, month, userInformation.day);
+    let thisStatus = 1;
+    await dates.map((date) => {
+      thisStatus = 1;
+      if (userInformation.canceledAppointments.includes(date)) {
+        thisStatus = 0;
+      }
+      appointmentsWithDay.push({
+        user_id: userInformation.user_id,
+        userName: userInformation.userName,
+        day: this.translateDay(userInformation.day),
+        hour: userInformation.hour,
+        date: date,
+        status: thisStatus,
+      })
+    })
+    console.log(appointmentsWithDay,"appointmentsWithDay");
+    return appointmentsWithDay
   }
 }
 

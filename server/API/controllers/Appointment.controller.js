@@ -7,11 +7,11 @@ class AppointmentController extends Controller {
     async read(req, res, next) {
         let params = {};
         if (req.params.filter1) params.filter1 = req.params.filter1;
-        if (req.params.filter2) params.filter2= req.params.filter2;
-
+        if (req.params.filter2) params.filter2 = req.params.filter2;
+        console.log(params);
         try {
             const response = await this.service.read(params);
-            return res.status(response.statusCode).json(response.dateNextAppointment);
+            return res.status(response.statusCode).json(response.json);
         } catch (error) {
             next(error);
         }
