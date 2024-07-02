@@ -17,7 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import "./pages_css/CreateProfile.css";
 
-function CreateProfile() {
+function CreateProfile({userState}) {
   const theme = createTheme({
     palette: {
       primary: {
@@ -25,14 +25,24 @@ function CreateProfile() {
       },
       secondary: {
         main: '#ff9b2c',       },
-    },
-  });
-  const [hmo, setHmo] = useState("");
-  const [birthDate, setBirthDate] = useState();
-  const navigate = useNavigate();
-  const URL_API = "http://localhost:3000";
-
-  const handleHmoChange = (event) => {
+      },
+    });
+    const [hmo, setHmo] = useState("");
+    const [birthDate, setBirthDate] = useState();
+    const navigate = useNavigate();
+    const URL_API = "http://localhost:3000";
+    
+    switch (userState) {
+      case "client":
+        break;
+      case "manager":
+        navigate("/*");
+        break;
+      default:
+        navigate("/*");
+        break;
+    }
+    const handleHmoChange = (event) => {
     setHmo(event.target.value);
   };
   // const handleBirthDateChange = (name,newValue) => {

@@ -9,12 +9,23 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 
-function ViewClient() {
+function ViewClient({userState}) {
   const clientId = useParams().id;
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const [client, setClient] = useState();
+  const navigate=useNavigate();
   const URL_API = "http://localhost:3000";
+  switch (userState) {
+    case "manager":
+      break;
+    case "client":
+      navigate("/*");
+      break;
+    default:
+      navigate("/*");
+      break;
+  }
 
   useEffect(()=>{
     fetchClient();

@@ -9,14 +9,35 @@
   top: 10px;
   left: 10px;
 }
+
 #titleSection {
-  text-align: center; 
-  >h1{
-    font-size: 8em;
-    margin: 0.5vw;
+  text-align: center;
+}
+
+#titleSection > h1 {
+  font-size: 8em;
+  margin: 0.5vw;
+}
+
+#titleSection > h2 {
+  font-size: 2em;
+  margin: 0.5vw;
+}
+@media screen and (max-width: 768px) {
+  #logoImg {
+    width: 90vw;
+    margin-top: 0;
   }
-  >h2{
-    font-size: 2em;
-    margin: 0.5vw;
+
+  #titleSection > h1 {
+    font-size: 3em; 
+  }
+
+  #titleSection > h2 {
+    font-size: 1.5em; 
+  }
+
+  #loginButton {
+    font-size: 0.8em; 
   }
 }

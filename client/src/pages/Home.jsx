@@ -5,8 +5,6 @@ import AddClient from "../components/AddClient";
 function Home({userState}) {
   return (
     <>
-      {/* to ask batya what did she do here */}
-      {/* {userState == "manager" && <AddClient user_id={props.user_id} />} */}
       {userState == "manager" && <AddClient/>}
       {userState == "client" && <NextTurn user_id={"325890895"} />}
       <Alert  userState={userState} />

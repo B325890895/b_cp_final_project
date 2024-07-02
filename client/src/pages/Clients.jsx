@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-//import { useOutletContext} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
 import SingleClient from "../components/SingleClient";
@@ -13,7 +13,8 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 
 
-function Clients() {
+function Clients({userState}) {
+  const navigate = useNavigate();
   const URL_API = "http://localhost:3000";
   const [jsonClientList, setJsonClientList] = useState();
   const [clientList, setClientList] = useState();
@@ -28,6 +29,17 @@ function Clients() {
   const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
   }));
+  switch (userState) {
+    case "manager":
+      break;
+    case "client":
+      navigate("/*");
+      break;
+    default:
+      navigate("/*");
+      break;
+  }
+  
 
   //to update the names of the properties in the filter properly
   useEffect(() => {

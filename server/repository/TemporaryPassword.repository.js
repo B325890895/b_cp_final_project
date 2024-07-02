@@ -22,7 +22,13 @@ class PasswordRepository extends Repository {
         const result = await bcrypt.compare(password, object.password);
         if (result) {
           console.log('סיסמה נכונה');
-          return { json: true, statusCode: 200 };
+          return {
+            json: {
+              request: true,
+              userState: "",
+            },
+            statusCode: 200,
+          };
         } else {
           console.log('סיסמה שגויה');
           return { json: false, statusCode: 500 };

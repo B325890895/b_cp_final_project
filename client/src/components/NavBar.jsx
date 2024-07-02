@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,9 +9,12 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link, Outlet } from "react-router-dom";
 import "./components_css/NavBar.css";
+import { useNavigate } from "react-router-dom";
+
 
 function NavBar({ userState }) {
-  console.log(userState);
+  const navigate = useNavigate();
+
   const navItemsClient = [
     { name: "בית", link: "home" },
     // { name: "תשלום", link: "payment" },
@@ -27,17 +30,22 @@ function NavBar({ userState }) {
     // { name: "אזור אישי", link: "profile" },
   ];
   let navItems = null;
-  switch (userState) {
-    case "manager":
-      navItems = navItemsManager;
-      break;
-    case "client":
-      navItems = navItemsClient;
-      break;
-    default:
-      navItems = null;
-      break;
-  }
+  
+
+    switch (userState) {
+      case "manager":
+        navItems = navItemsManager;
+        break;
+      case "client":
+        navItems = navItemsClient;
+        break;
+      default:
+        navItems = null;
+        navigate("/*");
+        break;
+    }
+  
+
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
