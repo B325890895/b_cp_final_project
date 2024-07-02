@@ -12,15 +12,15 @@ import "./components_css/NavBar.css";
 import { useNavigate } from "react-router-dom";
 
 
-function NavBar({ userState }) {
+function NavBar({ userId,userState }) {
   const navigate = useNavigate();
 
   const navItemsClient = [
     { name: "בית", link: "home" },
     // { name: "תשלום", link: "payment" },
-    { name: "התחייבות חברת החולים", link: "hmo" },
-    { name: "לוח שנה", link: "calendar" },
-    { name: "אזור אישי", link: "profile" },
+    // { name: "התחייבות חברת החולים", link: "hmo/" },
+    { name: "לוח שנה", link: `calendar/${userId}` },
+    { name: "אזור אישי", link: `profile/${userId}` },
   ];
   const navItemsManager = [
     { name: "בית", link: "home" },

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useParams, useNavigate } from "react-router-dom";
 // import "./pages_css/Profile.css";
 import ShowProfile from "../components/ShowProfile";
 // import CreateProfile from "./CreateProfile";
@@ -10,8 +9,8 @@ import Error from "../components/Error";
 import Loading from "../components/Loading";
 
 
-export default function Profile({ userId, userState }) {
-
+export default function Profile({ userState }) {
+  const userId = useParams().id;
   const URL_API = "http://localhost:3000"
   const [profileState, setProfileState] = useState("show");
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +30,6 @@ export default function Profile({ userId, userState }) {
   }
 
   useEffect(() => {
-    console.log(userDetail,userId,userState);
     if (userDetail == undefined) {
        importUserDetailsFromDatabase();
     }
@@ -40,7 +38,7 @@ export default function Profile({ userId, userState }) {
   async function importUserDetailsFromDatabase() {
     try {
       console.log("importUserDetailsFromDatabase", `${URL_API}/${userId}`);
-      const response = await fetch(`${URL_API}/${userId}`);
+      const response = await fetch(`${URL_API}/user/${userId}`);
       if (!response.ok) {
         throw Error("Did not received expected data");
       }
