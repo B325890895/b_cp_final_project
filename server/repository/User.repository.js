@@ -34,10 +34,13 @@ class UserRepository extends Repository {
   }
 
   async update(id, data) {
-    let object = await this.model.findOneAndUpdate({ user_id: id }, { $set: data });
+    let object = await this.model.findOneAndUpdate({ user_id: id },  data , {
+      returnOriginal: false,
+      new: true
+    });
     if (object){
-      console.log("i got her and it works perfectly");
-      return {json:object,statusCode: 200};
+      console.log("i got her and it works perfectly",object);
+      return {statusCode: 200};
     }
    else{
      console.log("i couldn't find her");

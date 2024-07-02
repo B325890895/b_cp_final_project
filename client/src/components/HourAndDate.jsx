@@ -55,7 +55,7 @@ try{
       `${URL_API}/user/${clientId}`,
       {
         method: "PUT",
-        body: JSON.stringify({ dayAndHourToUpdate }),
+        body: JSON.stringify( dayAndHourToUpdate ),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
