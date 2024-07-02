@@ -9,7 +9,7 @@ function Home({userId,userState}) {
     <>
       {userState == "manager" && <AddClient/>}
       {userState == "client" && <NextTurn user_id={userId} />}
-      <Alert  userState={userState} />
+      <Alert  user_id={userId} />
     </>
   );
 }

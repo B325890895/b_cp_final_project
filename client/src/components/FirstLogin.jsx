@@ -18,7 +18,7 @@ import Alert from '@mui/material/Alert';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
-function Login({ setConnectionStatus, setUserState }) {
+function Login({ setConnectionStatus,setUserId, setUserState }) {
 
   const theme = createTheme({
     palette: {

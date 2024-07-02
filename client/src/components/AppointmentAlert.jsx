@@ -14,7 +14,7 @@ async function fetchAppointments(user_id) {
   return response.json();
 }
 
-function AppointmentAlert({user_id,userState}) {
+function AppointmentAlert({user_id}) {
   const [appointment, setAppointment] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);

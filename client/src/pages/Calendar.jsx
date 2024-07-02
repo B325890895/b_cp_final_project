@@ -15,8 +15,7 @@ import { Typography } from '@mui/material';
 
 const URL_API = "http://localhost:3000";
 
-const calendar = ({ userState }) => {
-  const userId = useParams().id;
+const calendar = ({userId, userState }) => {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(null);
   const [showAppoint, setShowAppoint] = useState(null);
@@ -32,6 +31,9 @@ const calendar = ({ userState }) => {
       setIsLoadingBool(false);
     }
   }, [thisMonthAppointments]);
+  useEffect(() => {
+    getAppointmentsInThisMonth(date.getMonth() + 1, date.getFullYear());
+  }, []);
   async function getAppointmentsInThisMonth(month, year) {
     setIsLoadingBool(true);
     let filter1
@@ -56,13 +58,13 @@ const calendar = ({ userState }) => {
     }
      setAppointments(thisMonthAppointments);
   }
-  const handleDateChange = (newDate) => {
+  async function handleDateChange  (newDate) {
     console.log(newDate);
 
     setDate(newDate);
      onDateChange(newDate);
   };
-  const dayClick = (date) => {
+  async function dayClick (date)  {
     console.log(date);
     const thisAppointment = getThisAppointment(date)
     if (thisAppointment) {
@@ -73,18 +75,18 @@ const calendar = ({ userState }) => {
       setShowAppoint(null);
     }
   }
-  const handleTimeChange = (newTime) => {
+  async function handleTimeChange  (newTime) {
     setTime(newTime);
   };
 
-  const tileDisabled = ({ date, view }) => {
+ async function tileDisabled  ({ date, view }) {
     if (view === 'month') {
       const today = new Date();
       return date < today.setHours(0, 0, 0, 0);
     }
     return !availableHours.includes(date.getHours());
   };
-  const tileContent = ({ date }) => {
+  async function tileContent  ({ date })  {
     let remarks;
    
     const thisDayAppointments = getThisAppointments(date);
@@ -114,7 +116,7 @@ const calendar = ({ userState }) => {
     }
     return context;
   }
-  function getThisAppointments(date) {
+ async function getThisAppointments(date) {
     console.log(thisMonthAppointments);
     let thisDayAppointmentGet=[]
     const thisDay = date.getDate(), thisMonth = date.getMonth()+1, thisYear = date.getFullYear();;
@@ -129,6 +131,7 @@ const calendar = ({ userState }) => {
       })
     }
     else {
+      console.log(thisMonthAppointments);
       thisDayAppointmentGet = thisMonthAppointments.map((appoint) => {
         if (appoint.date == `${thisDay}/${monthFull - 1}/${thisYear}` && appoint.userName == userId)
           return appoint;
