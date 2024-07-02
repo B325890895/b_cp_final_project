@@ -37,7 +37,7 @@ class PasswordRepository extends Repository {
         throw new Error("Error comparing passwords");
       }
     } else {
-      throw new Error("userName does not exsist");
+      throw new Error("userName does not exist");
     }
   }
   async delete(userName) {

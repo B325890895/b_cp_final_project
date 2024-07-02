@@ -40,11 +40,17 @@ class temporaryPasswordService extends Service {
       if(createNewPassword.json){
        //delete the old temporary password
        this.delete(userName)
+        if(userName=="204203038"){
+          //declare the user is manager
+          login.json.userState="manager"
+        }else{
+          //declare the user is regular user
+          login.json.userState="client"
+        }
       }else{
         return {statusCode: 500}
       } 
-      //token
-      return createNewPassword;
+      return login;
     } else {
       return {statusCode: 401, message:"user name or password not correct"};
     }

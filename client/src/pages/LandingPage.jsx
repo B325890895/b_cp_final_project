@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import "./pages_css/LandingPage.css";
 import LoginIcon from "@mui/icons-material/Login";
@@ -6,6 +6,14 @@ import Button from "@mui/material/Button";
 
 function LandingPage() {
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    clearLocalStorage();
+  }, []);
+
+function clearLocalStorage(){
+  localStorage.clear();
+}
 
   function connect() {
     console.log("Connecting");

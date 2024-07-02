@@ -1,4 +1,6 @@
 import React, {useState,useEffect} from "react";
+import { useNavigate } from "react-router-dom";
+
 // import "./pages_css/Profile.css";
 import ShowProfile from "../components/ShowProfile";
 // import CreateProfile from "./CreateProfile";
@@ -8,13 +10,24 @@ import Error from "../components/Error";
 import Loading from "../components/Loading";
 
 
-export default function Profile() {
+export default function Profile({userState}) {
 
   const URL_API="http://localhost:3000"
   const [profileState,setProfileState]=useState("show");
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
-  // const userDetail=info[0].userInfo;
+  const navigate=useNavigate();
+
+  switch (userState) {
+    case "client":
+      break;
+    case "manager":
+      navigate("/*");
+      break;
+    default:
+      navigate("/*");
+      break;
+  }
 
   useEffect(() => {
     if(!userDetail)

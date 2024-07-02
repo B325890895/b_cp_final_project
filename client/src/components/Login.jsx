@@ -59,6 +59,7 @@ function Login({ setConnectionStatus, setUserState }) {
       const data = await response.json();
       console.log("successfully connected:", data);
       setUserState(data.userState);
+      localStorage.setItem('userState', data.userState);
       navigate("/Home");
     }
     // else if (response.status === 400) {

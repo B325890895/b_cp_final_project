@@ -12,7 +12,6 @@ function Commitment() {
   const [isLoading, setIsLoading] = useState(false);
   return (
     <>
-      {" "}
       <Card dir="rtl">
         {fetchError && <Error />}
         {isLoading && <Loading />}
