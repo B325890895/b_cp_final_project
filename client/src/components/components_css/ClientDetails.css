@@ -1,0 +1,73 @@
+.form-container {
+    display: flex;
+    padding-top: 5vw;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 60vw;
+  }
+  
+  .form-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+  .form-fields {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .left-side, .right-side {
+    width: 50%;
+  }
+  #mother,.left-side{
+    margin-top: 2vw;
+  }
+  
+  
+  .submit-button {
+    width: 100%;
+    padding-top: 2vw;
+    padding-bottom: 2rem;
+  }
+  
+  @media (max-width: 960px) {
+    .form-fields {
+      flex-direction: column;
+    }
+    
+    .left-side, .right-side {
+      width: 100%;
+    }
+  }
+  
+  /* תנאי לגודל של סמארטפון */
+  @media (max-width: 600px) {
+    body {
+      height: auto;
+      margin-top: 2vw;
+    }
+  
+    .form-container {
+      padding-bottom: 2rem;
+    }
+  
+  
+    .left-side, .right-side {
+      margin-bottom: 1rem;
+    }
+  
+    /* הקטנת גודל הכותרות */
+    .headers h1 {
+      font-size: 1.5rem !important; /* עבור הכותרת הראשית */
+    }
+  
+    .headers h5 {
+      font-size: 1rem !important; /* עבור הכותרת המשנית */
+    }
+  
+    h6 {
+      font-size: 0.9rem !important; /* עבור כותרות הקטגוריות (פרטי אב, פרטי אם) */
+    }
+  }

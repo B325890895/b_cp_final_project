@@ -3,7 +3,7 @@ const { Service } = require("./Service");
 const temporaryPasswordRepository = require("../repository/TemporaryPassword.repository");
 const { DataSecurity } = require("./dataSecurity");
 const nodemailer = require("nodemailer");
-const passwordService= require("./Password.service")
+const passwordService = require("./Password.service");
 
 class temporaryPasswordService extends Service {
   constructor(repository) {
@@ -19,7 +19,7 @@ class temporaryPasswordService extends Service {
       return { statusCode: 400 };
     const password = await this.generatePassword(9);
     let salt = await bcrypt.genSalt(4);
-    const hashPassword = await bcrypt.hash(password,salt);
+    const hashPassword = await bcrypt.hash(password, salt);
     const response = await this.repository.create({
       userName: passwordInfo.userName,
       password: hashPassword,
@@ -32,27 +32,30 @@ class temporaryPasswordService extends Service {
     }
   }
 
-  async read(userName, password,newPassword) {
+  async read(userName, password, newPassword) {
     const login = await this.repository.read(userName, password);
     if (login.json) {
       //create the new password in the password collection
-      const createNewPassword = await passwordService.create(userName,newPassword)
-      if(createNewPassword.json){
-       //delete the old temporary password
-       this.delete(userName)
-        if(userName=="204203038"){
+      const createNewPassword = await passwordService.create(
+        userName,
+        newPassword
+      );
+      if (createNewPassword.json) {
+        //delete the old temporary password
+        this.delete(userName);
+        if (userName == "204203038") {
           //declare the user is manager
-          login.json.userState="manager"
-        }else{
+          login.json.userState = "manager";
+        } else {
           //declare the user is regular user
-          login.json.userState="client"
+          login.json.userState = "client";
         }
-      }else{
-        return {statusCode: 500}
-      } 
+      } else {
+        return { statusCode: 500 };
+      }
       return login;
     } else {
-      return {statusCode: 401, message:"user name or password not correct"};
+      return { statusCode: 401, message: "user name or password not correct" };
     }
   }
   async delete(userName) {
@@ -85,7 +88,7 @@ class temporaryPasswordService extends Service {
     });
 
     const mailOptions = {
-      from:process.env.EMAIL_USER,
+      from: process.env.EMAIL_USER,
       to: toEmail,
       subject: `ברכותינו,\n  החשבון שלך לאתר של בת שבע כ"ץ נוצר בהצלחה \n`,
       text: `שם המשתמש שלך הוא:${userName}\n הסיסמא שלך היא:#${password}\n`,

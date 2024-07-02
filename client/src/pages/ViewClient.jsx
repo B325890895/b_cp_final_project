@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import HourAndDate from "../components/HourAndDate"
+import ClientDetails from "../components/ClientDetails";
 // import Loading from "./Loading"
 // import Error  from "./Error"
-import "../pages/pages_css/CreateProfile.css"
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import EditIcon from '@mui/icons-material/Edit';
 
 
-function ViewClient({userState}) {
+function ViewClient({ userState }) {
   const clientId = useParams().id;
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
+  const [hourDateAlert,setHourDateAlert] = useState(false)
+  const [hourDateUpdate,setHourDateUpdate] = useState(false)
   const [client, setClient] = useState();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const URL_API = "http://localhost:3000";
   switch (userState) {
     case "manager":
@@ -27,102 +30,57 @@ function ViewClient({userState}) {
       break;
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchClient();
   }, []);
 
   const fetchClient = async () => {
-    console.log("fetchClient", clientId);
     try {
       const response = await fetch(`${URL_API}/user/${clientId}`);
-      console.log(response);
       if (!response.ok) {
         throw Error("Did not received clients data from server");
       }
       const result = await response.json();
-      console.log(result);
       setClient(result);
+      if(!result.day){
+        setHourDateAlert(true)
+      }
     } catch (err) {
       setFetchError(err.message);
     } finally {
       setIsLoading(false);
     }
   };
+ function updateButtonHandler(){
+  setHourDateAlert(false);
+  setHourDateUpdate(true);
 
-  return (
+ }
+   return (
     <>
+        <Stack sx={{ width: '100%' }} 
+        spacing={1}
+        >
+
       {/* {isLoading && <Loading />} */}
       {/* {fetchError && <Error message={fetchError} />} */}
+      {!isLoading && !fetchError && (
+        <ClientDetails client={client}/>
+      )}
       {
-        !isLoading && !fetchError &&
-        (
-
-          <Container component="main" maxWidth="lg" dir="rtl">
-            <CssBaseline />
-            <Box className="form-container">
-              <Box
-                dir="rtl"
-                noValidate
-                className="form-content"
-              >
-                <Box className="left-side">
-                  <Box id="profile">
-                    <Typography component="h1" variant="h4">
-                      {client.user_id}ת.ז.:
-                    </Typography>
-                    <Typography component="h1" variant="h4">
-                      {client.userName}שם:
-                    </Typography>
-                    <Typography component="h1" variant="h6">
-                      {client.email}כתובת מייל:
-                    </Typography>
-                    <Typography component="h1" variant="h6">
-                      {client.hmo}קופת חולים:
-                    </Typography>
-                    <Typography component="h1" variant="h6">
-                      {client.birthDate} תאריך לידה:
-                    </Typography>
-                  </Box>
-                </Box>
-
-                <Box className="right-side">
-                  <Box id="father">
-                    <Typography component="h1" variant="h5">
-                      פרטי אב
-                    </Typography>
-                    <Typography component="h1" variant="h6">
-                      {client.father.name}שם:
-                    </Typography>
-                    <Typography component="h1" variant="h6">
-                      {client.father.phoneNumber}טלפון:
-                    </Typography>
-                  </Box>
-                  <Box id="mother">
-                    <Typography component="h1" variant="h5">
-                      פרטי אם
-                    </Typography>
-                    <Typography component="h1" variant="h6">
-                      {client.mother.name}שם:
-                    </Typography>
-                    <Typography component="h1" variant="h6">
-                      {client.mother.phoneNumber}טלפון:
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-              {/* 
-        <Box className="submit-button">
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            שמירת פרטים
+        !isLoading && !fetchError && hourDateAlert &&
+        <Alert dir="rtl" severity="warning"      action={
+          <Button color="inherit" size="small" onClick={updateButtonHandler}>
+            <EditIcon/>
           </Button>
-        </Box> */}
-            </Box>
-          </Container>)}
+        }>
+     ללקוח לא מוגדר יום ושעה לטיפול.
+      </Alert>  
+      }{
+        !isLoading && !fetchError && hourDateUpdate &&
+        <HourAndDate clientId={client.user_id} setHourDateUpdate={setHourDateUpdate}/>
+      }
+      </Stack>
     </>
   );
 }

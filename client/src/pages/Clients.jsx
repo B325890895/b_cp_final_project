@@ -8,12 +8,13 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Grid from "@mui/material/Grid";
-import { styled } from '@mui/material/styles';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
+import { styled } from "@mui/material/styles";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 
-
-function Clients({userState}) {
+function Clients({ userState }) {
   const navigate = useNavigate();
   const URL_API = "http://localhost:3000";
   const [jsonClientList, setJsonClientList] = useState();
@@ -23,12 +24,15 @@ function Clients({userState}) {
   const [searchClientId, setSearchClientId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [sort, setSort] = useState("");
+  
   useEffect(() => {
     (async () => await fetchClients())();
   }, []);
-  const Demo = styled('div')(({ theme }) => ({
+
+  const Demo = styled("div")(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
   }));
+
   switch (userState) {
     case "manager":
       break;
@@ -39,29 +43,26 @@ function Clients({userState}) {
       navigate("/*");
       break;
   }
-  
 
-  //to update the names of the properties in the filter properly
   useEffect(() => {
-    if (searchTerm == "" && searchClientId == "") {
+    if (searchTerm === "" && searchClientId === "") {
       setClientList(jsonClientList);
     } else {
       setClientList(
         jsonClientList
+          .filter((client) => client.userName.startsWith(searchTerm))
           .filter((client) =>
-            client.name.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-          .filter((client) =>
-            searchClientId ? client.id.toString() === searchClientId : true
+            client.user_id.toString().startsWith(searchClientId)
           )
       );
     }
   }, [searchTerm, searchClientId]);
+
   const fetchClients = async () => {
     try {
       const response = await fetch(`${URL_API}/user`);
       if (!response.ok) {
-        throw Error("Did not received expected data");
+        throw Error("Did not receive expected data");
       }
       const result = await response.json();
       setJsonClientList(result);
@@ -85,24 +86,15 @@ function Clients({userState}) {
     function sortClients() {
       switch (sort) {
         case "serial":
-          //to check hwo the id is writen in the object
-          const serialSort = jsonClientList.sort((a, b) => a.id - b.id);
+          const serialSort = jsonClientList.sort((a, b) => a.user_id - b.user_id);
           setClientList([...serialSort]);
           break;
         case "alphabetical":
-          //to check hwo the id is writen in the object
           const alphabeticalSort = jsonClientList.sort((a, b) =>
-            a.name.localeCompare(b.title)
+            a.userName.localeCompare(b.userName)
           );
           console.log(alphabeticalSort);
           setClientList([...alphabeticalSort]);
-          break;
-        case "execute":
-          const executeSort = jsonClientList.sort(
-            (a, b) => a.completed - b.completed
-          );
-          console.log(executeSort);
-          setClientList([...executeSort]);
           break;
         case "random":
           setClientList(randomSort([...jsonClientList]));
@@ -114,67 +106,65 @@ function Clients({userState}) {
 
   function clearHandler() {
     setSearchTerm("");
-    setSearchPostId("");
+    setSearchClientId("");
   }
 
   return (
-    <>
-      {isLoading && <Loading />}
-      {fetchError && <Error message={fetchError} />}
-      <InputLabel id="sort-by">מיון עפ"י</InputLabel>
-      <Select
-        labelId="sort-by"
-        id="sort-by"
-        value={sort}
-        label="Age"
-        onChange={(e) => setSort(e.target.value)}
-      >
-        <MenuItem value="serial">Ten</MenuItem>
-        <MenuItem value="execute">Twenty</MenuItem>
-        <MenuItem value="alphabetical">Thirty</MenuItem>
-        <MenuItem value="random">Thirty</MenuItem>
-      </Select>
-
-      {/* <label className="sortBy" htmlFor="sort">
-          Sort by:{" "}
-        </label>
-        <select id="sort" onChange={(e) => setSort(e.target.value)}>
-          <option value="serial">Serial</option>
-          <option value="execute">Execution</option>
-          <option value="alphabetical">Alphabetical</option>
-          <option value="random">Random</option>
-        </select> */}
-
-      <TextField
-        id="standard-basic"
-        variant="standard"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        label="הכנס שם לקוח לחיפוש"
-      />
-      <TextField
-        id="standard-basic"
-        variant="standard"
-        value={searchClientId}
-        onChange={(e) => setSearchPostId(e.target.value)}
-        label="הכנס ת.ז. לחיפוש"
-      />
-      {!isLoading && !fetchError && (
-        <Grid item xs={12} md={6}>
-          <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-            רשימת לקוחות{" "}
-          </Typography>
-          <Demo>
-            <List>
-            </List>
-            {jsonClientList.map((client, kay) => {
-              kay = client.name
-              return (<SingleClient client={client} />);
-            })}
-          </Demo>
-        </Grid>
-      )}
-    </>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', p: 2 }}>
+        <Paper elevation={3} sx={{ p: 2, width: 300 }}>
+          <InputLabel id="sort-by">מיון עפ"י</InputLabel>
+          <Select
+            fullWidth
+            labelId="sort-by"
+            id="sort-by"
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+          >
+            <MenuItem value="serial">סריאלי</MenuItem>
+            <MenuItem value="alphabetical">אלפבתי</MenuItem>
+            <MenuItem value="random">רנדומלי</MenuItem>
+          </Select>
+          <TextField
+            fullWidth
+            id="search-name"
+            variant="outlined"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            label="הכנס שם לקוח לחיפוש"
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            id="search-id"
+            variant="outlined"
+            value={searchClientId}
+            onChange={(e) => setSearchClientId(e.target.value)}
+            label="הכנס ת.ז. לחיפוש"
+            margin="normal"
+          />
+        </Paper>
+      </Box>
+      
+      <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
+        {isLoading && <Loading />}
+        {fetchError && <Error message={fetchError} />}
+        {!isLoading && !fetchError && (
+          <Grid container justifyContent="center">
+            <Grid item xs={12} md={8}>
+              <Typography variant="h6" component="div" align="center" gutterBottom>
+                רשימת לקוחות
+              </Typography>
+              <List>
+                {clientList.map((client) => (
+                  <SingleClient key={client.user_id} client={client} />
+                ))}
+              </List>
+            </Grid>
+          </Grid>
+        )}
+      </Box>
+    </Box>
   );
 }
 
