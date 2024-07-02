@@ -16,12 +16,22 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 function Login({ setConnectionStatus, setUserState }) {
   const navigate = useNavigate();
 
-
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#576911",
+      },
+      secondary: {
+        main: "#ff9b2c",
+      },
+    },
+  });
   const handleSubmit = async (event) => {
     // Prevent page reload
     event.preventDefault();
@@ -61,6 +71,8 @@ function Login({ setConnectionStatus, setUserState }) {
     setConnectionStatus("newConnection");
   }
   return (
+    <ThemeProvider theme={theme}>
+
     <Container component="main" maxWidth="xs" dir="rtl">
       <CssBaseline />
       <Box
@@ -111,8 +123,8 @@ function Login({ setConnectionStatus, setUserState }) {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+            sx={{ mt: 3, mb: 2, bgcolor: '#aee62d', '&:hover': { bgcolor: '#9ed11d' } }}
+            >
             התחבר
           </Button>
           <Grid container>
@@ -125,6 +137,8 @@ function Login({ setConnectionStatus, setUserState }) {
         </Box>
       </Box>
     </Container>
+    </ThemeProvider>
+
   );
 }
 export default Login;

@@ -25,7 +25,6 @@ function SingleClient({ client }) {
     </Tooltip>
         </ListItemIcon>
         <ListItemText primary={client.userName} secondary={client.user_id} />
-        {console.log(client)}
       </ListItem>
       ,
     </div>

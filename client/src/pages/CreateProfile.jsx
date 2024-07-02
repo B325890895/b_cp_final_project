@@ -13,10 +13,20 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import "./pages_css/CreateProfile.css";
 
 function CreateProfile() {
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#576911',
+      },
+      secondary: {
+        main: '#ff9b2c',       },
+    },
+  });
   const [hmo, setHmo] = useState("");
   const [birthDate, setBirthDate] = useState();
   const navigate = useNavigate();
@@ -68,6 +78,8 @@ function CreateProfile() {
     }
   };
   return (
+    <ThemeProvider theme={theme}>
+
     <Container component="main" maxWidth="lg" dir="rtl">
       <CssBaseline />
       <Box className="form-container">
@@ -81,8 +93,9 @@ function CreateProfile() {
         </Box>
         
         <Box component="form" onSubmit={handleSubmit} noValidate
-        //  className="form-content"
+         className="form-content"
          >
+                  <Box className="form-fields">
           <Box className="left-side">
           <Box id="profile">
             <TextField
@@ -191,13 +204,14 @@ function CreateProfile() {
               autoFocus
             />            </Box>
           </Box>
+          </Box>
         <Box className="submit-button">
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+            sx={{ mt: 3, mb: 2, bgcolor: '#aee62d', '&:hover': { bgcolor: '#9ed11d' } }}
+            >
             שמירת פרטים
           </Button>
         </Box>
@@ -205,6 +219,8 @@ function CreateProfile() {
         </Box>
       </Box>
     </Container>
+    </ThemeProvider>
+
   )
 
 }

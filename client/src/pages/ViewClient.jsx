@@ -14,14 +14,14 @@ function ViewClient() {
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const [client, setClient] = useState();
+  const URL_API="http://localhost:3000";
 
   useEffect(() => {
     (async () => await fetchClient())();
   }, []);
   const fetchClient = async () => {
-    console.log("i am going to bring the clients datailes");
+    console.log(clientId);
     try {
-      console.log("i am in the try");
       const response = await fetch(`${URL_API}/user/${clientId}`);
       if (!response.ok) {
         throw Error("Did not received clients data from server");

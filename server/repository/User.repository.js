@@ -15,10 +15,17 @@ class UserRepository extends Repository {
       return {json: objects,statusCode: 200};
     throw new Error("Couldn't read all");
   }
-  async read(user_id) {
-    console.log("userrepository",user_id);
+  async read(id) {
+    console.log("userrepository",id);
+    console.log(typeof(id));
     try {
-      return await this.model.findOne({ user_id: user_id });
+      let user= await this.model.findOne({ user_id:id });
+      console.log(user);
+      if (user) {
+        return { json: user, statusCode: 200 };
+      }else {
+        throw new Error
+      }
     }
     catch (err) {
       console.log("user not found");

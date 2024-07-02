@@ -15,8 +15,21 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from '@mui/material/Alert';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 function Login({ setConnectionStatus, setUserState }) {
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#576911',
+      },
+      secondary: {
+        main: '#ff9b2c', 
+      },
+    },
+  });
   const navigate = useNavigate();
   const [passwordAlert,setPasswordAlert] =useState(false);
   const handleSubmit = async (event) => {
@@ -73,6 +86,8 @@ try {
   }
 
   return (
+    <ThemeProvider theme={theme}>
+
     <Container component="main" maxWidth="xs" dir="rtl">
       <CssBaseline />
       <Box
@@ -142,13 +157,15 @@ try {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+            sx={{ mt: 3, mb: 2, bgcolor: '#aee62d', '&:hover': { bgcolor: '#9ed11d' } }}
+            >
             התחבר
           </Button>
         </Box>
       </Box>
     </Container>
+    </ThemeProvider>
+
   );
 }
 export default Login;

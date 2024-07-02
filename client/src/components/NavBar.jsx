@@ -10,7 +10,6 @@ import Button from "@mui/material/Button";
 import { Link, Outlet } from "react-router-dom";
 import "./components_css/NavBar.css";
 
-
 function NavBar({ userState }) {
   console.log(userState);
   const navItemsClient = [
@@ -48,7 +47,10 @@ function NavBar({ userState }) {
     <>
       <Box sx={{ display: "flex" }} dir="rtl">
         <CssBaseline />
-        <AppBar component="nav">
+        <AppBar
+          component="nav"
+          sx={{ backgroundColor: "#aee62d", color: "black" }}
+        >
           <Toolbar>
             <IconButton
               color="inherit"
@@ -71,11 +73,20 @@ function NavBar({ userState }) {
               />
             </Typography>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              {navItems && navItems.map((item) => (
-                <Button key={item.link} sx={{ color: "#fff" }}>
-                  <Link to={item.link.toLowerCase()}>{item.name}</Link>
-                </Button>
-              ))}
+              {navItems &&
+                navItems.map((item) => (
+                  <Button key={item.link} sx={{ color: "black" }}>
+                    <Link
+                      to={item.link.toLowerCase()}
+                      style={{
+                        color: "black",
+                        textDecoration: "none",
+                      }}
+                    >
+                      {item.name}
+                    </Link>
+                  </Button>
+                ))}
             </Box>
           </Toolbar>
         </AppBar>
