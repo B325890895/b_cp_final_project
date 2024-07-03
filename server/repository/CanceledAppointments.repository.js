@@ -16,8 +16,8 @@ class AppointmentRepository extends Repository {
          return await this.model.findOne({ user_id: user_id });
     }
 
-    async delete(userName, date) {
-        return await this.model.deleteOne({ userName: userName, date: date });
+    async delete(user_id, date) {
+        return await this.model.deleteOne({ user_id: user_id, date: date });
     }
     async update(canceledAppointmentsUpdated) {
         try {

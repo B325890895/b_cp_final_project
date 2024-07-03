@@ -165,7 +165,7 @@ function NavBar({ userId, userState }) {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const navItemsClient = [
-    { name: "בית", link: "home" },
+    { name: "בית", link: `home/${userId}`},
     // { name: "תשלום", link: "payment" },
     // { name: "התחייבות חברת החולים", link: "hmo/" },
     { name: "לוח שנה", link: `calendar/${userId}` },

@@ -22,13 +22,13 @@ router.
         AlertController.delete(req, res, next)
     });
 router.
-    route("/appintment/:filter")
+    route("/appointment/:filter")
     .get((req, res, next) => {
         AlertController.read(req, res, next);
     })
 
     router.
-    route("/appintment/:filter1/:filter2")
+    route("/appointment/:filter1/:filter2")
     .delete((req, res, next) => {
         console.log("route deleted");
         AlertController.delete(req, res, next);

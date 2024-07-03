@@ -9,14 +9,15 @@ class CanceledAppointmentServies extends Service {
         if (user_id == "manager") {
             const response = await canceledAppointmentRepository.readAll()
             if (response) {
-                const result = response.filter(appointment => !this.isDatePassed(appointment.date));
-                const responseUpdate = await canceledAppointmentRepository.update(result);
-                console.log(responseUpdate.statusCode,"service");
-                if (responseUpdate.statusCode!=200) {
-                    console.log("not found");
-                    return { statusCode: 500, json: {} };
-                }
-                return { statusCode: 200, json: result };
+                // const result = response.filter(appointment => !this.isDatePassed(appointment.date));
+                // const responseUpdate = await canceledAppointmentRepository.update(result);
+                // console.log(responseUpdate.statusCode,"service","hiii");
+                // if (responseUpdate.statusCode!=200) {
+                //     console.log("not found");
+                //     return { statusCode: 500, json: {} };
+                // }
+                console.log(response);
+                return { statusCode: 200, json: response };
             }
             return { statusCode: 500, json: {} };
         }
@@ -29,7 +30,8 @@ class CanceledAppointmentServies extends Service {
     async delete(user_id, date) {
         const response = await canceledAppointmentRepository.delete(user_id, date);
         if (response) {
-            return { statusCode: 200, json: response };
+            console.log(response);
+            return { statusCode: 200, json: response.json };
         }
         return { statusCode: 500, json: {} };
     }
