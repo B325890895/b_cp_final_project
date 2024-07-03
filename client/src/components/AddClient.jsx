@@ -66,6 +66,9 @@ function AddClient() {
     if (response.status == 200) {
       setAlertAddClient(true);
     }
+    else{
+      alert("קיים משתמש בעל תעודת זהות כזאת")
+    }
   }
   async function cancel() {
     console.log("cancel add delete client");
@@ -82,8 +85,8 @@ function AddClient() {
       console.log("לקוח נמחק בהצלחה")
       setAlertAddClient(false);
       setAddClientForm(false);setAddClientButton(true), setDisabledAddButton(true)
-      
     }
+  
   }
   function addClient() {
     setAddClientForm(!addClientForm)

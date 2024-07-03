@@ -51,6 +51,13 @@ class PasswordRepository extends Repository {
       return { json: false, statusCode: 500 };
     }
   }
+  async readByUserName(userName) {
+    const result = await this.model.findOne({ userName: userName });
+    if (result && result != undefined) {
+      return true;
+    }
+    return false;
+  }
 }
 
 module.exports = new PasswordRepository(passwordConnection, passwordModel);

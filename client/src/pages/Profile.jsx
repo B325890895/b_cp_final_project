@@ -60,7 +60,7 @@ export default function Profile({ userState }) {
         <Loading />}
       {/* {profileState=="create"&&!fetchError && !isLoading && <CreateProfile id="" setUserDetail={setUserDetail} setProfileState={setProfileState}/>} */}
       {profileState == "show" && !fetchError && !isLoading && <ShowProfile userDetail={userDetail} setProfileState={setProfileState} />}
-      {profileState == "update" && !fetchError && !isLoading && <UpdateProfile setProfileState={setProfileState} />}
+      {profileState == "update" && !fetchError && !isLoading && <UpdateProfile userDetail={userDetail} setProfileState={setProfileState} />}
 
     </>
   );
