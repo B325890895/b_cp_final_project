@@ -151,7 +151,7 @@ class AppointmentService extends Service {
     return userInformation;
   }
   getDates(year, month, dayOfWeek) {
-    const arrayDayOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
+    const arrayDayOfWeek = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
     const dates = [];
     const date = new Date(year, month - 1, 1);
     const newDate = new Date(date);
