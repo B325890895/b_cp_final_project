@@ -1,15 +1,16 @@
 .form-container {
     display: flex;
-    padding-top: 5vw;
+    padding-top: 10vw;
     flex-direction: column;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     width: 60vw;
   }
   
   .form-content {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    /* flex-grow: 1; */
+    height: auto;
   }
   
   .form-fields {
@@ -45,13 +46,13 @@
   /* תנאי לגודל של סמארטפון */
   @media (max-width: 600px) {
     body {
-      height: auto;
+      /* height: auto; */
       margin-top: 2vw;
     }
-  
+/*   
     .form-container {
       padding-bottom: 2rem;
-    }
+    } */
   
   
     .left-side, .right-side {

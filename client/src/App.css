@@ -5,6 +5,18 @@
   text-align: center;
   font-family: karantina;
 }
+/* Example to remove margin and padding */
+.MuiContainer-root.MuiContainer-maxWidthLg.css-1oqqzyl-MuiContainer-root {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Custom styles for your component */
+.custom-container {
+  margin: 0 auto; /* Center align */
+  padding: 1rem;  /* Adjust padding as needed */
+}
+
 
 
 .karantina-light {
