@@ -37,7 +37,6 @@ export default function Profile({ userState }) {
 
   async function importUserDetailsFromDatabase() {
     try {
-      console.log("importUserDetailsFromDatabase", `${URL_API}/${userId}`);
       const response = await fetch(`${URL_API}/user/${userId}`);
       if (!response.ok) {
         throw Error("Did not received expected data");
