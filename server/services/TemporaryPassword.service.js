@@ -117,7 +117,7 @@ class temporaryPasswordService extends Service {
     return await this.repository.readByUserName(userName);
   }
   async checksIfExistsInPassword(userName) {
-    return await passwordService.readByUserName(userName);
+    return await passwordService.checksIfExistsInPassword(userName);
   }
 }
 module.exports = new temporaryPasswordService(temporaryPasswordRepository);

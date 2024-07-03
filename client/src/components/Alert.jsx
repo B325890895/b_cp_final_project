@@ -7,13 +7,13 @@ function Alert({userState,user_id}) {
     return (
       <>
         <ReportAlert />
-        <AppointmentAlert userState={"manager"} user_id={"manager"}/>
+        <AppointmentAlert userState={"manager"} user_id={user_id}/>
       </>
     );
   }
   if (userState == "client") {
     return (<>       
-     <AppointmentAlert userState={"client"} user_id={"325890895"}/>
+     <AppointmentAlert userState={"client"} user_id={user_id}/>
     </>)
   }
 }
