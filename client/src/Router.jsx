@@ -24,7 +24,6 @@ function Router() {
       setUserId(localStorage.getItem("userId"));
     }
   }, []);
-
   return (
     <>
       <BrowserRouter>
@@ -33,7 +32,7 @@ function Router() {
           <Route path="/connect" element={<Connect setUserId={setUserId} setUserState={setUserState} />} />
           <Route path="/createProfile" element={<CreateProfile userState={userState} />} />
           <Route element={<NavBar  userId={userId} userState={userState} />}>
-            <Route path="/home" element={<Home userId={userId} userState={userState} />} />
+            <Route path="/home/:id" element={<Home  userState={userState} />} />
             <Route path="/profile/:id" element={<Profile  userState={userState} />} />
             <Route path="/calendar/:id" element={<Calendar  userState={userState} />} />
             <Route path="/hmo" element={<HMO userId={userId} userState={userState} />} />

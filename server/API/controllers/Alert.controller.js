@@ -9,6 +9,7 @@ class AlertController extends Controller {
         try {
             if (req.params.filter) {
                 const response = await cenceledAppointment.read(req.params.filter);
+            console.log("response: " + response.json);
                 return res.status(response.statusCode).json(response.json);
             }
             if (req.params.id) {
@@ -21,8 +22,8 @@ class AlertController extends Controller {
     }
     async delete(req, res, next) {
         try {
-            console.log("controller");
             const response = await cenceledAppointment.delete(req.params.filter1, req.params.filter2);
+            console.log(response.json);
             return res.status(response.statusCode).json(response.json);
         } catch (error) {
             next(error);

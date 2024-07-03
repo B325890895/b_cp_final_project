@@ -62,7 +62,7 @@ function Login({ setConnectionStatus,setUserId, setUserState }) {
       setUserId(userConnectionInfo.userName)
       localStorage.setItem('userState', data.userState);
       localStorage.setItem('userId', userConnectionInfo.userName);
-      navigate("/Home");
+      navigate(`/Home/${userConnectionInfo.userName}`);
     }
     // else if (response.status === 400) {
     else {
