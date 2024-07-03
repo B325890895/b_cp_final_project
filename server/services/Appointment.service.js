@@ -38,15 +38,16 @@ class AppointmentService extends Service {
       if (params.filter1 == "*") {
         const usersResponse = await userService.readAll();
         const users = usersResponse.json;
-        const appointmentsAtMonthPromises =  users.map(async (user) => {
+        const appointmentsAtMonthPromises = users.map(async (user) => {
           await this.getUserAppointmentsAtMonth(user.user_id, month, year, appointmentsWithDay)
         })
         await Promise.all(appointmentsAtMonthPromises);
-        console.log(appointmentsWithDay, "appointmentsAtMonth");
         return { statusCode: 200, json: appointmentsWithDay };
       }
       else {
-        this.getUserAppointmentsAtMonth(params.filter1.user_id, month, year, appointmentsWithDay);
+       const response=await this.getUserAppointmentsAtMonth(params.filter1, month, year, appointmentsWithDay);
+       console.log(response,"hiiii");
+       return { statusCode: 200, json: response}
       }
     }
     return { statusCode: 500 };
@@ -95,7 +96,6 @@ class AppointmentService extends Service {
     const [hours, minutes] = userInformation.hour.split(':').map(Number);
     const currentDate = new Date();
     let datesAtThisDay = this.getDates(currentDate.getFullYear(), currentDate.getMonth() + 1, userInformation.day);
-    console.log(datesAtThisDay, "datesAtThisDay");
     let dateNextAppointment = datesAtThisDay.find((date) => {
       const [day, month, year] = date.split('/').map(Number);
       const dateAppointment = new Date(year, month - 1, day, hours, minutes);
@@ -103,7 +103,10 @@ class AppointmentService extends Service {
         if (userInformation.canceledAppointments.includes(date)) {
           appointmentWithDay.dateCenceled.push(date);
         }
-        return date;
+        else{
+          return date;
+        }
+          
       }
     })
     while (!dateNextAppointment) {
@@ -116,6 +119,7 @@ class AppointmentService extends Service {
         return dateAppointment;
       })
     }
+    console.log(dateNextAppointment, "dateNextAppointment");
     return dateNextAppointment;
   }
 
@@ -144,7 +148,6 @@ class AppointmentService extends Service {
   async getUserInfo(userId) {
     console.log("user info user id: " + userId);
     const userInformation = await userInfo.read(userId);
-
     if (!userInformation) {
       throw new Error("User not found");
     }
@@ -172,12 +175,13 @@ class AppointmentService extends Service {
       dates.push(dateString);
       date.setDate(date.getDate() + 7);
     }
-    console.log(dates.length);
+    console.log(dates.length, "dates.length");
     return dates;
   }
   async getUserAppointmentsAtMonth(userId, month, year, appointmentsWithDay) {
     const userInformation = (await this.getUserInfo(userId)).json;
     const dates = this.getDates(year, month, userInformation.day);
+    console.log(userInformation);
     let thisStatus = 1;
     await dates.map((date) => {
       thisStatus = 1;
@@ -193,7 +197,6 @@ class AppointmentService extends Service {
         status: thisStatus,
       })
     })
-    console.log(appointmentsWithDay,"appointmentsWithDay");
     return appointmentsWithDay
   }
 }
