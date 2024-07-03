@@ -12,6 +12,7 @@ class AppointmentService extends Service {
   async read(params) {
     const regex = /^(0?[1-9]|1[0-2])\/(2000|200[1-9]|201[0-9]|202[0-5])$/;
     if (params.filter1 && params.filter2 == "next") {
+      console.log(params.filter1);
       const userInformation = await this.getUserInfo(params.filter1);
       console.log(userInformation.json.userName, "userInformation.userName");
       if (!userInformation) {
@@ -25,7 +26,7 @@ class AppointmentService extends Service {
         hour: userInformation.json.hour,
         date: "",
         status: 1,
-        dateCenceled: [],
+        dateCanceled: [],
       };
       const dateNextAppointment = this.getDate(userInformation, appointmentWithDay);
       appointmentWithDay.date = dateNextAppointment;
@@ -45,7 +46,7 @@ class AppointmentService extends Service {
         return { statusCode: 200, json: appointmentsWithDay };
       }
       else {
-        this.getUserAppointmentsAtMonth(user.user_id, month, year, appointmentsWithDay);
+        this.getUserAppointmentsAtMonth(params.filter1.user_id, month, year, appointmentsWithDay);
       }
     }
     return { statusCode: 500 };
@@ -141,6 +142,7 @@ class AppointmentService extends Service {
     return Math.round(hoursDifference * 100) / 100;
   }
   async getUserInfo(userId) {
+    console.log("user info user id: " + userId);
     const userInformation = await userInfo.read(userId);
 
     if (!userInformation) {
