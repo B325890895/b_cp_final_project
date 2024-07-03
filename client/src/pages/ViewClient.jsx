@@ -193,7 +193,7 @@ function ViewClient({ userState }) {
               יום {client.day}{" "}
             </Typography>
             <Typography component="h1" variant="h6">
-              בשעה {client.time}
+              בשעה {client.hour}
             </Typography>
           </div>
         )}

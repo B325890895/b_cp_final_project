@@ -66,13 +66,12 @@ try {
     
     if (response.status == 200) {
       const data = await response.json();
-      console.log("successfully connected:", data);
       setUserState(data.userState);
       setUserId(userConnectionInfo.userName)
       localStorage.setItem('userId', userConnectionInfo.userName);
       localStorage.setItem('userState', data.userState);
       if(data.userState=="manager"){
-        navigate("/Home");
+        navigate(`/home/${userConnectionInfo.userName}`);
       }else{
         navigate("/createProfile");
       }

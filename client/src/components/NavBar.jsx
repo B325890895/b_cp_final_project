@@ -172,7 +172,7 @@ function NavBar({ userId, userState }) {
     { name: "אזור אישי", link: `profile/${userId}` },
   ];
   const navItemsManager = [
-    { name: "בית", link: "home" },
+    { name: "בית", link:  `home/${userId}` },
     // { name: "צפיה בקבלות", link: "payment" },
     { name: "צפיה בלקוחות", link: "clients" },
     { name: "לוח שנה", link: `calendar/${userId}` },

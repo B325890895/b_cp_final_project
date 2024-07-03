@@ -35,6 +35,7 @@ function CreateProfile({userState}) {
     
     switch (userState) {
       case "client":
+        navigate()
         break;
       case "manager":
         navigate("/*");
@@ -69,7 +70,6 @@ function CreateProfile({userState}) {
         phoneNumber: document.forms[0].mother_phoneNumber.value,
       },
     };
-    console.log(userProfile);
     try {
       const response = await fetch(`${URL_API}/user`, {
         method: "POST",
@@ -81,7 +81,7 @@ function CreateProfile({userState}) {
       if (response.ok) {
         const data = await response.json();
         console.log("Successfully created user:", data);
-        navigate("/Home");
+        navigate(`/home/${userProfile.user_id}`);
       } else {
         console.log("Error in server");
       }

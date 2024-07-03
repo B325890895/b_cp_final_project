@@ -17,7 +17,8 @@ class temporaryPasswordService extends Service {
     //validation to email and user name
     if (!this.validation(passwordInfo.userName, passwordInfo.email))
       return { statusCode: 400 };
-    if (this.checksIfExistsInPassword(passwordInfo.userName) || this.checksIfExistsInTemporaryPassword(passwordInfo.userName)) {
+    if (await this.checksIfExistsInPassword(passwordInfo.userName) ||await this.checksIfExistsInTemporaryPassword(passwordInfo.userName)) {
+      console.log("Password already exists");
       return { statusCode: 500, json: 'User already exists.' };
     }
     const password = await this.generatePassword(9);
@@ -114,10 +115,14 @@ class temporaryPasswordService extends Service {
     return true;
   }
   async checksIfExistsInTemporaryPassword(userName) {
-    return await this.repository.readByUserName(userName);
+    const result= await this.repository.readByUserName(userName);
+    console.log(result,"checksIfExistsInTemporaryPassword service");
+    return result;
   }
   async checksIfExistsInPassword(userName) {
-    return await passwordService.checksIfExistsInPassword(userName);
+    const result= await passwordService.checksIfExistsInPassword(userName);
+    console.log(result,"checksIfExistsInPassword service");
+    return result;
   }
 }
 module.exports = new temporaryPasswordService(temporaryPasswordRepository);
