@@ -8,16 +8,15 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import info from '../assets/currentUserInfo.json'
 
 
 
-function UpdateProfile({ setProfileState }) {
-  const URL_API = "http://localhost:3001";
+function UpdateProfile({userDetail, setProfileState }) {
+  const URL_API = "http://localhost:3000";
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const userDetail = info[0].userInfo;
-  const [updateName, setUpdateName] = useState(userDetail.name);
+  const [userId, setUserId] = useState(userDetail.user_id);
+  const [updateName, setUpdateName] = useState(userDetail.userName);
   const [updateEmail, setUpdateEmail] = useState(userDetail.email);
   const [updateBirthDate, setUpdateBirthDate] = useState(userDetail.birthDate);
   const [updateHMO, setUpdateHMO] = useState(userDetail.hmo);
@@ -35,9 +34,6 @@ function UpdateProfile({ setProfileState }) {
   );
 
   function updateHandler() {
-
-    console.log("");
-
     const updatedProfile = {
       userId: userDetail.userId,
       name: updateName,
@@ -54,7 +50,7 @@ function UpdateProfile({ setProfileState }) {
       },
     }
 
-    fetch(`${URL_API}/user/${userDetail.userId}`, {
+    fetch(`${URL_API}/user/${userDetail.user_id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +69,6 @@ function UpdateProfile({ setProfileState }) {
       .catch((error) => {
         setFetchError("Error updating profile:", error);
       });
-    info[0].userInfo = updatedProfile;
     setProfileState("show")
   }
 
@@ -89,12 +84,14 @@ function UpdateProfile({ setProfileState }) {
         dir="rtl"
       >
         <CardContent>
-
           <TextField
             id="user_id"
             label="מספר זהות"
             variant="standard"
-            value={userDetail.userId}
+            InputProps={{
+              readOnly: true,
+            }}
+            value={userId}
           />
           <TextField
             id="user_name"

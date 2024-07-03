@@ -61,5 +61,8 @@ class passwordService extends Service {
       return false;
     return true;
   }
+  async checksIfExistsInPassword(userName) {
+    return await this.repository.readByUserName(userName);
+  }
 }
 module.exports = new passwordService(passwordRepository);

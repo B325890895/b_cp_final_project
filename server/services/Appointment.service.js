@@ -21,7 +21,7 @@ class AppointmentService extends Service {
       let appointmentWithDay = {
         user_id: params.filter1,
         userName: userInformation.json.userName,
-        day: this.translateDay(userInformation.json.day),
+        day: userInformation.json.day,
         hour: userInformation.json.hour,
         date: "",
         status: 1,
@@ -118,19 +118,19 @@ class AppointmentService extends Service {
     return dateNextAppointment;
   }
 
-  translateDay(day) {
-    console.log(day, "day");
-    const days = {
-      Sunday: "ראשון",
-      Monday: "שני",
-      Tuesday: "שלישי",
-      Wednesday: "רביעי",
-      Thursday: "חמישי",
-      Friday: "שישי",
-      Saturday: "שבת",
-    };
-    return days[day] || "יום לא תקין";
-  }
+  // translateDay(day) {
+  //   console.log(day, "day");
+  //   const days = {
+  //     Sunday: "ראשון",
+  //     Monday: "שני",
+  //     Tuesday: "שלישי",
+  //     Wednesday: "רביעי",
+  //     Thursday: "חמישי",
+  //     Friday: "שישי",
+  //     Saturday: "שבת",
+  //   };
+  //   return days[day] || "יום לא תקין";
+  // }
 
   async getHoursBetweenDates(futureDate) {
     const [day, month, year] = futureDate.split("/").map(Number);
@@ -185,7 +185,7 @@ class AppointmentService extends Service {
       appointmentsWithDay.push({
         user_id: userInformation.user_id,
         userName: userInformation.userName,
-        day: this.translateDay(userInformation.day),
+        day: userInformation.day,
         hour: userInformation.hour,
         date: date,
         status: thisStatus,
